@@ -5,9 +5,10 @@ import javax.swing.JFrame;
 
 public class Frame extends JFrame{
 	public Frame(){
-		add(new Grid());
+		Grid blah=new Grid();
+		add(blah);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(600, 600);
+		setSize(616, 640);
 		setLocationRelativeTo(null);
 		setTitle("Tic Tac Toe");
 		setResizable(false);
