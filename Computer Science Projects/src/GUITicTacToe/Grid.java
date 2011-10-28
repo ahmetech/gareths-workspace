@@ -177,7 +177,6 @@ public class Grid extends JPanel implements ActionListener{
 		}
 	}	
 	public void actionPerformed(ActionEvent e) {
-		printthegrid(board);
 		checkifwinner(board);
 		repaint();
 	}
@@ -202,19 +201,35 @@ public class Grid extends JPanel implements ActionListener{
 		}
 	}
 	public void checkifwinner(String[][] board){
-
 		int row= checkrow(board);
 		int column= checkcolumn(board);
 		int diagnol= checkdiagnol(board);
-		System.out.println(row+column+diagnol);
 		if(row>0||column>0||diagnol>0){
 			ingame=false;
 		}
 		else{
 			ingame= true;
-
+			int blah=howmanyvis(buttons);
+			if(blah==9){
+			checks=new ArrayList();
+			circles=new ArrayList();
+			for (int i = 0; i < buttons.size(); i++) {
+				buttons.get(i).setVisible(true);
+			}
+			putstuffingrid();
+			}
 		}
 	}
+	public int howmanyvis(ArrayList<Button> buttons){
+		int blah=0;
+		for (int i = 0; i < buttons.size(); i++) {
+			if(!buttons.get(i).isVisible()){
+				blah++;
+			}
+		}
+		return blah;
+	}
+	
 	public int checkrow(String[][] board){
 		String[][] tic= board;
 		int win;
