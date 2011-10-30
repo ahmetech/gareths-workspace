@@ -6,7 +6,7 @@ public class Frame extends JFrame {
 	public Frame(){
 		add(new Board());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(320, 340);
+		setSize(320, 380);
 		setLocationRelativeTo(null);
 		setTitle("Snake Game");
 		setResizable(false);

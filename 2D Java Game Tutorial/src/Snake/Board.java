@@ -29,6 +29,7 @@ public class Board extends JPanel implements ActionListener{
     private int dots;
     private int apple_x;
     private int apple_y;
+    private int score;
 
     private boolean left = false;
     private boolean right = true;
@@ -51,6 +52,7 @@ public class Board extends JPanel implements ActionListener{
     	ImageIcon iih=new ImageIcon(this.getClass().getResource("head.png"));
     	head=iih.getImage();
     	setFocusable(true);
+    	score=0;
     	initGame();
     }
     public void initGame(){
@@ -74,13 +76,21 @@ public class Board extends JPanel implements ActionListener{
     				g.drawImage(ball, x[i], y[i], this);
     			}
     		}
+    		score(g);
     		Toolkit.getDefaultToolkit().sync();
     		g.dispose();
     	}else
     		gameOver(g);
     }
+    public void score(Graphics g){
+    	String msg="Score: "+score;
+		Font thing=new Font("Helvetica", Font.BOLD, 10);
+		FontMetrics metr=this.getFontMetrics(thing);
+		g.drawString(msg, 0, 340);
+    }
     public void gameOver(Graphics g){
-    	String msg="Game Over";
+    	String msg="Game Over " +
+    			"Your Score is "+score;
     	Font small=new Font("Helvetica", Font.BOLD, 16);
     	FontMetrics metr=this.getFontMetrics(small);
     	g.setColor(Color.white);
@@ -90,6 +100,7 @@ public class Board extends JPanel implements ActionListener{
     public void checkApple(){
     	if(x[0]==apple_x && y[0]==apple_y){
     		dots++;
+    		score++;
     		locateApple();
     	}
     }
