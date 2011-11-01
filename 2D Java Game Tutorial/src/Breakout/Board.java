@@ -5,10 +5,12 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
@@ -22,7 +24,7 @@ public class Board extends JPanel implements Commons{
 	int timerId;
 	
 	public Board(){
-		addKeyListener(new TAdpater());
+		addKeyListener(new TAdapter());
 		setFocusable(true);
 		bricks=new Brick[30];
 		setDoubleBuffered(true);
@@ -66,10 +68,111 @@ public class Board extends JPanel implements Commons{
 	}
 	private class TAdapter extends KeyAdapter{
 		public void keyReleased(KeyEvent e){
-			Paddle.keyReleased(e);
+			paddle.keyReleased(e);
 		}
 		public void keyPressed(KeyEvent e){
-			Paddle.keyPressed(e);
+			paddle.keyPressed(e);
 		}
 	}
-}
+	class ScheduleTask extends TimerTask{
+		public void run() {
+			ball.move();
+			paddle.move();
+			checkCollision();
+			repaint();
+		}
+	}
+	public void stopGame(){
+		ingame=false;
+		timer.cancel();
+	}
+	public void checkCollision(){
+		if(ball.getRect().getMaxY()>Commons.Bottom){
+			ingame=false;
+		}
+		for (int i = 0, j=0; i < bricks.length; i++) {
+			if(bricks[i].isDestroyed()){
+				j++;
+			}
+			if(j==30){
+				stopGame();
+			}
+		}
+		if((ball.getRect()).intersects(paddle.getRect())){
+			int paddleLPos = (int)paddle.getRect().getMinX();
+            int ballLPos = (int)ball.getRect().getMinX();
+
+            int first = paddleLPos + 8;
+            int second = paddleLPos + 16;
+            int third = paddleLPos + 24;
+            int fourth = paddleLPos + 32;
+
+            if (ballLPos < first) {
+                ball.setXdir(-1);
+                ball.setYdir(-1);
+            }
+
+            if (ballLPos >= first && ballLPos < second) {
+                ball.setXdir(-1);
+                ball.setYdir(-1 * ball.getYdir());
+            }
+
+            if (ballLPos >= second && ballLPos < third) {
+                ball.setXdir(0);
+                ball.setYdir(-1);
+            }
+
+            if (ballLPos >= third && ballLPos < fourth) {
+                ball.setXdir(1);
+                ball.setYdir(-1 * ball.getYdir());
+            }
+
+            if (ballLPos > fourth) {
+                ball.setXdir(1);
+                ball.setYdir(-1);
+            }
+
+
+        }
+
+
+        for (int i = 0; i < 30; i++) {
+            if ((ball.getRect()).intersects(bricks[i].getRect())) {
+
+                int ballLeft = (int)ball.getRect().getMinX();
+                int ballHeight = (int)ball.getRect().getHeight();
+                int ballWidth = (int)ball.getRect().getWidth();
+                int ballTop = (int)ball.getRect().getMinY();
+
+                Point pointRight =
+                    new Point(ballLeft + ballWidth + 1, ballTop);
+                Point pointLeft = new Point(ballLeft - 1, ballTop);
+                Point pointTop = new Point(ballLeft, ballTop - 1);
+                Point pointBottom =
+                    new Point(ballLeft, ballTop + ballHeight + 1);
+
+                if (!bricks[i].isDestroyed()) {
+                    if (bricks[i].getRect().contains(pointRight)) {
+                        ball.setXdir(-1);
+                    }
+
+                    else if (bricks[i].getRect().contains(pointLeft)) {
+                        ball.setXdir(1);
+                    }
+
+                    if (bricks[i].getRect().contains(pointTop)) {
+                        ball.setYdir(1);
+                    }
+
+                    else if (bricks[i].getRect().contains(pointBottom)) {
+                        ball.setYdir(-1);
+                    }
+
+                    bricks[i].setDestroyed(true);
+                }
+            }
+        }
+		}
+		
+	}
+
