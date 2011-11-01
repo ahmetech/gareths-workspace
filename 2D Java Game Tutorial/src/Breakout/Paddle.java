@@ -5,7 +5,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 public class Paddle extends Sprite implements Commons {
-	int dx;
+	boolean l;
+	boolean r;
 	public Paddle(){
 		ImageIcon ii = new ImageIcon(this.getClass().getResource("paddle.png"));
         image = ii.getImage();
@@ -14,7 +15,12 @@ public class Paddle extends Sprite implements Commons {
         resetState();
 	}
 	public void move(){
-		x+=dx;
+		if(l){
+			x+=-2;
+		}
+		if(r){
+			x+=2;
+		}
 		if(x<=2){
 			x=2;
 		}
@@ -25,19 +31,19 @@ public class Paddle extends Sprite implements Commons {
 	public void keyPressed(KeyEvent e){
 		int key=e.getKeyCode();
 		if(key==KeyEvent.VK_LEFT){
-			dx=-2;
+			l=true;
 		}
 		if(key==KeyEvent.VK_RIGHT){
-			dx=2;
+			r=true;
 		}
 	}
 	public void keyReleased(KeyEvent e){
 		int key=e.getKeyCode();
 		if(key==KeyEvent.VK_LEFT){
-			dx=0;
+			l=false;
 		}
 		if(key==KeyEvent.VK_RIGHT){
-			dx=0;
+			r=false;
 		}
 	}
 	public void resetState(){

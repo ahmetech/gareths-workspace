@@ -4,11 +4,10 @@ import javax.swing.ImageIcon;
 
 
 public class Ball extends Sprite implements Commons {
-
    private int xdir;
    private int ydir;
-
-
+   
+   
    public Ball() {
 
      xdir = 1;
@@ -49,7 +48,7 @@ public class Ball extends Sprite implements Commons {
     }
 
 	public void setXdir(int xdir) {
-		this.xdir = x;
+		this.xdir = xdir;
 	}
 	public int getYdir() {
 		return ydir;
