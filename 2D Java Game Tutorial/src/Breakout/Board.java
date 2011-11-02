@@ -20,13 +20,14 @@ public class Board extends JPanel implements Commons{
 	Ball ball;
 	Paddle paddle;
 	Brick[] bricks;
-	boolean ingame=true;
+	boolean Win;
 	int timerId;
 	int Score;
 	int NumberofLives;
 	
 	public Board(){
 		NumberofLives=3;
+		Win=false;
 		Score=0;
 		addKeyListener(new TAdapter());
 		setFocusable(true);
@@ -71,7 +72,13 @@ public class Board extends JPanel implements Commons{
 			}
 			ReportScore(g);
 			ReportLives(g);
-		}else{
+		}if(Win&& NumberofLives==0){
+			Font font = new Font("Verdana", Font.BOLD, 18);
+            FontMetrics metr = this.getFontMetrics(font);
+            g.setColor(Color.BLACK);
+            g.setFont(font);
+            g.drawString("You Win",(Commons.Width - metr.stringWidth("Game Over")) / 2, Commons.Width / 2);
+		} if(!Win&& NumberofLives==0){
 			Font font = new Font("Verdana", Font.BOLD, 18);
             FontMetrics metr = this.getFontMetrics(font);
             g.setColor(Color.BLACK);
@@ -98,7 +105,8 @@ public class Board extends JPanel implements Commons{
 		}
 	}
 	public void stopGame(){
-		ingame=false;
+		NumberofLives=0;
+		Win=true;
 		timer.cancel();
 	}
 	public void ReportScore(Graphics g){
