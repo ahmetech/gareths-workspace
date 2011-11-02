@@ -22,8 +22,12 @@ public class Board extends JPanel implements Commons{
 	Brick[] bricks;
 	boolean ingame=true;
 	int timerId;
+	int Score;
+	int NumberofLives;
 	
 	public Board(){
+		NumberofLives=3;
+		Score=0;
 		addKeyListener(new TAdapter());
 		setFocusable(true);
 		bricks=new Brick[30];
@@ -48,7 +52,7 @@ public class Board extends JPanel implements Commons{
 	}
 	public void paint(Graphics g){
 		super.paint(g);
-		if(ingame){
+		if(!(NumberofLives==0)){
 			g.drawImage(ball.getImage(), ball.getX(), ball.getY(), ball.getWidth(), ball.getHeight(), this);
 			g.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight(), this);
 			for (int i = 0; i < bricks.length; i++) {
@@ -56,12 +60,23 @@ public class Board extends JPanel implements Commons{
 					g.drawImage(bricks[i].getImage(), bricks[i].getX(), bricks[i].getY(), bricks[i].getWidth(), bricks[i].getHeight(), this);
 				}
 			}
+			int tempscore=0;
+			for (int i = 0; i < bricks.length; i++) {
+				if(bricks[i].isDestroyed()){
+					tempscore++;
+				}
+				if(Score<tempscore){
+					Score=tempscore;
+				}
+			}
+			ReportScore(g);
+			ReportLives(g);
 		}else{
 			Font font = new Font("Verdana", Font.BOLD, 18);
             FontMetrics metr = this.getFontMetrics(font);
             g.setColor(Color.BLACK);
             g.setFont(font);
-            g.drawString("Game Over",(Commons.Width - metr.stringWidth("Game Over")) / 2, Commons.Width / 2);
+            g.drawString("You Lose",(Commons.Width - metr.stringWidth("Game Over")) / 2, Commons.Width / 2);
 		}
 		Toolkit.getDefaultToolkit().sync();
         g.dispose();
@@ -86,9 +101,17 @@ public class Board extends JPanel implements Commons{
 		ingame=false;
 		timer.cancel();
 	}
+	public void ReportScore(Graphics g){
+		g.drawString("Your score is: "+Score, 1, 10);
+	}
+	public void ReportLives(Graphics g){
+		g.drawString("LIves left: "+NumberofLives, 225, 10);
+	}
 	public void checkCollision(){
 		if(ball.getRect().getMaxY()>Commons.Bottom){
-			ingame=false;
+			NumberofLives-=1;
+			ball.resetState();
+			paddle.resetState();
 		}
 		for (int i = 0, j=0; i < bricks.length; i++) {
 			if(bricks[i].isDestroyed()){
@@ -167,7 +190,6 @@ public class Board extends JPanel implements Commons{
                     else if (bricks[i].getRect().contains(pointBottom)) {
                         ball.setYdir(-1);
                     }
-
                     bricks[i].setDestroyed(true);
                 }
             }

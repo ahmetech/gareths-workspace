@@ -17,7 +17,7 @@ public class Brick extends Sprite{
 	public boolean isDestroyed(){
 		return destroyed;
 	}
-	public void setDestroyed(boolean destoryed){
+	public void setDestroyed(boolean destroyed){
 		this.destroyed=destroyed;
 	}
 }
