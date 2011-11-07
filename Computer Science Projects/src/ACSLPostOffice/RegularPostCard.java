@@ -7,8 +7,8 @@ public class RegularPostCard {
 	int zone1;
 	int zone2;
 	double cost;
-	public RegularPostCard(double len, double hei, double thick, int zone12,
-	int zone22){
+	
+	public RegularPostCard(double len, double hei, double thick, int zone12, int zone22){
 		length=len;
 		height=hei;
 		thickness=thick;
@@ -16,6 +16,7 @@ public class RegularPostCard {
 		zone2=zone22;
 		cost=.03;
 	}
+	
 	public int getZone1() {
 		return zone1;
 	}
@@ -30,8 +31,5 @@ public class RegularPostCard {
 	}
 	public double getCost() {
 		return cost;
-	}
-	public void setCost(double cost) {
-		this.cost = cost;
 	}
 }
