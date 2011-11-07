@@ -39,6 +39,7 @@ public class PostOffice {
 			}else{
 				System.out.println("Unmailable");
 			}
+			
 		}
 	}
 	public static String[] getinput(String user){
@@ -55,6 +56,8 @@ public class PostOffice {
 		if (userinput[4].substring(0,2).equals(" 0")) {
 			zone2=Integer.valueOf(userinput[4].substring(2, 6));
 		}else zone2=Integer.valueOf(userinput[4]);
-		System.out.println(length+" "+height+" "+thickness+" "+zone1+" "+zone2);
+	}
+	public static void findcost(double cost, int zone1, int zone2){
+		
 	}
 }
