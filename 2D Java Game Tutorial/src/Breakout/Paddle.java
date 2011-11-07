@@ -16,10 +16,10 @@ public class Paddle extends Sprite implements Commons {
 	}
 	public void move(){
 		if(l){
-			x+=-2;
+			x+=-3;
 		}
 		if(r){
-			x+=2;
+			x+=3;
 		}
 		if(x<=2){
 			x=2;
