@@ -38,7 +38,7 @@ public class Board extends JPanel implements ActionListener {
 
        setFocusable(true);
        curPiece = new Shape();
-       timer = new Timer(200, this);
+       timer = new Timer(400, this);
        timer.start(); 
 
        statusbar =  parent.getStatusBar();
