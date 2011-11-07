@@ -1,10 +1,16 @@
 package com.mthebron.mthapp;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Scanner;
+
+import android.content.Context;
+import android.content.res.AssetManager;
 public class TeacherList {
-	public static Teacher[] MakeList() throws FileNotFoundException{
+	public static Teacher[] MakeList(Context context) throws IOException{
 		Teacher[] teachers=new Teacher[71];	
-		Scanner iScanner=new Scanner(getAsset().open("TeacherInformation.txt"));
+		Scanner iScanner = null;
+		iScanner = new Scanner(context.getAssets().open("TeacherInformation.txt"));
 		StringBuilder teachersBuilder=new StringBuilder();
 		while(iScanner.hasNext()) {
 			teachersBuilder.append(iScanner.nextLine());
