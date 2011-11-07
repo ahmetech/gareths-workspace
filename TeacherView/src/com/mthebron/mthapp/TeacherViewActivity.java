@@ -1,9 +1,11 @@
 package com.mthebron.mthapp;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,11 +20,7 @@ public class TeacherViewActivity extends ListActivity {
 	static Teacher[] teacher=new Teacher[71];
 	public void onCreate(Bundle savedInstanceState) {
 		  super.onCreate(savedInstanceState);
-		  try {
-			this.makeList();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		  this.makeList();
 		  setListAdapter(new ArrayAdapter<String>(this, R.layout.main, Teachers));
 		  
 		  ListView lv = getListView();
@@ -37,8 +35,13 @@ public class TeacherViewActivity extends ListActivity {
 		    }
 		  });
 	}
-    public static void makeList() throws FileNotFoundException{
-    	Teacher[] blah=TeacherList.MakeList();
+    public static void makeList(){
+    	Teacher[] blah = null;
+		try {
+			blah = TeacherList.MakeList(null);
+		} catch (IOException e) {
+			Log.e("error", "error");
+		}
     	teacher=blah;
     	for (int i = 0; i < Teachers.length; i++) {
 			Teachers[i]=teacher[i].getName();
