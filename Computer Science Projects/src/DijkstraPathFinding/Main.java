@@ -2,7 +2,7 @@ package DijkstraPathFinding;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/*
 public class Main {
 	public static int numofnodes;
 	public static String path;
@@ -104,3 +104,4 @@ public class Main {
 
 
 }
+*/
