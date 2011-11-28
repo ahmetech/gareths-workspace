@@ -13,23 +13,35 @@ public class RunMe {
 	protected static ArrayList<String> input;
 	protected static char startPos;
 	protected static char finalPos;
+	protected static Vertex source;
+	protected static Vertex destination;
 	
-	public static void main(){
+	public static void main(String[] args){
 		nodesList=new ArrayList<Vertex>();
 		edgesList=new ArrayList<Edge>();
 		input=getInput();
 		for (int i = 0; i < numofnodes; i++) {
-			
-			Vertex temp=new Vertex(, name);
+			String blah=""+i;
+			Vertex temp=new Vertex(blah, blah);
+			nodesList.add(temp);
 		}
-		
-		
-		
+		organizeInput(input);
+		for(int i=0; i<nodesList.size(); i++){
+			if(nodesList.get(i).getnameString().charAt(0)==startPos){
+				source=nodesList.get(i);
+			}
+			if(nodesList.get(i).getnameString().charAt(0)==finalPos){
+				destination=nodesList.get(i);
+			}
+		}
 		Graph graph = new Graph(nodesList, edgesList);
 		Algorithm dijkstra = new Algorithm(graph);
-		dijkstra.Calcucate(startPos);
-		LinkedList<Vertex> path = dijkstra.getPath(finalPos);
+		dijkstra.Calcucate(source);
+		LinkedList<Vertex> path = dijkstra.getPath(destination);
 		
+		for (Vertex vertex : path) {
+			System.out.println(vertex.getnameString());
+		}
 	}
 	
 	//Gets the input
@@ -53,7 +65,7 @@ public class RunMe {
 	}
 	
 	//Takes the input and organizes it into the Graph
-		public static void organizeInput(ArrayList<String> input, int[][] map){
+		public static void organizeInput(ArrayList<String> input){
 			for(int i=1; i<input.size(); i++){
 				String thing=input.get(i).substring(0, 1);
 				char blah=thing.charAt(0);
@@ -61,8 +73,8 @@ public class RunMe {
 				String thing2=input.get(i).substring(2, 3);
 				char blah2=thing2.charAt(0);
 				int point2=blah2-65;
-				map[point1][point2]=Integer.valueOf(input.get(i).substring(1, 2));
-				map[point2][point1]=Integer.valueOf(input.get(i).substring(1, 2));
+				int weight=Integer.valueOf(input.get(i).substring(1, 2));
+				edgesList.add(new Edge("edge_"+i, nodesList.get(point1), nodesList.get(point2), weight));
 			}
 		}
 }
