@@ -6,17 +6,15 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RunMe {
-	protected static List<Vertex> nodesList;
-	protected static List<Edge> edgesList;
-	protected static int numofnodes;
-	protected static String path;
-	protected static ArrayList<String> input;
-	protected static char startPos;
-	protected static char finalPos;
-	protected static Vertex source;
-	protected static Vertex destination;
-	
+	static int numofnodes;
+	static char startPos;
+	static char finalPos;
 	public static void main(String[] args){
+		List<Vertex> nodesList;
+		List<Edge> edgesList;
+		ArrayList<String> input;
+		Vertex source = null;
+		Vertex destination = null;
 		nodesList=new ArrayList<Vertex>();
 		edgesList=new ArrayList<Edge>();
 		input=getInput();
@@ -25,21 +23,24 @@ public class RunMe {
 			Vertex temp=new Vertex(blah, blah);
 			nodesList.add(temp);
 		}
-		organizeInput(input);
+		organizeInput(input, edgesList, nodesList);
 		for(int i=0; i<nodesList.size(); i++){
-			if(nodesList.get(i).getnameString().charAt(0)==startPos){
+			int check=Integer.valueOf(nodesList.get(i).getnameString());
+			int checkpoint=startPos-65;
+			int checkend=finalPos-65;
+			if(check==checkpoint){
 				source=nodesList.get(i);
 			}
-			if(nodesList.get(i).getnameString().charAt(0)==finalPos){
+			if(check==checkend){
 				destination=nodesList.get(i);
 			}
 		}
 		Graph graph = new Graph(nodesList, edgesList);
 		Algorithm dijkstra = new Algorithm(graph);
 		dijkstra.Calcucate(source);
-		LinkedList<Vertex> path = dijkstra.getPath(destination);
+		LinkedList<Vertex> pathList = dijkstra.getPath(destination);
 		
-		for (Vertex vertex : path) {
+		for (Vertex vertex : pathList) {
 			System.out.println(vertex.getnameString());
 		}
 	}
@@ -48,6 +49,7 @@ public class RunMe {
 	public static ArrayList<String> getInput(){
 		Scanner iScanner=new Scanner(System.in);
 		ArrayList<String> input2=new ArrayList<String>();
+		String path;
 		numofnodes=iScanner.nextInt();
 		boolean thing=true;
 		while(thing){
@@ -65,7 +67,7 @@ public class RunMe {
 	}
 	
 	//Takes the input and organizes it into the Graph
-		public static void organizeInput(ArrayList<String> input){
+		public static void organizeInput(ArrayList<String> input, List<Edge> edgesList, List<Vertex> nodesList){
 			for(int i=1; i<input.size(); i++){
 				String thing=input.get(i).substring(0, 1);
 				char blah=thing.charAt(0);
