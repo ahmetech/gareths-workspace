@@ -19,7 +19,7 @@ public class Vertex {
 	}
 	
 	
-	
+	//Converters
 	public String toString(){
 		return nameString;
 	}
