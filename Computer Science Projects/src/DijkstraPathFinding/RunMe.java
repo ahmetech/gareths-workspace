@@ -24,6 +24,9 @@ public class RunMe {
 			nodesList.add(temp);
 		}
 		organizeInput(input, edgesList, nodesList);
+		
+		
+		//Finds and sets the source and destination vertexes
 		for(int i=0; i<nodesList.size(); i++){
 			int check=Integer.valueOf(nodesList.get(i).getnameString());
 			int checkpoint=startPos-65;
@@ -35,15 +38,29 @@ public class RunMe {
 				destination=nodesList.get(i);
 			}
 		}
-		Graph graph = new Graph(nodesList, edgesList);
-		Algorithm dijkstra = new Algorithm(graph);
-		dijkstra.Calcucate(source);
-		LinkedList<Vertex> pathList = dijkstra.getPath(destination);
 		
+		//Where I integrate the algorithm
+		Graph graph = new Graph(nodesList, edgesList);
+		Algorithm mainpart = new Algorithm(graph);
+		mainpart.Calcucate(source);
+		LinkedList<Vertex> pathList = mainpart.getPath(destination);
+		
+		
+		
+		//Prints the path of minimum value
 		for (Vertex vertex : pathList) {
-			System.out.println(vertex.getnameString());
+			int basenum= Integer.valueOf(vertex.getnameString());
+			boolean flip=true;
+			String blah="A";
+			char letter=blah.charAt(0);
+			while (flip) {
+				if (letter-65==basenum) {
+					flip=false;
+				}else letter++;
+			}
+			System.out.print(letter);
 		}
-	}
+	}  
 	
 	//Gets the input
 	public static ArrayList<String> getInput(){

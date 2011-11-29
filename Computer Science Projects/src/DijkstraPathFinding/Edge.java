@@ -19,11 +19,9 @@ public class Edge {
 	public String getidString(){
 		return idString;
 	}
-	
 	public Vertex getsourceVertex(){
 		return sourceVertex;
 	}
-	
 	public Vertex getdestinationVertex(){
 		return destinationVertex;
 	}
@@ -32,7 +30,7 @@ public class Edge {
 	}
 	
 	
-	
+	//Converters
 	public String toString(){
 		return sourceVertex+ " "+ destinationVertex;
 	}
