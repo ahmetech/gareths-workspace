@@ -50,6 +50,8 @@ public class RunMe {
 		//Prints the path of minimum value
 		Vertex previous=new Vertex("temp", "temp");
 		int previousbasenum=0;
+		boolean first=true;
+		int totalvalue=0;
 		for (int i=0; i<pathList.size(); i++) {
 			int basenum= Integer.valueOf(pathList.get(i).getnameString());
 			boolean flip=true;
@@ -60,14 +62,29 @@ public class RunMe {
 					flip=false;
 				}else letter++;
 			}
+			while(first){
 			System.out.print(letter);
+			first=false;
+			}
 			previous=pathList.get(i);
-			previousbasenum=basenum;
+			int value=0;
+			if (i==0) {
+				previousbasenum=basenum;
+			}
 			if(i>0){
 				for(Edge edge:edgesList){
-					
+					int sourcenum=Integer.valueOf(edge.getsourceVertex().getidString());
+					int destinationnum=Integer.valueOf(edge.getdestinationVertex().getidString());
+					if (sourcenum==previousbasenum&&destinationnum==basenum) {
+						value=edge.getweight();
+						totalvalue+=value;
+						previousbasenum=basenum;
+					}
 				}
-				System.out.print();
+				System.out.print(value+""+letter);
+				if(i==pathList.size()-1){
+					System.out.print(" "+"Total Distance:"+totalvalue);
+				}
 			}
 		}
 	}  
