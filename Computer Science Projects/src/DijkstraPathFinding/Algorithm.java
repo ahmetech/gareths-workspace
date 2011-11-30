@@ -9,13 +9,15 @@ public class Algorithm {
 	protected HashSet<Vertex> unSettledNodeSet;
 	protected HashMap<Vertex, Vertex> predecessors;
 	protected HashMap<Vertex, Integer> distance;
-	
+
 	//Constructor
 	public Algorithm(Graph graph){
 		nodesList=new ArrayList<Vertex>(graph.getVertexes());
 		edgesList=new ArrayList<Edge>(graph.getEdges());
 	}
 	
+	
+	//Main part of the algorithm
 	public void Calcucate(Vertex source){
 		settledNodeSet=new HashSet<Vertex>();
 		unSettledNodeSet=new HashSet<Vertex>();
@@ -31,44 +33,9 @@ public class Algorithm {
 		}
 	}
 	
-	protected void findMinimalDistances(Vertex node){
-		List<Vertex> adjacentNodesList=getNeighbors(node);
-		for(Vertex target: adjacentNodesList){
-			if(getShortestDistance(target)>getShortestDistance(node)+getDistance(node, target)){
-				distance.put(target, getShortestDistance(node)+getDistance(node, target));
-				predecessors.put(target, node);
-				unSettledNodeSet.add(target);
-			}
-		}
-	}
 	
-	
-	private int getDistance(Vertex node, Vertex target) {
-		for (Edge edge : edgesList) {
-			if (edge.getsourceVertex().equals(node)
-					&& edge.getdestinationVertex().equals(target)) {
-				return edge.getweight();
-			}
-		}
-		throw new RuntimeException("No path");
-	}
-	
-	
-	//Goes through all the Edges, and checks that a point around it isn't already settled
-	private List<Vertex> getNeighbors(Vertex node) {
-		List<Vertex> neighbors = new ArrayList<Vertex>();
-		for (Edge edge : edgesList) {
-			if (edge.getsourceVertex().equals(node)
-					&& !isSettled(edge.getdestinationVertex())) {
-				neighbors.add(edge.getdestinationVertex());
-			}
-		}
-		return neighbors;
-	}
-	
-	
-	//Goes through all the vertexes and returns the smallest 
-	private Vertex getMinimum(HashSet<Vertex> vertexes) {
+	//Goes through all the vertexes and returns the smallest distanced
+	protected Vertex getMinimum(HashSet<Vertex> vertexes) {
 		Vertex minimum = null;
 		for (Vertex vertex : vertexes) {
 			if (minimum == null) {
@@ -82,35 +49,80 @@ public class Algorithm {
 		return minimum;
 	}
 	
-	
-	//Returns if the point has already been processed
-	private boolean isSettled(Vertex vertex) {
-		return settledNodeSet.contains(vertex);
-	}
-	
-
-	private int getShortestDistance(Vertex destination) {
-		Integer d = distance.get(destination);
-		if (d == null) {
-			return Integer.MAX_VALUE;
-		} else {
-			return d;
+	//Returns the distance between the current node and the target node
+		protected int getDistance(Vertex node, Vertex target) {
+			for (Edge edge : edgesList) {
+				if (edge.getsourceVertex().equals(node)
+						&& edge.getdestinationVertex().equals(target)) {
+					return edge.getweight();
+				}
+			}
+			throw new RuntimeException("No path");
+		}
+		
+		
+	//Takes the list of neighbors and  find the minimum point
+	protected void findMinimalDistances(Vertex node){
+		List<Vertex> adjacentNodesList=getNeighbors(node);
+		for(Vertex target: adjacentNodesList){
+			if(getShortestDistance(target)>getShortestDistance(node)+getDistance(node, target)){
+				distance.put(target, getShortestDistance(node)+getDistance(node, target));
+				predecessors.put(target, node);
+				unSettledNodeSet.add(target);
+			}
 		}
 	}
 	
-
-	public LinkedList<Vertex> getPath(Vertex target) {
-		LinkedList<Vertex> path = new LinkedList<Vertex>();
+	
+	
+	
+	//Find the distance, if the vertex doesn't touch return infinite
+		protected int getShortestDistance(Vertex destination) {
+			Integer d = distance.get(destination);
+			if (d == null) {
+				return Integer.MAX_VALUE;
+			} else {
+				return d;
+			}
+		}
+	
+	//Goes through all the Edges, and checks that a point around it isn't already settled
+	protected List<Vertex> getNeighbors(Vertex node) {
+		List<Vertex> neighbors = new ArrayList<Vertex>();
+		for (Edge edge : edgesList) {
+			if (edge.getsourceVertex().equals(node)
+					&& !isSettled(edge.getdestinationVertex())) {
+				neighbors.add(edge.getdestinationVertex());
+			}
+		}
+		return neighbors;
+	}
+	
+	
+	//Returns if the point has already been processed
+	protected boolean isSettled(Vertex vertex) {
+		return settledNodeSet.contains(vertex);
+	}
+	
+	
+	
+	
+	
+	//Gets the path from the list of predecessors
+	public ArrayList<Vertex> getPath(Vertex target) {
+		ArrayList<Vertex> path = new ArrayList<Vertex>();
 		Vertex step = target;
 		// Check if a path exists
 		if (predecessors.get(step) == null) {
 			return null;
 		}
+		//If the path exists goes through the predecessors to get path
 		path.add(step);
 		while (predecessors.get(step) != null) {
 			step = predecessors.get(step);
 			path.add(step);
 		}
+		//Flips it so its in the right order
 		Collections.reverse(path);
 		return path;
 	}

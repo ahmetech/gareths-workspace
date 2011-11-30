@@ -10,8 +10,8 @@ public class RunMe {
 	static char startPos;
 	static char finalPos;
 	public static void main(String[] args){
-		List<Vertex> nodesList;
-		List<Edge> edgesList;
+		ArrayList<Vertex> nodesList;
+		ArrayList<Edge> edgesList;
 		ArrayList<String> input;
 		Vertex source = null;
 		Vertex destination = null;
@@ -43,13 +43,15 @@ public class RunMe {
 		Graph graph = new Graph(nodesList, edgesList);
 		Algorithm mainpart = new Algorithm(graph);
 		mainpart.Calcucate(source);
-		LinkedList<Vertex> pathList = mainpart.getPath(destination);
+		ArrayList<Vertex> pathList = mainpart.getPath(destination);
 		
 		
 		
 		//Prints the path of minimum value
-		for (Vertex vertex : pathList) {
-			int basenum= Integer.valueOf(vertex.getnameString());
+		Vertex previous=new Vertex("temp", "temp");
+		int previousbasenum=0;
+		for (int i=0; i<pathList.size(); i++) {
+			int basenum= Integer.valueOf(pathList.get(i).getnameString());
 			boolean flip=true;
 			String blah="A";
 			char letter=blah.charAt(0);
@@ -59,6 +61,14 @@ public class RunMe {
 				}else letter++;
 			}
 			System.out.print(letter);
+			previous=pathList.get(i);
+			previousbasenum=basenum;
+			if(i>0){
+				for(Edge edge:edgesList){
+					
+				}
+				System.out.print();
+			}
 		}
 	}  
 	
