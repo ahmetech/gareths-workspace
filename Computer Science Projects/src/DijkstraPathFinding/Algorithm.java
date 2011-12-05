@@ -9,7 +9,7 @@ public class Algorithm {
 	protected HashSet<Vertex> unSettledNodeSet;
 	protected HashMap<Vertex, Vertex> predecessors;
 	protected HashMap<Vertex, Integer> distance;
-
+	
 	//Constructor
 	public Algorithm(Graph graph){
 		nodesList=new ArrayList<Vertex>(graph.getVertexes());
@@ -81,7 +81,7 @@ public class Algorithm {
 	//Find the distance, if the vertex doesn't touch return infinite
 		protected int getShortestDistance(Vertex destination) {
 			Integer d = distance.get(destination);
-			
+			//If it hasn't been moved to, the distance is infinite
 			if (d == null) {
 				return Integer.MAX_VALUE;
 			} else {
