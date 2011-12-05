@@ -57,13 +57,15 @@ public class Algorithm {
 					return edge.getweight();
 				}
 			}
-			throw new RuntimeException("No path");
+			//Return here will only happen if no path
+			System.out.println("No Path");
+			return 0;
 		}
 		
 		
 	//Takes the list of neighbors and  find the minimum point
 	protected void findMinimalDistances(Vertex node){
-		List<Vertex> adjacentNodesList=getNeighbors(node);
+		ArrayList<Vertex> adjacentNodesList=getNeighbors(node);
 		for(Vertex target: adjacentNodesList){
 			if(getShortestDistance(target)>getShortestDistance(node)+getDistance(node, target)){
 				distance.put(target, getShortestDistance(node)+getDistance(node, target));
@@ -79,6 +81,7 @@ public class Algorithm {
 	//Find the distance, if the vertex doesn't touch return infinite
 		protected int getShortestDistance(Vertex destination) {
 			Integer d = distance.get(destination);
+			
 			if (d == null) {
 				return Integer.MAX_VALUE;
 			} else {
@@ -87,8 +90,8 @@ public class Algorithm {
 		}
 	
 	//Goes through all the Edges, and checks that a point around it isn't already settled
-	protected List<Vertex> getNeighbors(Vertex node) {
-		List<Vertex> neighbors = new ArrayList<Vertex>();
+	protected ArrayList<Vertex> getNeighbors(Vertex node) {
+		ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
 		for (Edge edge : edgesList) {
 			if (edge.getsourceVertex().equals(node)
 					&& !isSettled(edge.getdestinationVertex())) {
