@@ -24,8 +24,8 @@ public class RunMe {
 			nodesList.add(temp);
 		}
 		organizeInput(input, edgesList, nodesList);
-		
-		
+
+
 		//Finds and sets the source and destination vertexes
 		for(int i=0; i<nodesList.size(); i++){
 			int check=Integer.valueOf(nodesList.get(i).getnameString());
@@ -38,15 +38,15 @@ public class RunMe {
 				destination=nodesList.get(i);
 			}
 		}
-		
+
 		//Where I integrate the algorithm
 		Graph graph = new Graph(nodesList, edgesList);
 		Algorithm mainpart = new Algorithm(graph);
 		mainpart.Calcucate(source);
 		ArrayList<Vertex> pathList = mainpart.getPath(destination);
-		
-		
-		
+
+
+
 		//Prints the path of minimum value
 		Vertex previous=new Vertex("temp", "temp");
 		int previousbasenum=0;
@@ -63,8 +63,8 @@ public class RunMe {
 				}else letter++;
 			}
 			while(first){
-			System.out.print(letter);
-			first=false;
+				System.out.print(letter);
+				first=false;
 			}
 			previous=pathList.get(i);
 			int value=0;
@@ -88,7 +88,7 @@ public class RunMe {
 			}
 		}
 	}  
-	
+
 	//Gets the input
 	public static ArrayList<String> getInput(){
 		Scanner iScanner=new Scanner(System.in);
@@ -109,18 +109,18 @@ public class RunMe {
 		}
 		return input2;
 	}
-	
+
 	//Takes the input and organizes it into the Graph
-		public static void organizeInput(ArrayList<String> input, List<Edge> edgesList, List<Vertex> nodesList){
-			for(int i=1; i<input.size(); i++){
-				String thing=input.get(i).substring(0, 1);
-				char blah=thing.charAt(0);
-				int point1=blah-65;
-				String thing2=input.get(i).substring(2, 3);
-				char blah2=thing2.charAt(0);
-				int point2=blah2-65;
-				int weight=Integer.valueOf(input.get(i).substring(1, 2));
-				edgesList.add(new Edge("edge_"+i, nodesList.get(point1), nodesList.get(point2), weight));
-			}
+	public static void organizeInput(ArrayList<String> input, List<Edge> edgesList, List<Vertex> nodesList){
+		for(int i=1; i<input.size(); i++){
+			String thing=input.get(i).substring(0, 1);
+			char blah=thing.charAt(0);
+			int point1=blah-65;
+			String thing2=input.get(i).substring(2, 3);
+			char blah2=thing2.charAt(0);
+			int point2=blah2-65;
+			int weight=Integer.valueOf(input.get(i).substring(1, 2));
+			edgesList.add(new Edge("edge_"+i, nodesList.get(point1), nodesList.get(point2), weight));
 		}
+	}
 }
