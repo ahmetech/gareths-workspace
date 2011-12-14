@@ -1,5 +1,6 @@
 package Sudoku;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Sudoku {
@@ -25,6 +26,7 @@ public class Sudoku {
 				blah[i][j]=Integer.valueOf(input[j]);
 			}
 		}
+		scanner=null;
 		return blah;
 	}
 	
@@ -53,4 +55,43 @@ public class Sudoku {
 		}
 		return fullset;
 	}
+	
+	public static int[] findSpaces(int[][] grid, int row){
+		ArrayList<Integer> spaces=new ArrayList<Integer>();
+		for (int i = 0; i < grid.length; i++) {
+			if (grid[row][i]==0) {
+				spaces.add(i);
+			}
+		}
+		int[] space=new int[spaces.size()];
+		for (int i = 0; i < spaces.size(); i++) {
+			space[i]=spaces.get(i);
+		}
+		return space;
+	}
+	
+	public static int whatBox(int[][] grid, )
+	
+	public static boolean checkBox(int[][] grid, int number, int gridrow, int gridcolumn){
+		
+	}
+	
+	public static boolean checkColumn(int[][] grid, int number, int gridcolumn){
+		for (int i = 0; i < grid.length; i++) {
+			if (number==grid[i][gridcolumn]) {
+				return true;
+			}
+		}return false;
+	}
+	
+	public static boolean isFull(int[][] grid, int row){
+		int sum=0;
+		for (int i = 0; i < grid.length; i++) {
+			sum+=grid[row][i];
+			}
+		if (sum==45) {
+			return true;
+		}else return false;
+	}
 }
+
