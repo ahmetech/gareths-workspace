@@ -12,6 +12,17 @@ public class Sudoku {
 			String number=scanner.nextLine();
 			int row=Integer.valueOf(number);
 			int[] missingNumbers=findMissingNumbers(grid, row);
+			int[] missingPlaces=findSpaces(grid, row);
+			
+			
+			
+			
+			
+			if(isFull(grid, row)){
+				for (int j = 0; j < grid.length; j++) {
+					System.out.println(grid[row][j]);
+				}
+			}
 		}
 		
 	}
@@ -70,9 +81,120 @@ public class Sudoku {
 		return space;
 	}
 	
-	public static int whatBox(int[][] grid, )
+	public static int findBox(int[][] grid, int row, int place){
+		if(row<3&&place<3){
+			return 1;
+		}
+		if(row<3&&(place>2&&place<6)){
+			return 2;
+		}
+		if(row<3&&(place>5&&place<9)){
+			return 3;
+		}
+		if((row>2&&row<6)&&place<3){
+			return 4;
+		}
+		if((row>2&&row<6)&&(place>2&&place<6)){
+			return 5;
+		}
+		if((row>2&&row<6)&&(place>5&&place<9)){
+			return 6;
+		}
+		if((row>5&&row<9)&&place<3){
+			return 7;
+		}
+		if((row>5&&row<9)&&(place>2&&place<6)){
+			return 8;
+		}
+		if((row>5&&row<9)&&(place>5&&place<9)){
+			return 9;
+		}return 0;
+	}
 	
-	public static boolean checkBox(int[][] grid, int number, int gridrow, int gridcolumn){
+	public static int[] stuffInBox(int[][] grid, int box){
+		int[] stuff=new int[9];
+		int placeholder=0;
+		if(box==1){
+			for(int i=0; i<3; i++){
+				for(int j=0; i<3;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==2){
+			for(int i=0; i<3; i++){
+				for(int j=3; i<6;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==3){
+			for(int i=0; i<3; i++){
+				for(int j=6; i<9;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==4){
+			for(int i=3; i<6; i++){
+				for(int j=0; i<3;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==5){
+			for(int i=3; i<6; i++){
+				for(int j=3; i<6;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==6){
+			for(int i=3; i<6; i++){
+				for(int j=6; i<9;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==7){
+			for(int i=6; i<9; i++){
+				for(int j=0; i<3;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==8){
+			for(int i=6; i<9; i++){
+				for(int j=3; i<6;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		if(box==9){
+			for(int i=6; i<9; i++){
+				for(int j=6; i<9;j++){
+					stuff[placeholder]=grid[i][j];
+					placeholder++;
+				}
+			}
+		}
+		return stuff;
+	}
+	
+	public static boolean checkBox(int number, int[] stuff){
+		for (int i = 0; i < stuff.length; i++) {
+			if(number==stuff[i]){
+				return true;
+			}
+		}return false;
 		
 	}
 	
