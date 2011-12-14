@@ -13,8 +13,24 @@ public class Sudoku {
 			int row=Integer.valueOf(number);
 			int[] missingNumbers=findMissingNumbers(grid, row);
 			int[] missingPlaces=findSpaces(grid, row);
-			
-			
+			int[] originalRow=new int[9];
+			for (int j = 0; j < originalRow.length; j++) {
+				originalRow[i]=grid[row][i];
+			}
+			int[] temporaryrow=new int[9];
+			for (int j = 0; j < temporaryrow.length; j++) {
+				temporaryrow[i]=grid[row][i];
+			}
+			while (!isRowFull(temporaryrow)) {
+				for (int j = 0; j < missingPlaces.length; j++) {
+					int box=findBox(grid, row, missingPlaces[j]);
+					int[] stuffInBox=stuffInBox(grid, box);
+					for (int k = 0; k < missingNumbers.length; k++) {
+						
+					}
+				}
+			}
+				
 			
 			
 			
@@ -198,12 +214,22 @@ public class Sudoku {
 		
 	}
 	
-	public static boolean checkColumn(int[][] grid, int number, int gridcolumn){
-		for (int i = 0; i < grid.length; i++) {
-			if (number==grid[i][gridcolumn]) {
+	public static boolean checkColumn(int number, int[] column){
+		for (int i = 0; i < column.length; i++) {
+			if (number==column[i]) {
 				return true;
 			}
 		}return false;
+	}
+	
+	public static boolean isRowFull(int[] row){
+		int sum=0;
+		for (int i = 0; i < row.length; i++) {
+			sum+=row[i];
+			}
+		if (sum==45) {
+			return true;
+		}else return false;
 	}
 	
 	public static boolean isFull(int[][] grid, int row){
