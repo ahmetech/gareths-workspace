@@ -6,27 +6,28 @@ import java.util.Scanner;
 public class Sudoku {
 	public static void main(String[] args){
 		int[][] grid=new int[9][9];
-		grid=getinput();
+		Scanner scanner=new Scanner(System.in);
+		grid=getinput(scanner);
 		for (int i = 0; i < 5; i++) {
-			Scanner scanner=new Scanner(System.in);
 			String number=scanner.nextLine();
 			int row=Integer.valueOf(number);
 			int[] missingNumbers=findMissingNumbers(grid, row);
 			int[] missingPlaces=findSpaces(grid, row);
 			int[] originalRow=new int[9];
 			for (int j = 0; j < originalRow.length; j++) {
-				originalRow[i]=grid[row][i];
+				int blah=grid[row-1][j];
+				originalRow[j]=grid[row-1][j];
 			}
-			int[] temporaryrow=new int[9];
-			for (int j = 0; j < temporaryrow.length; j++) {
-				temporaryrow[i]=grid[row][i];
-			}
+			int[] temporaryrow=originalRow;
 			while (!isRowFull(temporaryrow)) {
 				for (int j = 0; j < missingPlaces.length; j++) {
 					int box=findBox(grid, row, missingPlaces[j]);
 					int[] stuffInBox=stuffInBox(grid, box);
 					for (int k = 0; k < missingNumbers.length; k++) {
-						
+						if (!checkBox(missingNumbers[k], stuffInBox)&&!checkColumn(missingNumbers[k], missingPlaces[j], grid)) {
+							addToRow(temporaryrow, missingNumbers[k], missingPlaces[j]);
+							k+=100;
+						}
 					}
 				}
 			}
@@ -43,8 +44,7 @@ public class Sudoku {
 		
 	}
 	
-	public static int[][] getinput(){
-		Scanner scanner=new Scanner(System.in);
+	public static int[][] getinput(Scanner scanner){
 		int[][] blah=new int[9][9];
 		for(int i=0; i<9;i++){
 			String temp=scanner.nextLine();
@@ -53,7 +53,6 @@ public class Sudoku {
 				blah[i][j]=Integer.valueOf(input[j]);
 			}
 		}
-		scanner=null;
 		return blah;
 	}
 	
@@ -67,16 +66,19 @@ public class Sudoku {
 			rownumbers[i]=grid[row-1][i];
 		}
 		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				if(rownumbers[i]==fullset[j]){
-					int[] temp=new int[fullset.length-1];
-					for(int a=0; a<j;a++){
-						temp[a]=fullset[a];
+			for (int thing:fullset) {
+				if(rownumbers[i]==thing){
+					ArrayList<Integer> temp=new ArrayList<Integer>();
+					for(int a=0; a<fullset.length;a++){
+						if(!(fullset[a]==thing)){
+						temp.add(fullset[a]);
+						}
 					}
-					for(int a=j+1; a<fullset.length-1; a++){
-						temp[a]=fullset[a];
+					int[] temp2=new int[temp.size()];
+					for (int j = 0; j < temp2.length; j++) {
+						temp2[j]=temp.get(j);
 					}
-					fullset=temp;
+					fullset=temp2;
 				}
 			}
 		}
@@ -86,7 +88,7 @@ public class Sudoku {
 	public static int[] findSpaces(int[][] grid, int row){
 		ArrayList<Integer> spaces=new ArrayList<Integer>();
 		for (int i = 0; i < grid.length; i++) {
-			if (grid[row][i]==0) {
+			if (grid[row-1][i]==0) {
 				spaces.add(i);
 			}
 		}
@@ -214,12 +216,16 @@ public class Sudoku {
 		
 	}
 	
-	public static boolean checkColumn(int number, int[] column){
-		for (int i = 0; i < column.length; i++) {
-			if (number==column[i]) {
+	public static boolean checkColumn(int number, int column, int[][] grid){
+		for (int i = 0; i < 9; i++) {
+			if (number==grid[i][column]) {
 				return true;
 			}
 		}return false;
+	}
+	
+	public static void addToRow(int[] row, int number, int place){
+		row[place]=number;
 	}
 	
 	public static boolean isRowFull(int[] row){
