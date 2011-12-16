@@ -15,29 +15,30 @@ public class Sudoku {
 			int[] missingPlaces=findSpaces(grid, row);
 			int[] originalRow=new int[9];
 			for (int j = 0; j < originalRow.length; j++) {
-				int blah=grid[row-1][j];
 				originalRow[j]=grid[row-1][j];
 			}
 			int[] temporaryrow=originalRow;
 			while (!isRowFull(temporaryrow)) {
-				for (int j = 0; j < missingPlaces.length; j++) {
-					int box=findBox(grid, row, missingPlaces[j]);
+				for (int place: missingPlaces) {
+					int box=findBox(grid, row, place);
 					int[] stuffInBox=stuffInBox(grid, box);
-					for (int k = 0; k < missingNumbers.length; k++) {
-						if (!checkBox(missingNumbers[k], stuffInBox)&&!checkColumn(missingNumbers[k], missingPlaces[j], grid)) {
-							addToRow(temporaryrow, missingNumbers[k], missingPlaces[j]);
-							k+=100;
-						}
+					int[] column=getColumn(place, grid);
+					int howManyCanFit= howManyCanFit(place, stuffInBox, column, missingNumbers);
+					if (howManyCanFit==1) {
+						int numberThatFit=numberThatFits(place, stuffInBox, column, missingNumbers);
+						addToRow(temporaryrow, numberThatFit, place);
 					}
 				}
 			}
-				
-			
+			originalRow=temporaryrow;
+			for (int j = 0; j < 9; j++) {
+				grid[row-1][j]=originalRow[j];
+			}
 			
 			
 			if(isFull(grid, row)){
 				for (int j = 0; j < grid.length; j++) {
-					System.out.println(grid[row][j]);
+					System.out.print(grid[row-1][j]);
 				}
 			}
 		}
@@ -134,7 +135,7 @@ public class Sudoku {
 		int placeholder=0;
 		if(box==1){
 			for(int i=0; i<3; i++){
-				for(int j=0; i<3;j++){
+				for(int j=0; j<3;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -142,7 +143,7 @@ public class Sudoku {
 		}
 		if(box==2){
 			for(int i=0; i<3; i++){
-				for(int j=3; i<6;j++){
+				for(int j=3; j<6;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -150,7 +151,7 @@ public class Sudoku {
 		}
 		if(box==3){
 			for(int i=0; i<3; i++){
-				for(int j=6; i<9;j++){
+				for(int j=6; j<9;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -158,7 +159,8 @@ public class Sudoku {
 		}
 		if(box==4){
 			for(int i=3; i<6; i++){
-				for(int j=0; i<3;j++){
+				for(int j=0; j<3;j++){
+					int blah=grid[i][j];
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -166,7 +168,7 @@ public class Sudoku {
 		}
 		if(box==5){
 			for(int i=3; i<6; i++){
-				for(int j=3; i<6;j++){
+				for(int j=3; j<6;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -174,7 +176,7 @@ public class Sudoku {
 		}
 		if(box==6){
 			for(int i=3; i<6; i++){
-				for(int j=6; i<9;j++){
+				for(int j=6; j<9;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -182,7 +184,7 @@ public class Sudoku {
 		}
 		if(box==7){
 			for(int i=6; i<9; i++){
-				for(int j=0; i<3;j++){
+				for(int j=0; j<3;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -190,7 +192,7 @@ public class Sudoku {
 		}
 		if(box==8){
 			for(int i=6; i<9; i++){
-				for(int j=3; i<6;j++){
+				for(int j=3; j<6;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -198,7 +200,7 @@ public class Sudoku {
 		}
 		if(box==9){
 			for(int i=6; i<9; i++){
-				for(int j=6; i<9;j++){
+				for(int j=6; j<9;j++){
 					stuff[placeholder]=grid[i][j];
 					placeholder++;
 				}
@@ -207,27 +209,66 @@ public class Sudoku {
 		return stuff;
 	}
 	
+	public static int[] getColumn(int place, int[][] grid){
+		int[] column=new int[9];
+		for (int i = 0; i < 9; i++) {
+			column[i]=grid[i][place];
+		}
+		return column;
+	}
+	
+	public static int howManyCanFit(int place, int[] box, int[] column, int[] missingNumbers){
+		int totalThatFit=0;
+		for(int number:missingNumbers){
+			if (checkBox(number, box)&&checkColumn(number, column)) {
+				totalThatFit++;
+			}
+		}
+		return totalThatFit;
+	}
+	public static int numberThatFits(int place, int[] box, int[] column, int[] missingNumbers){
+		int numberThatFits=0;
+		for(int number:missingNumbers){
+			if (checkBox(number, box)&&checkColumn(number, column)) {
+				numberThatFits=number;
+				int[] array=removeFromArray(missingNumbers, numberThatFits);
+				missingNumbers=array;
+			}
+		}
+		return numberThatFits;
+	}
 	public static boolean checkBox(int number, int[] stuff){
 		for (int i = 0; i < stuff.length; i++) {
 			if(number==stuff[i]){
-				return true;
+				return false;
 			}
-		}return false;
+		}return true;
 		
 	}
 	
-	public static boolean checkColumn(int number, int column, int[][] grid){
+	public static boolean checkColumn(int number,int[] column){
 		for (int i = 0; i < 9; i++) {
-			if (number==grid[i][column]) {
-				return true;
+			if (number==column[i]) {
+				return false;
 			}
-		}return false;
+		}return true;
 	}
 	
 	public static void addToRow(int[] row, int number, int place){
 		row[place]=number;
 	}
 	
+	public static int[] removeFromArray(int[] array, int number){
+		int[] open=new int[array.length-1];
+		int placeholder=0;
+		for(int thing: array){
+			if (!(thing==number)) {
+				open[0]=thing;
+			}
+		}
+		array=open;
+		return array;
+	}
 	public static boolean isRowFull(int[] row){
 		int sum=0;
 		for (int i = 0; i < row.length; i++) {
@@ -241,7 +282,7 @@ public class Sudoku {
 	public static boolean isFull(int[][] grid, int row){
 		int sum=0;
 		for (int i = 0; i < grid.length; i++) {
-			sum+=grid[row][i];
+			sum+=grid[row-1][i];
 			}
 		if (sum==45) {
 			return true;
