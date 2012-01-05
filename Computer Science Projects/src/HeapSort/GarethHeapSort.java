@@ -21,12 +21,66 @@ public class GarethHeapSort {
 	 */
 	
 	
-	//Methods to implement: sift down, sift up, left child, right child.
 	private static int[] sort(int[] array)
 	{
+		ArrayList<Integer> sorted=new ArrayList<Integer>();
+		while(!(array.length==0)){
+			int size=array.length;
+			for (int i = 0; i < array.length; i++) {
+				int parentPlace=i;
+				int parent=array[i];
+				
+			}
+		}
 		
 		return array;
 	}
+	
+	public static boolean doesHaveKidsLeft(int[] array, int parentPlace, int size){
+		if(((2*parentPlace)+1)>=size){
+			return false;
+		}else return true;
+	}
+	
+	public static boolean doesHaveKidsRight(int[] array, int parentPlace, int size){
+		if(((2*parentPlace)+2)>=size){
+			return false;
+		}else return true;
+	}
+	
+	public static int findLeft(int[] array, int parentPlace){
+		int left=array[((2*parentPlace)+1)];
+		return left;
+	}
+	
+	public static int findRight(int[] array, int parentPlace){
+		int right=array[((2*parentPlace)+2)];
+		return right;
+	}
+	
+	public static boolean checkChild(int parent, int child){
+		if(parent<child){
+			return true;
+		}else return false;
+	}
+	
+	public static void shiftUp(int parentPlace, int childPlace, int[] array){
+		int temp=array[childPlace];
+		array[childPlace]=array[parentPlace];
+		array[parentPlace]=temp;
+	}
+	
+	public static void removeandadd(int[] array, ArrayList<Integer> sorted){
+		int size=array.length;
+		int[] temp=new int[size-1];
+		for(int i=0; i<temp.length; i++){
+			temp[i]=array[i];
+		}
+		sorted.add(array[size-1]);
+		array=temp;
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		// Create the random number generator
