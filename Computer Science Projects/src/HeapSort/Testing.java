@@ -1,25 +1,26 @@
 package HeapSort;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
-// Sorting Skeleton Code
-/*
- *  ******* THE ONLY METHOD YOU NEED 
- *  ******* TO MODIFY IS THE "SORT()"
- *  ******* METHOD. You can add methods
- *  ******* if necessary. For some
- *  ******* sorting methods, it WILL be
- *  ******* necessary
- */
-
-public class GarethHeapSort {
-
-	/*
-	 * ** YOU CAN MODIFY ANYTHING FROM HERE UNTIL "END"
-	 * ** FEEL FREE TO ADD METHODS AS REQUIRED
-	 */
-
+public class Testing {
+	public static void main(String[] args){
+		int[] array= new int[11];
+		array[0]=5;
+		array[1]=10;
+		array[2]=20;
+		array[3]=4;
+		array[4]=6;
+		array[5]=80;
+		array[6]=90;
+		array[7]=1;
+		array[8]=3;
+		array[9]=4;
+		array[10]=8;
+		int[] sorted=sort(array);
+		for (int i = 0; i < sorted.length; i++) {
+			System.out.println(sorted[i]);
+		}
+	}
 
 	private static int[] sort(int[] array)
 	{
@@ -27,6 +28,7 @@ public class GarethHeapSort {
 		while(!(array.length==0)){
 			int size=array.length;
 			for (int i = 0; i < array.length; i++) {
+				size=array.length;
 				int parentPlace=i;
 				checkLeft(array, parentPlace, size);
 				checkRight(array, parentPlace, size);
@@ -133,6 +135,7 @@ public class GarethHeapSort {
 		if(parentValue<superParentValue){
 			return false;
 		}else return true;
+
 	}
 
 	public static void shiftDown(int parentPlace, int childPlace, int[] array){
@@ -156,48 +159,4 @@ public class GarethHeapSort {
 		sorted.add(array[size-1]);
 		array=temp;
 	}
-
-
-
-	public static void main(String[] args) {
-		// Create the random number generator
-		Random numGenerator = new Random();
-
-		// randomly get a number to be the size of the array
-		int arraySize;
-		do
-		{
-			//arraySize = numGenerator.nextInt();
-			arraySize=10;
-		} while ((arraySize < 10) || (arraySize >= 100000));
-		// make sure the array size is at least 10 and less than 100,000
-
-		// create the array
-		int[] toBeSorted = new int[arraySize];
-
-		// populate the array with random numbers
-		for (int i = 0; i < toBeSorted.length; i++)
-		{
-			toBeSorted[i] = numGenerator.nextInt();
-			// no restrictions on the numbers to be placed in the array
-		}
-
-		// Create the sorted array to compare against
-		int[] sortedArray = Arrays.copyOf(toBeSorted, toBeSorted.length);
-		Arrays.sort(sortedArray);
-
-		// Call the "sort" method on the original array
-		int[] presumablySortedArray = sort(toBeSorted);
-
-		// See if the arrays are equal
-		if (Arrays.equals(sortedArray, presumablySortedArray))
-		{
-			System.out.print("Sorting worked. Not a guarantee of using the correct sorting algorithm though");
-		}
-		else
-		{
-			System.out.print("Sorting did not work");
-		}
-	}
-
 }
