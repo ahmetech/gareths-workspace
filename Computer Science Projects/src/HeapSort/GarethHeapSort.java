@@ -27,16 +27,19 @@ public class GarethHeapSort {
 		while(!(array.length==0)){
 			int size=array.length;
 			for (int i = 0; i < array.length; i++) {
+				size=array.length;
 				int parentPlace=i;
 				checkLeft(array, parentPlace, size);
 				checkRight(array, parentPlace, size);
 			}
-			shiftDown(array[0], array[size-1], array);
-			removeandadd(array, sorted);
+			int first= array[0];
+			int second=array[array.length-1];
+			shiftDown(0, array.length-1, array);
+			array=removeandadd(array, sorted);
 		}
 		int[] sortedArray=new int[sorted.size()];
 		for(int i=0; i<sorted.size(); i++){
-			sortedArray[i]=sorted.remove(0);
+			sortedArray[i]=sorted.get(i);
 		}
 		return sortedArray;
 	}
@@ -60,12 +63,7 @@ public class GarethHeapSort {
 			int childValue=findRightValue(array, parentPlace);
 			if(checkChild(parentValue, childValue)){
 				shiftDown(parentPlace, childPlace, array);
-			}if(!(parentPlace==0)){
-				int superParentPlace=findSuperParentPlace(parentPlace, array);
-				int superParentValue=findSuperParentValue(parentPlace, array);
-				if(checkParent(parentPlace, superParentValue, array)){
-					shiftUp(parentPlace, superParentPlace, array);
-				}
+				shiftUp(parentPlace, array);
 			}
 		}
 	}
@@ -77,12 +75,7 @@ public class GarethHeapSort {
 			int childValue=findLeftValue(array, parentPlace);
 			if(checkChild(parentValue, childValue)){
 				shiftDown(parentPlace, childPlace, array);
-			}if(!(parentPlace==0)){
-				int superParentPlace=findSuperParentPlace(parentPlace, array);
-				int superParentValue=findSuperParentValue(parentPlace, array);
-				if(checkParent(parentPlace, superParentValue, array)){
-					shiftUp(parentPlace, superParentPlace, array);
-				}
+				shiftUp(parentPlace, array);
 			}
 		}
 	}
@@ -97,11 +90,13 @@ public class GarethHeapSort {
 		return right;
 	}
 	public static int findSuperParentPlace(int parentPlace, int[] array){
-		int superParentPlace=0;
-		if(parentPlace%2==0){
-			superParentPlace=(parentPlace-2)/2;
-		} else superParentPlace=((parentPlace-1)/2);
-		return superParentPlace;
+		if(!(parentPlace==0)){
+			int superParentPlace=0;
+			if(parentPlace%2==0){
+				superParentPlace=(parentPlace-2)/2;
+			} else superParentPlace=((parentPlace-1)/2);
+			return superParentPlace;
+		}return 0;
 	}
 
 	public static int findLeftValue(int[] array, int parentPlace){
@@ -115,12 +110,14 @@ public class GarethHeapSort {
 	}
 
 	public static int findSuperParentValue(int parentPlace, int[] array){
-		int superParentPlace=0;
-		if(parentPlace%2==0){
-			superParentPlace=(parentPlace-2)/2;
-		} else superParentPlace=((parentPlace-1)/2);
-		int superParentValue=array[superParentPlace];
-		return superParentValue;
+		if(!(parentPlace==0)){
+			int superParentPlace=0;
+			if(parentPlace%2==0){
+				superParentPlace=(parentPlace-2)/2;
+			} else superParentPlace=((parentPlace-1)/2);
+			int superParentValue=array[superParentPlace];
+			return superParentValue;
+		}return 0;
 	}
 
 	public static boolean checkChild(int parentValue, int childValue){
@@ -128,11 +125,13 @@ public class GarethHeapSort {
 			return true;
 		}else return false;
 	}
-	public static boolean checkParent(int parentPlace, int superParentValue, int[] array){
+	public static boolean checkParent(int parentPlace, int superParentPlace, int[] array){
 		int parentValue=array[parentPlace];
+		int superParentValue=findSuperParentValue(parentPlace, array);
 		if(parentValue<superParentValue){
 			return false;
 		}else return true;
+
 	}
 
 	public static void shiftDown(int parentPlace, int childPlace, int[] array){
@@ -141,20 +140,32 @@ public class GarethHeapSort {
 		array[parentPlace]=temp;
 	}
 
-	public static void shiftUp(int parentPlace, int superParentPlace, int[] array){
-		int temp=array[superParentPlace];
-		array[superParentPlace]=array[parentPlace];
-		array[parentPlace]=temp;
+	public static void shiftUp(int parentPlace, int[] array){
+		int superParentPlace=findSuperParentPlace(parentPlace, array);
+		if(checkParent(parentPlace, superParentPlace, array)&&!(parentPlace==0)){
+			int temp=array[superParentPlace];
+			array[superParentPlace]=array[parentPlace];
+			array[parentPlace]=temp;
+			parentPlace=superParentPlace;
+			shiftUp(parentPlace, array);
+		}
 	}
 
-	public static void removeandadd(int[] array, ArrayList<Integer> sorted){
+	public static int[] removeandadd(int[] array, ArrayList<Integer> sorted){
 		int size=array.length;
-		int[] temp=new int[size-1];
-		for(int i=0; i<temp.length; i++){
-			temp[i]=array[i];
+		if(!(size==1)){
+			int[] temp=new int[size-1];
+			for(int i=0; i<temp.length; i++){
+				temp[i]=array[i];
+			}
+			sorted.add(array[size-1]);
+			array=temp;
+		}else{
+			int[] blah=new int[0];
+			sorted.add(array[0]);
+			array=blah;
 		}
-		sorted.add(array[size-1]);
-		array=temp;
+		return array;
 	}
 
 
@@ -167,8 +178,7 @@ public class GarethHeapSort {
 		int arraySize;
 		do
 		{
-			//arraySize = numGenerator.nextInt();
-			arraySize=10;
+			arraySize = numGenerator.nextInt();
 		} while ((arraySize < 10) || (arraySize >= 100000));
 		// make sure the array size is at least 10 and less than 100,000
 

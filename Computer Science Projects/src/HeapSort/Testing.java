@@ -39,12 +39,14 @@ public class Testing {
 				checkLeft(array, parentPlace, size);
 				checkRight(array, parentPlace, size);
 			}
-			shiftDown(array[0], array[array.length-1], array);
-			removeandadd(array, sorted);
+			int first= array[0];
+			int second=array[array.length-1];
+			shiftDown(0, array.length-1, array);
+			array=removeandadd(array, sorted);
 		}
 		int[] sortedArray=new int[sorted.size()];
 		for(int i=0; i<sorted.size(); i++){
-			sortedArray[i]=sorted.remove(0);
+			sortedArray[i]=sorted.get(i);
 		}
 		return sortedArray;
 	}
@@ -156,13 +158,20 @@ public class Testing {
 		}
 	}
 
-	public static void removeandadd(int[] array, ArrayList<Integer> sorted){
+	public static int[] removeandadd(int[] array, ArrayList<Integer> sorted){
 		int size=array.length;
-		int[] temp=new int[size-1];
-		for(int i=0; i<temp.length; i++){
-			temp[i]=array[i];
+		if(!(size==1)){
+			int[] temp=new int[size-1];
+			for(int i=0; i<temp.length; i++){
+				temp[i]=array[i];
+			}
+			sorted.add(array[size-1]);
+			array=temp;
+		}else{
+			int[] blah=new int[0];
+			sorted.add(array[0]);
+			array=blah;
 		}
-		sorted.add(array[size-1]);
-		array=temp;
+		return array;
 	}
 }
