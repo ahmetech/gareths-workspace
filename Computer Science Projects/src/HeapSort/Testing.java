@@ -4,18 +4,24 @@ import java.util.ArrayList;
 
 public class Testing {
 	public static void main(String[] args){
-		int[] array= new int[11];
-		array[0]=5;
+		int[] array= new int[17];
+		array[0]=15;
 		array[1]=10;
-		array[2]=20;
-		array[3]=4;
-		array[4]=6;
-		array[5]=80;
-		array[6]=90;
-		array[7]=1;
-		array[8]=3;
-		array[9]=4;
-		array[10]=8;
+		array[2]=30;
+		array[3]=64;
+		array[4]=8;
+		array[5]=14;
+		array[6]=39;
+		array[7]=10;
+		array[8]=9;
+		array[9]=18;
+		array[10]=12;
+		array[11]=32;
+		array[12]=4;
+		array[13]=27;
+		array[14]=56;
+		array[15]=100;
+		array[16]=100;
 		int[] sorted=sort(array);
 		for (int i = 0; i < sorted.length; i++) {
 			System.out.println(sorted[i]);
@@ -33,7 +39,7 @@ public class Testing {
 				checkLeft(array, parentPlace, size);
 				checkRight(array, parentPlace, size);
 			}
-			shiftDown(array[0], array[size-1], array);
+			shiftDown(array[0], array[array.length-1], array);
 			removeandadd(array, sorted);
 		}
 		int[] sortedArray=new int[sorted.size()];
@@ -62,12 +68,7 @@ public class Testing {
 			int childValue=findRightValue(array, parentPlace);
 			if(checkChild(parentValue, childValue)){
 				shiftDown(parentPlace, childPlace, array);
-			}if(!(parentPlace==0)){
-				int superParentPlace=findSuperParentPlace(parentPlace, array);
-				int superParentValue=findSuperParentValue(parentPlace, array);
-				if(checkParent(parentPlace, superParentValue, array)){
-					shiftUp(parentPlace, superParentPlace, array);
-				}
+				shiftUp(parentPlace, array);
 			}
 		}
 	}
@@ -79,12 +80,7 @@ public class Testing {
 			int childValue=findLeftValue(array, parentPlace);
 			if(checkChild(parentValue, childValue)){
 				shiftDown(parentPlace, childPlace, array);
-			}if(!(parentPlace==0)){
-				int superParentPlace=findSuperParentPlace(parentPlace, array);
-				int superParentValue=findSuperParentValue(parentPlace, array);
-				if(checkParent(parentPlace, superParentValue, array)){
-					shiftUp(parentPlace, superParentPlace, array);
-				}
+				shiftUp(parentPlace, array);
 			}
 		}
 	}
@@ -99,11 +95,13 @@ public class Testing {
 		return right;
 	}
 	public static int findSuperParentPlace(int parentPlace, int[] array){
-		int superParentPlace=0;
-		if(parentPlace%2==0){
-			superParentPlace=(parentPlace-2)/2;
-		} else superParentPlace=((parentPlace-1)/2);
-		return superParentPlace;
+		if(!(parentPlace==0)){
+			int superParentPlace=0;
+			if(parentPlace%2==0){
+				superParentPlace=(parentPlace-2)/2;
+			} else superParentPlace=((parentPlace-1)/2);
+			return superParentPlace;
+		}return 0;
 	}
 
 	public static int findLeftValue(int[] array, int parentPlace){
@@ -117,12 +115,14 @@ public class Testing {
 	}
 
 	public static int findSuperParentValue(int parentPlace, int[] array){
-		int superParentPlace=0;
-		if(parentPlace%2==0){
-			superParentPlace=(parentPlace-2)/2;
-		} else superParentPlace=((parentPlace-1)/2);
-		int superParentValue=array[superParentPlace];
-		return superParentValue;
+		if(!(parentPlace==0)){
+			int superParentPlace=0;
+			if(parentPlace%2==0){
+				superParentPlace=(parentPlace-2)/2;
+			} else superParentPlace=((parentPlace-1)/2);
+			int superParentValue=array[superParentPlace];
+			return superParentValue;
+		}return 0;
 	}
 
 	public static boolean checkChild(int parentValue, int childValue){
@@ -130,8 +130,9 @@ public class Testing {
 			return true;
 		}else return false;
 	}
-	public static boolean checkParent(int parentPlace, int superParentValue, int[] array){
+	public static boolean checkParent(int parentPlace, int superParentPlace, int[] array){
 		int parentValue=array[parentPlace];
+		int superParentValue=findSuperParentValue(parentPlace, array);
 		if(parentValue<superParentValue){
 			return false;
 		}else return true;
@@ -144,10 +145,15 @@ public class Testing {
 		array[parentPlace]=temp;
 	}
 
-	public static void shiftUp(int parentPlace, int superParentPlace, int[] array){
-		int temp=array[superParentPlace];
-		array[superParentPlace]=array[parentPlace];
-		array[parentPlace]=temp;
+	public static void shiftUp(int parentPlace, int[] array){
+		int superParentPlace=findSuperParentPlace(parentPlace, array);
+		if(checkParent(parentPlace, superParentPlace, array)&&!(parentPlace==0)){
+			int temp=array[superParentPlace];
+			array[superParentPlace]=array[parentPlace];
+			array[parentPlace]=temp;
+			parentPlace=superParentPlace;
+			shiftUp(parentPlace, array);
+		}
 	}
 
 	public static void removeandadd(int[] array, ArrayList<Integer> sorted){
