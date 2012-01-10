@@ -39,7 +39,8 @@ public class GarethHeapSort {
 		}
 		int[] sortedArray=new int[sorted.size()];
 		for(int i=0; i<sorted.size(); i++){
-			sortedArray[i]=sorted.get(i);
+			int temp1=sorted.get(sorted.size()-1-i);
+			sortedArray[i]=temp1;
 		}
 		return sortedArray;
 	}
