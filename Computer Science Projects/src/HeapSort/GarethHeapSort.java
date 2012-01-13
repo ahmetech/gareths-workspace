@@ -180,9 +180,10 @@ public class GarethHeapSort {
 		do
 		{
 			arraySize = numGenerator.nextInt();
+			
 		} while ((arraySize < 10) || (arraySize >= 100000));
 		// make sure the array size is at least 10 and less than 100,000
-
+		System.out.println(arraySize);
 		// create the array
 		int[] toBeSorted = new int[arraySize];
 
