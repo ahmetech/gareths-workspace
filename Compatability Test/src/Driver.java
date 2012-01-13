@@ -48,8 +48,9 @@ public class Driver {
         String studentAnswersLocation = JOptionPane.showInputDialog("" +
             "Enter the file location that Student answers can be found");
         Scanner ao = StudentData.getData(studentAnswersLocation);
+        Scanner userInput=new Scanner(System.in);
 
-        ArrayList<StudentData> allStudents = StudentData.createStudentList(io, ao);
+        ArrayList<StudentData> allStudents = StudentData.createStudentList(io, ao, userInput);
        
         ArrayList<StudentData> maleStudents = new ArrayList<StudentData>();
         ArrayList<StudentData> femaleStudents = new ArrayList<StudentData>();

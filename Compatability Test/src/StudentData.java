@@ -52,12 +52,13 @@ public class StudentData {
         
     }
     
-    public static ArrayList<StudentData> createStudentList(Scanner io, Scanner ao){
+    public static ArrayList<StudentData> createStudentList(Scanner io, Scanner ao, Scanner userInput){
         ArrayList<StudentData> data = new ArrayList<StudentData>();
         
         while (io.hasNextLine()){
             try{
-            data.add(new StudentData(("" + io.nextInt()), io.nextLine(), ao.nextLine().toUpperCase(), null));
+            String studentName=userInput.nextLine();
+            data.add(new StudentData(("" + io.nextInt()+" "+studentName), io.nextLine(), ao.nextLine().toUpperCase(), null));
             
             }catch (NullPointerException e){
                 throw new NullPointerException(e.getMessage());

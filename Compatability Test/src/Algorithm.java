@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Algorithm {
 
     public final static int M_OR_F_Q_NUM = 0; //Change this to your Q Number
-    public final static char MALE = 'A'; //Change this to the char Answer for 'male'
+    public final static char MALE = "A"; //Change this to the char Answer for 'male'
     public final static int NUM_MATCHES_WANTED = 5; //Change this to how many results you want
     
     public String[] matches;
