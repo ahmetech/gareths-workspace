@@ -71,6 +71,9 @@ public class ListNode {
 	}
 	
 	public static void insert(ListNode oldList, int  loc, ListNode newList){
+		ListNode firstListNode=oldList;
+		int numOfInsertion=getX(oldList, loc);
 		
+			
 	}
 }
