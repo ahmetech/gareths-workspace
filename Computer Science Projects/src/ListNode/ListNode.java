@@ -31,24 +31,46 @@ public class ListNode {
 		for(int i=0; i<9; i++){
 			g.setNext(new ListNode(numGenerator.nextInt()));
 			g.next.setNext(new ListNode(numGenerator.nextInt()));
-		}*/
+		}
 		ListNode head=new ListNode(0);
 		ListNode g=new ListNode(1);
 		head.setNext(g);
-		makeListNode(g, 8);
+		makeListNode(g, 8);*/
+		ListNode head=new ListNode(0);
+		head.setNext(new ListNode(1));
+		head.next.setNext(new ListNode(2));
+		head.next.next.setNext(new ListNode(3));
+		head.next.next.next.setNext(new ListNode(4));
+		head.next.next.next.next.setNext(new ListNode(5));
+		head.next.next.next.next.next.setNext(new ListNode(6));
+		head.next.next.next.next.next.next.setNext(new ListNode(7));
+		head.next.next.next.next.next.next.next.setNext(new ListNode(8));
+		head.next.next.next.next.next.next.next.next.setNext(new ListNode(9));
+		
 		
 	}
 	
-	public static void makeListNode(ListNode g, int number){
+	/*public static void makeListNode(ListNode g, int number){
 		while(number>0){
 			g.setNext(new ListNode(g.getData()+1));
 			g.next.setNext(new ListNode(g.next.getData()+1));
 			number--;
 			makeListNode(g.next, number);
 		}
+	}*/
+	
+	public static int getX(ListNode head, int pos){
+		ListNode found=head;
+		for(int i=0; i<pos; i++){
+			if(i==0)found=head.getNext();
+			else{
+				found=found.getNext();
+			}
+		}
+		return found.getData();
 	}
 	
-	public static void getX(int pos){
+	public static void insert(ListNode oldList, int  loc, ListNode newList){
 		
 	}
 }
