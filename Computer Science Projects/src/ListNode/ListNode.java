@@ -46,9 +46,9 @@ public class ListNode {
 		head.next.next.next.setNext(new ListNode(4));
 		head.next.next.next.next.setNext(new ListNode(5));
 		head.next.next.next.next.next.setNext(new ListNode(6));
-		//head.next.next.next.next.next.next.setNext(new ListNode(984));
-		//head.next.next.next.next.next.next.next.setNext(new ListNode(2));
-		//head.next.next.next.next.next.next.next.next.setNext(new ListNode(13));
+		//head.next.next.next.next.next.next.setNext(new ListNode(7));
+		//head.next.next.next.next.next.next.next.setNext(new ListNode(8));
+		//head.next.next.next.next.next.next.next.next.setNext(new ListNode(9));
 		
 		//Creates second ListNode
 		ListNode head2=new ListNode(22);
@@ -57,10 +57,10 @@ public class ListNode {
 		head2.next.next.setNext(new ListNode(12));
 		head2.next.next.next.setNext(new ListNode(8));
 		//head2.next.next.next.next.setNext(new ListNode(5));
-		//head2.next.next.next.next.next.setNext(new ListNode(6));
-		//head2.next.next.next.next.next.next.setNext(new ListNode(7));
-		//head2.next.next.next.next.next.next.next.setNext(new ListNode(8));
-		//head2.next.next.next.next.next.next.next.next.setNext(new ListNode(9));
+		//head2.next.next.next.next.next.setNext(new ListNode(80));
+		//head2.next.next.next.next.next.next.setNext(new ListNode(120));
+		//head2.next.next.next.next.next.next.next.setNext(new ListNode(145));
+		//head2.next.next.next.next.next.next.next.next.setNext(new ListNode(918));
 		
 		insert(head, 2, head2);
 		
@@ -148,11 +148,11 @@ public class ListNode {
 			ListNode tempListNode=currentListNode.getNext();
 			currentListNode=tempListNode;
 		}
-		ListNode endOfOldList=currentListNode.getNext();
+		ListNode pointAfterInsertion=currentListNode.getNext();
 		currentListNode.setNext(newList);
+		//final node in newList
 		ListNode endOfONewList=findLastNode(newList);
-		ListNode oldListPlus1=findLocNode(oldList, (loc+1));
-		endOfONewList.setNext(oldListPlus1);
+		endOfONewList.setNext(pointAfterInsertion);
 		
 		
 			
