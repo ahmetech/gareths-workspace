@@ -12,4 +12,9 @@ public class Frame extends JFrame implements Commons{
 		setVisible(true);
 		setResizable(false);
 	}
+	
+	public static void main(String[] args){
+		new SpaceInvaders();
+	}
+	
 }
