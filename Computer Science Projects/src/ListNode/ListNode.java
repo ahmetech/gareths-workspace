@@ -62,7 +62,7 @@ public class ListNode {
 		//head2.next.next.next.next.next.next.next.setNext(new ListNode(145));
 		//head2.next.next.next.next.next.next.next.next.setNext(new ListNode(918));
 		
-		insert(head, 2, head2);
+		insert(head, 3, head2);
 		
 		int length=length(head);
 		ListNode currentListNode=head;
