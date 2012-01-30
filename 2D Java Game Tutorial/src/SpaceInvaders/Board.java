@@ -3,6 +3,7 @@ package SpaceInvaders;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -86,5 +87,40 @@ public class Board extends JPanel implements Runnable, Commons{
 		if(shot.isVisible()){
 			g.drawImage(shot.getImage(), shot.getX(), shot.getY(), this);
 		}
+	}
+	
+	public void drawBombing(Graphics g){
+		Iterator i3=aliens.iterator();
+		
+		while(i3.hasNext()){
+			Alien alien=(Alien) i3.next();
+			Alien.Bomb b=alien.getBomb();
+			
+			if(!b.isDestroyed()){
+				g.drawImage(b.getImage(), b.getX(), b.getY(), this);
+			}
+		}
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		
+		g.setColor(Color.black);
+		g.fillRect(0, 0, d.width, d.height);
+		g.setColor(Color.green);
+		
+		if(ingame){
+			g.drawLine(0, Ground, Board_Width, Board_Height);
+			drawAliens(g);
+			drawPlayer(g);
+			drawShot(g);
+			drawBombing(g);
+		}
+		Toolkit.getDefaultToolkit().sync();
+	    g.dispose();
+	}
+	
+	public void gameOver(){
+		
 	}
 }
