@@ -14,5 +14,33 @@ public class Alien extends Sprite{
 		setImage(ii.getImage());
 	}
 	
+	public void act(int direction){
+		this.x+=direction;
+	}
 	
+	public Bomb getBomb(){
+		return bomb;
+	}
+	
+	public class Bomb extends Sprite{
+		private boolean destroyed;
+		
+		public Bomb(int paramX, int paramY){
+			setDestroyed(true);
+			this.x=paramX;
+			this.y=paramY;
+			ImageIcon ii= new ImageIcon(this.getClass().getResource("bomb.png"));
+			setImage(ii.getImage());
+		}
+
+		public boolean isDestroyed() {
+			return destroyed;
+		}
+
+		public void setDestroyed(boolean destroyed) {
+			this.destroyed = destroyed;
+		}
+		
+		
+	}
 }
