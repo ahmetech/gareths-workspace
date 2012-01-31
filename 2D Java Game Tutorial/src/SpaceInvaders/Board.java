@@ -2,6 +2,8 @@ package SpaceInvaders;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -121,6 +123,48 @@ public class Board extends JPanel implements Runnable, Commons{
 	}
 	
 	public void gameOver(){
+		Graphics graphics =this.getGraphics();
 		
+		graphics.setColor(Color.black);
+		graphics.fillRect(0, 0, Board_Width, Board_Height);
+		
+		graphics.setColor(new Color(0, 32, 48));
+		graphics.fillRect(50, Board_Width/2-30, Board_Width-100, 50);
+		graphics.setColor(Color.white);
+		graphics.drawRect(50, Board_Width/2-30, Board_Width/2-100, 50);
+		
+		Font small=new Font("Helvetica", Font.BOLD,14);
+		FontMetrics metric=this.getFontMetrics(small);
+		
+		graphics.setColor(Color.white);
+		graphics.setFont(small);
+		graphics.drawString(message, (Board_Width - metric.stringWidth(message))/2, Board_Width/2);
+	}
+	
+	public void animationCycle(){
+		if (deaths==Aliens_To_Destroy) {
+			ingame=false;
+			message="You Won";
+		}
+		
+		//player
+		player.act();
+		
+		//shot
+		if(shot.isVisible()){
+			Iterator it=aliens.iterator();
+			int shotX=shot.getX();
+			int shotY=shot.getY();
+			
+			while (it.hasNext()) {
+				Alien alien=(Alien)it.next();
+				int alienX=alien.getX();
+				int alienY=alien.getY();
+				
+				if(alien.isVisible()&&shot.isVisible()){
+					
+				}
+			}
+		}
 	}
 }
