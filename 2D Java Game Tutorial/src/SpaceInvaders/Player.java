@@ -36,7 +36,7 @@ public class Player extends Sprite implements Commons{
 		}
 	}
 	
-	public void keyPressed(KeyStroke e){
+	public void keyPressed(KeyEvent e){
 		int key=e.getKeyCode();
 		
 		if(key==KeyEvent.VK_LEFT){
@@ -49,7 +49,7 @@ public class Player extends Sprite implements Commons{
 		}
 	}
 	
-	public void keyReleased(KeyStroke e){
+	public void keyReleased(KeyEvent e){
 		int key=e.getKeyCode();
 		
 		if(key==KeyEvent.VK_LEFT){
