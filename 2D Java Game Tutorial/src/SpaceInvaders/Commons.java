@@ -8,7 +8,7 @@ public interface Commons {
 	public static final int Alien_Height=12;
 	public static final int Alien_Width=12;
 	public static final int Border_Right=30;
-	public static final int Boarder_Left=5;
+	public static final int Border_Left=5;
 	public static final int Go_Down=15;
 	public static final int Aliens_To_Destroy=24;
 	public static final int Chance=5;

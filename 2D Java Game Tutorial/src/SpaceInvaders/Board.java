@@ -6,11 +6,16 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 public class Board extends JPanel implements Runnable, Commons{
 	private Dimension d;
@@ -162,9 +167,146 @@ public class Board extends JPanel implements Runnable, Commons{
 				int alienY=alien.getY();
 				
 				if(alien.isVisible()&&shot.isVisible()){
-					
+					if((shotX>=alienX)&&(shotX<=(alienX+Alien_Width))&&(shotY>=alienY)&&(shotY<=(alienY+Alien_Height))){
+						ImageIcon ii= new ImageIcon(this.getClass().getResource("explosion.png"));
+						alien.setImage(ii.getImage());
+						alien.setDying(true);
+						deaths++;
+						shot.die();
+					}
 				}
 			}
+			
+			int y=shot.getY();
+			y-=4;
+			if(y<0){
+				shot.die();
+			}else shot.setY(y);
+			
+			//aliens
+			Iterator it1=aliens.iterator();
+			while (it1.hasNext()) {
+				Alien a1=(Alien) it1.next();
+				int x=a1.getX();
+				
+				if(x>=Board_Width-Border_Right&& direction !=-1){
+					direction=-1;
+					Iterator i1=aliens.iterator();
+					while(i1.hasNext()){
+						Alien a=(Alien) i1.next();
+						a.setY(a.getY()-Go_Down);
+					}
+				}
+				
+				if(x<=Border_Left&&direction!=1){
+					direction=1;
+					Iterator i2=aliens.iterator();
+					while(i2.hasNext()){
+						Alien a=(Alien) i2.next();
+						a.setY(a.getY()-Go_Down);
+					}
+				}
+				
+				Iterator iterator=aliens.iterator();
+				
+				while(iterator.hasNext()){
+					Alien alien=(Alien) iterator.next();
+					if(alien.isVisible()){
+						int alienY=alien.getY();
+						if(alienY>Ground-Alien_Height){
+							ingame=false;
+							message="Invasion";
+						}
+						alien.act(direction);
+					}
+				}
+				
+				//bomb
+				
+				Iterator i3=aliens.iterator();
+				Random numGenerator=new Random();
+				
+				while(i3.hasNext()){
+					int shot=numGenerator.nextInt(15);
+					Alien a=(Alien) i3.next();
+					Alien.Bomb b=a.getBomb();
+					if(shot==Chance&& a.isVisible()&& b.isDestroyed()){
+						b.setDestroyed(false);
+						b.setX(a.getX());
+						b.setY(a.getY());
+					}
+					
+					int bombX=b.getX();
+					int bombY=b.getY();
+					int playerX=player.getX();
+					int playerY=player.getY();
+					
+					if(player.isVisible()&&!b.isDestroyed()){
+						if((bombX>=playerX)&&(bombX<=playerX+Player_Widht)&&(bombY>=playerY)&&(bombY<=playerY+Player_Height)){
+							ImageIcon ii=new ImageIcon(this.getClass().getResource("explosion.png"));
+							player.setImage(ii.getImage());
+							player.setDying(true);
+							b.setDestroyed(true);
+						}
+					}
+					
+					if(!b.isDestroyed()){
+						b.setY(b.getY()+1);
+						if(b.getY()>=Ground-Bomb_Height){
+							b.setDestroyed(true);
+						}
+					}
+				}
+				
+				
+				}
+				
+			}
 		}
-	}
+	public void run(){
+		long beforeTime, timeDiff, sleep;
+
+        beforeTime = System.currentTimeMillis();
+
+        while (ingame) {
+            repaint();
+            animationCycle();
+
+            timeDiff = System.currentTimeMillis() - beforeTime;
+            sleep = Delay - timeDiff;
+
+            if (sleep < 0) 
+                sleep = 2;
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                System.out.println("interrupted");
+            }
+            beforeTime = System.currentTimeMillis();
+        }
+        gameOver();
+    }
+	
+	private class TAdapter extends KeyAdapter {
+
+        public void keyReleased(KeyEvent e) {
+            player.keyReleased(e);
+        }
+
+        public void keyPressed(KeyEvent e) {
+
+          player.keyPressed(e);
+
+          int x = player.getX();
+          int y = player.getY();
+
+          if (ingame)
+          {
+            if (e.isAltDown()) {
+                if (!shot.isVisible())
+                    shot = new Shot(x, y);
+            }
+          }
+        }
+    }
 }
