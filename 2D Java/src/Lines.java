@@ -72,7 +72,7 @@ public class Lines extends JPanel {
         JFrame frame = new JFrame("Lines");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(lines);
-        frame.setSize(1920, 1080);
+        frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

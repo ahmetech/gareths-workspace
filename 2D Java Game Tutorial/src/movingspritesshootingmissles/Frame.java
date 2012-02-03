@@ -8,7 +8,7 @@ public class Frame extends JFrame {
         add(new Board());
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1600, 900);
+        setSize(900, 900);
         setLocationRelativeTo(null);
         setTitle("Collision");
         setResizable(false);
