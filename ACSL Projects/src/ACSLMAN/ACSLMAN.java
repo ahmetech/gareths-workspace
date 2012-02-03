@@ -42,7 +42,7 @@ public class ACSLMAN {
 			for (int i = 0; i < phrase.length(); i++) {
 				for (int j=0; j< word.size(); j++) {
 					if (phrase.substring(0+i, 1+i).equals(word.get(j))) {
-						word.remove(index)
+						word.remove(index);
 					}
 				}
 			}
