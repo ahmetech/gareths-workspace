@@ -11,7 +11,7 @@ public class InputExample {
 		InputExample inputExample=new InputExample();
 		inputExample.start();
 	}
-	
+
 	public void start(){
 		try {
 			Display.setDisplayMode(new DisplayMode(400, 400));
@@ -20,30 +20,33 @@ public class InputExample {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
+
 		// init OpenGL here
-		
+
 		while(!Display.isCloseRequested()){
-			
+
 			//render OpenGL here
-			
+
 			pollInput();
 			Display.update();
 		}
 		Display.destroy();
 	}
-	
+
 	public void pollInput(){
-		if(Mouse.isButtonDown(0)){
-			int mouseX=Mouse.getX();
-			int mouseY=Mouse.getY();
-			System.out.println("Mouse Down @ X: "+mouseX+" Y: "+mouseY);
+		while(Mouse.next()){
+			if(Mouse.getEventButtonState()){
+				if(Mouse.getEventButton()==0){
+					int mouseX=Mouse.getX();
+					int mouseY=Mouse.getY();
+					System.out.println("Mouse Down @ X: "+mouseX+" Y: "+mouseY);
+				}
+			}
 		}
-		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			System.out.println("Space Key Is Down");
 		}
-		
+
 		while (Keyboard.next()) {
 			if(Keyboard.getEventKeyState()){
 				if(Keyboard.getEventKey()==Keyboard.KEY_A){
@@ -68,5 +71,5 @@ public class InputExample {
 			}
 		}
 	}
-	
+
 }

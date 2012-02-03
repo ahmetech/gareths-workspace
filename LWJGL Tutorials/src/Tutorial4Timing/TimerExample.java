@@ -51,10 +51,10 @@ public class TimerExample {
 		rotation+=0.1f * delta;
 		
 		while(Keyboard.next()){
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x-=0.1f*delta;
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))x+=0.1f*delta;
-			if(Keyboard.isKeyDown(Keyboard.KEY_UP))y+=0.1f*delta;
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))y-=0.1f*delta;
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) x-=0.01f*delta;
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))x+=0.01f*delta;
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP))y+=0.01f*delta;
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN))y-=0.01f*delta;
 		}
 		
 		//keep quad on screen
