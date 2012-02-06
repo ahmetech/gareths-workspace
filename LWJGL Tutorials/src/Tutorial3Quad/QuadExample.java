@@ -21,7 +21,7 @@ public class QuadExample {
 			System.exit(0);
 		}
 		
-		//init OpenGL
+		//Initialize OpenGL
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0, 800, 0, 600, -1, 1);

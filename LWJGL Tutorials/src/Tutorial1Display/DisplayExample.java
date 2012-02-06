@@ -19,7 +19,7 @@ public class DisplayExample {
 			System.exit(0);
 		}
 		
-		//init OpenGL here
+		//Initialize OpenGL here
 		
 		while(!Display.isCloseRequested()){
 			
