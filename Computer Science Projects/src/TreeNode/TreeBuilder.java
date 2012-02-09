@@ -18,8 +18,22 @@ public class TreeBuilder {
 		}
 		//Make the list here
 		TreeNode head=new TreeNode(null, null, null, number.remove(0));
+		TreeNode currentNode=head;
+		TreeNode tempNode;
 		while(!(number.size()==0)){
-			
+			int numb=number.remove(0);
+			if(currentNode.data<=numb){
+				currentNode.left=new TreeNode(null, null, null, numb);
+				tempNode=currentNode.left;
+				tempNode.parent=currentNode;
+				currentNode=tempNode;
+			}
+			else{
+				currentNode.right=new TreeNode(null, null, null, numb);
+				tempNode=currentNode.right;
+				tempNode.parent=currentNode;
+				currentNode=tempNode;
+			}
 		}
 		
 		
