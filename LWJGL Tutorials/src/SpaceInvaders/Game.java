@@ -115,6 +115,15 @@ public class Game {
 			Game.gameRunning=false;
 			return;
 		}
+		
+		//get our sprites
+		gotYou=getSprite("gotyou.gif");
+		pressAnyKey=getSprite("pressanykey.gif");
+		youWin=getSprite("youwin.gif");
+		
+		message=pressAnyKey;
+		
+		
 	}
 	
 	
