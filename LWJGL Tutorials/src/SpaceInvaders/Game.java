@@ -104,11 +104,11 @@ public class Game {
 			soundManager.initialize(8);
 			
 			// load our sound data
-			SOUND_SHOT   = soundManager.addSound("shot.wav");
-			SOUND_HIT    = soundManager.addSound("hit.wav");
-			SOUND_START  = soundManager.addSound("start.wav");
-			SOUND_WIN    = soundManager.addSound("win.wav");
-			SOUND_LOSE  = soundManager.addSound("loose.wav");
+			SOUND_SHOT   = soundManager.addSound("res/shot.wav");
+			SOUND_HIT    = soundManager.addSound("res/hit.wav");
+			SOUND_START  = soundManager.addSound("res/start.wav");
+			SOUND_WIN    = soundManager.addSound("res/win.wav");
+			SOUND_LOSE  = soundManager.addSound("res/loose.wav");
 		} catch (LWJGLException e) {
 			System.out.println("Game exiting - problem in initialization:");
 			e.printStackTrace();
