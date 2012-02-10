@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TreeBuilder {
-	public TreeNode makeTree(){
+	public static TreeNode makeTree(){
 		Scanner input=new Scanner(System.in);
 		String blah=input.next();
 		String[] inputs=blah.split(", ");
@@ -35,6 +35,9 @@ public class TreeBuilder {
 				currentNode=tempNode;
 			}
 		}
+		
+		
+		
 		
 		
 		
