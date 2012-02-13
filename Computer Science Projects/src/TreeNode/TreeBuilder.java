@@ -22,6 +22,22 @@ public class TreeBuilder {
 		TreeNode tempNode;
 		while(!(number.size()==0)){
 			int numb=number.remove(0);
+			if(currentNode.getData()<=numb){
+				if(checkLeft(currentNode)){
+					currentNode.left=new TreeNode(head, null, null, numb);
+				}else{
+					currentNode=currentNode.getLeft();
+					if(){
+						
+					}
+				}
+			}
+			
+			
+			
+			
+			
+			/*
 			if(currentNode.data<=numb){
 				currentNode.left=new TreeNode(null, null, null, numb);
 				head=currentNode;
@@ -35,11 +51,47 @@ public class TreeBuilder {
 				tempNode=currentNode.right;
 				tempNode.parent=currentNode;
 				currentNode=tempNode;
-			}
+			}*/
 		}
-		return currentNode;
+		return head;
 		}
+	
+	//Checks to see if the Left Node is empty or not
+	public static boolean checkLeft(TreeNode node){
+		if(node.getLeft()==null){
+			return false;
+		}else return true;
+	}
+	
+	//Checks to see is the Right Node is empty or not
+	public static boolean checkRight(TreeNode node){
+		if(node.getRight()==null){
+			return false;
+		}else return true;
+	}
+	
+	//Checks to see if the next node is an end point
+	public boolean isEnd(TreeNode node){
+		if(node.getLeft()==null&&node.getRight()==null){
+			return true;
+		}else return false;
+	}
+	
+	
+	//preorder: parent, left right
+	public static void preOrder(TreeNode head){
+		
+	}
+	
+	//inorder: left parent right
+	public static void inOrder(TreeNode head){
+		
+	}
+	
+	//postorder: left right parent
+	public static void postOrder(TreeNode head){
+		
+	}
 }
-//preorder:parent, left right
-//inorder:left parent right
-//postorder:left right parent
+
+
