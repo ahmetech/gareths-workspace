@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class TreeBuilder {
 	public static TreeNode makeTree(){
 		Scanner input=new Scanner(System.in);
-		String blah=input.next();
+		System.out.println("Please input the numbers now: ");
+		String blah=input.nextLine();
 		String[] inputs=blah.split(", ");
 		int[] numbers=new int[inputs.length];
 		
@@ -26,37 +27,34 @@ public class TreeBuilder {
 		TreeNode head=new TreeNode(null, null, null, number.remove(0));
 		while(!(number.size()==0)){
 			int numb=number.remove(0);
-			makeMove(head, null, numb);
+			makeMove(head, numb);
 		}
 		return head;
 		}
 	
 	//Returns false is node.getData() is less that than the numb, true if greater
 	public static boolean leftOrRight(TreeNode node, int numb){
-		if (node.getData()<=numb) {
+		if (node.getData()>=numb) {
 			return false;
 		}else return true;
 	}
 	
-	//
-	public static void makeMove(TreeNode node, TreeNode paramPrevNode, int numb){
+	//Used to set up the tree
+	public static void makeMove(TreeNode node,  int numb){
 		TreeNode currentNode=node;
-		TreeNode prevNode=paramPrevNode;
 		if (leftOrRight(node, numb)) {
 			if (checkRight(currentNode)) {
-				currentNode.right=new TreeNode(prevNode, null, null, numb);
+				currentNode.right=new TreeNode(currentNode, null, null, numb);
 			}else {
-				prevNode=currentNode;
 				currentNode=currentNode.getRight();
-				makeMove(currentNode, prevNode, numb);
+				makeMove(currentNode, numb);
 			}
 		}else {
 			if (checkLeft(currentNode)) {
-				currentNode.left=new TreeNode(prevNode, null, null, numb);
+				currentNode.left=new TreeNode(currentNode, null, null, numb);
 			}else {
-				prevNode=currentNode;
 				currentNode=currentNode.getLeft();
-				makeMove(currentNode, prevNode, numb);
+				makeMove(currentNode, numb);
 			}
 		}
 	}
@@ -83,19 +81,39 @@ public class TreeBuilder {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	public static void pre(ArrayList<Integer> list, TreeNode node){
+		list.add(node.getData());
+		pre(list, node.getLeft());
+		pre(list, node.getRight());
+	}
+	
+	
+	
+	
+	
+	
 	//preorder: parent, left right
-	public static void preOrder(TreeNode head){
-		
+	public static ArrayList<Integer> preOrder(TreeNode head){
+		ArrayList<Integer> preOrder=new ArrayList<Integer>();
+		pre(preOrder, head);
+		return preOrder;
 	}
 	
 	//inorder: left parent right
-	public static void inOrder(TreeNode head){
-		
+	public static ArrayList<Integer> inOrder(TreeNode head){
+		ArrayList<Integer> inOrder=new ArrayList<Integer>();
 	}
 	
 	//postorder: left right parent
-	public static void postOrder(TreeNode head){
-		
+	public static ArrayList<Integer> postOrder(TreeNode head){
+		ArrayList<Integer> postOrder=new ArrayList<Integer>();
 	}
 }
 
