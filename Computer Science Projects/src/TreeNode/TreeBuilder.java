@@ -86,15 +86,35 @@ public class TreeBuilder {
 	
 	
 	
-	
-	
 	public static void pre(ArrayList<Integer> list, TreeNode node){
 		list.add(node.getData());
-		pre(list, node.getLeft());
-		pre(list, node.getRight());
+		if(node.getLeft()!=null){
+			pre(list, node.getLeft());
+		}
+		if(node.getRight()!=null){
+			pre(list, node.getRight());
+		}
 	}
 	
+	public static void in(ArrayList<Integer> list, TreeNode node){
+		if(node.getLeft()!=null){
+			in(list, node.getLeft());
+		}
+		list.add(node.getData());
+		if(node.getRight()!=null){
+			in(list, node.getRight());
+		}
+	}
 	
+	public static void post(ArrayList<Integer> list, TreeNode node){
+		if(node.getLeft()!=null){
+			post(list, node.getLeft());
+		}
+		if(node.getRight()!=null){
+			post(list, node.getRight());
+		}
+		list.add(node.getData());
+	}
 	
 	
 	
@@ -109,11 +129,15 @@ public class TreeBuilder {
 	//inorder: left parent right
 	public static ArrayList<Integer> inOrder(TreeNode head){
 		ArrayList<Integer> inOrder=new ArrayList<Integer>();
+		in(inOrder, head);
+		return inOrder;
 	}
 	
 	//postorder: left right parent
 	public static ArrayList<Integer> postOrder(TreeNode head){
 		ArrayList<Integer> postOrder=new ArrayList<Integer>();
+		post(postOrder, head);
+		return postOrder;
 	}
 }
 
