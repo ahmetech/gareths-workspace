@@ -13,17 +13,18 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 
 public class Player extends AbstractMoveableEntity{
-	String head="/Head/Person_head0";
-	String shirt="/Shirt/shirt_plain_cyan";
-	String hands="/Hands/Person_hands_D0";
-	String feet="/Feet/Person_feet_D0";
-	String eyes="/Eyes/Person_eyes_D";
+	String facingLeft="res/player/facingLEft";
+	String facingRight="res/player/facingRight";
+	String startingLeft="res/player/startingRight";
+	String startingRight="res/player/startingRight";
+	String runningLeft= "res/player/runningLeft";
+	String runningRight="res/player/runningRight";
+	String jumpingLeft= "res/player/jumpingLeft";
+	String jumpingRight="res/player/jumpingRight";
 	
 	
 	
 	
-	
-	String body="/Person_Base_Body";
 	int color;
 	int skin;
 	
@@ -33,12 +34,14 @@ public class Player extends AbstractMoveableEntity{
 	
 	boolean u=false,d=false,l=false,r=false;
 
-	private Texture headT;
-	private Texture shirtT;
-	private Texture handsT;
-	private Texture feetT;
-	private Texture eyesT;
-	private Texture bodyT;
+	private Texture facingLeftT;
+	private Texture facingRightT;
+	private Texture startingLeftT;
+	private Texture startingRightT;
+	private Texture runningLeftT;
+	private Texture runningRightT;
+	private Texture jumpingLeftT;
+	private Texture jumpingRightT;
 	
 	public Player(double x, double y, int c, int s) {
 		super(x, y, 32, 32);
