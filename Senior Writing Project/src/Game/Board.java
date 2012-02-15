@@ -50,7 +50,7 @@ public class Board {
 		
 	}
 	public void start() {
-		player=new Player(150,150,32,32);
+		player=new Player(150,150,true);
 		
 		
 		
@@ -242,7 +242,7 @@ public class Board {
 		// Clear The Screen And The Depth Buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
-		
+		/*
 		Texture bg;
 		try {
 			bg = TextureLoader.getTexture("PNG", new FileInputStream(new File("src/sand.png")));
@@ -266,7 +266,7 @@ public class Board {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		
