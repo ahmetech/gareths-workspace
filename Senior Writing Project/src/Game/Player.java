@@ -10,10 +10,11 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 
 public class Player extends AbstractMoveableEntity{
-	String facingLeft="res/player/facingLEft";
+	String facingLeft="res/player/facingLeft";
 	String facingRight="res/player/facingRight";
 	String startingLeft="res/player/startingRight";
 	String startingRight="res/player/startingRight";
@@ -21,17 +22,10 @@ public class Player extends AbstractMoveableEntity{
 	String runningRight="res/player/runningRight";
 	String jumpingLeft= "res/player/jumpingLeft";
 	String jumpingRight="res/player/jumpingRight";
-	
-	
-	
-	
-	int color;
-	int skin;
-	
-	
-	
-	
-	
+
+
+	boolean left, right;
+	boolean standing, running1, running2, jumping;
 	boolean u=false,d=false,l=false,r=false;
 
 	private Texture facingLeftT;
@@ -42,13 +36,13 @@ public class Player extends AbstractMoveableEntity{
 	private Texture runningRightT;
 	private Texture jumpingLeftT;
 	private Texture jumpingRightT;
-	
-	public Player(double x, double y, int c, int s) {
+
+	public Player(double x, double y, boolean facing) {
 		super(x, y, 32, 32);
-		color=c;
-		skin=s;
+		right=facing;
+		left=!facing;
 	}
-	
+
 	public boolean isU() {
 		return u;
 	}
@@ -82,119 +76,169 @@ public class Player extends AbstractMoveableEntity{
 	}
 
 	public void update(int delta){
-		if(u==true)y=y-delta*.1;
-		if(d==true)y=y+delta*.1;
-		if(l==true)x=x-delta*.1;
-		if(r==true)x=x+delta*.1;
-		
+		if(u==true){
+			y=y-delta*.1;
+		}
+		if(d==true){
+			y=y+delta*.1;
+		}
+		if(l==true){
+			right=false;
+			left=true;
+			x=x-delta*.1;
+		}
+		if(r==true){
+			left=false;
+			right=true;
+			x=x+delta*.1;
+		}
+
 		//animate();
 	}
-	
+
 	public void animate(){
-		
+
 	}
-	
+
 	@Override
 	public void draw() {
-		 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		try {
-			headT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+head+".png")));
-			shirtT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+shirt+".png")));
-			handsT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+hands+".png")));
-			feetT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+feet+".png")));
-			eyesT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+eyes+".png")));
-			bodyT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+body+".png")));
+			facingLeftT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(res.Player+".png"));
+			facingRightT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(facingRight+".png"));
+			startingLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingLeft+".png"));
+			startingRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingRight+".png"));
+			runningLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(runningLeft+".png"));
+			runningRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(runningRight+".png"));
+			jumpingLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(jumpingLeft+".png"));
+			jumpingRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(jumpingRight+".png"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		headT.bind();
-		
-		GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
+		if(standing&&left){
+			facingLeftT.bind();
 
-		shirtT.bind();
-		
-		GL11.glBegin(GL_QUADS);
+			GL11.glBegin(GL_QUADS);
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+14, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
+			GL11.glVertex2i((int)x+14, (int)y+20); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
+			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glEnd();
+		}
 
-		handsT.bind();
-		
-		GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
+		if(standing&&right){
+			facingRightT.bind();
 
-		feetT.bind();
-		
-		GL11.glBegin(GL_QUADS);
+			GL11.glBegin(GL_QUADS);
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+14, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
+			GL11.glVertex2i((int)x+14, (int)y+20); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
-		
-		
+			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glEnd();
+		}
 
-		eyesT.bind();
-		
-		GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
-		
+		if(running1&&left){
+			startingLeftT.bind();
 
-		bodyT.bind();
-		
-		GL11.glBegin(GL_QUADS);
+			GL11.glBegin(GL_QUADS);
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+32, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+15, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+32, (int)y+32); // Bottom-right
+			GL11.glVertex2i((int)x+15, (int)y+19); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-		GL11.glEnd();
-		
+			GL11.glVertex2i((int)x, (int)y+19); // Bottom-left
+			GL11.glEnd();
+		}
+
+		if(running1&&right){
+			startingRightT.bind();
+
+			GL11.glBegin(GL_QUADS);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2i((int)x, (int)y); // Upper-left
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2i((int)x+15, (int)y); // Upper-right
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2i((int)x+15, (int)y+19); // Bottom-right
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2i((int)x, (int)y+19); // Bottom-left
+			GL11.glEnd();
+		}
+
+
+		if(running2&&left){
+			runningLeftT.bind();
+
+			GL11.glBegin(GL_QUADS);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2i((int)x, (int)y); // Upper-left
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2i((int)x+16, (int)y+20); // Bottom-right
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glEnd();
+		}
+
+
+		if(running2&&right){
+			runningRightT.bind();
+
+			GL11.glBegin(GL_QUADS);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2i((int)x, (int)y); // Upper-left
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2i((int)x+16, (int)y+20); // Bottom-right
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glEnd();
+		}
+
+		if(jumping&&left){
+			jumpingLeftT.bind();
+
+			GL11.glBegin(GL_QUADS);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2i((int)x, (int)y); // Upper-left
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2i((int)x+16, (int)y+22); // Bottom-right
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2i((int)x, (int)y+22); // Bottom-left
+			GL11.glEnd();
+		}
+
+		if(jumping&&right){
+			jumpingRightT.bind();
+
+			GL11.glBegin(GL_QUADS);
+			GL11.glTexCoord2f(0, 0);
+			GL11.glVertex2i((int)x, (int)y); // Upper-left
+			GL11.glTexCoord2f(1, 0);
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
+			GL11.glTexCoord2f(1, 1);
+			GL11.glVertex2i((int)x+16, (int)y+22); // Bottom-right
+			GL11.glTexCoord2f(0, 1);
+			GL11.glVertex2i((int)x, (int)y+22); // Bottom-left
+			GL11.glEnd();
+		}
+
 		//glRectd(x,y,x+width,y+height);
 	}
 }
