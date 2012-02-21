@@ -14,14 +14,14 @@ import org.newdawn.slick.util.ResourceLoader;
 
 
 public class Player extends AbstractMoveableEntity{
-	String facingLeft="res/Player/facingLeft";
-	String facingRight="res/Player/facingRight";
-	String startingLeft="res/Player/startingRight";
-	String startingRight="res/Player/startingRight";
-	String runningLeft= "res/Player/runningLeft";
-	String runningRight="res/Player/runningRight";
-	String jumpingLeft= "res/Player/jumpingLeft";
-	String jumpingRight="res/Player/jumpingRight";
+	String facingLeft="/res/Player/standingLeft";
+	String facingRight="/res/Player/standingRight";
+	String startingLeft="/res/Player/walkingRight";
+	String startingRight="/res/Player/walkingRight";
+	String runningLeft= "/res/Player/runningLeft";
+	String runningRight="/res/Player/runningRight";
+	String jumpingLeft= "/res/Player/jumpingLeft";
+	String jumpingRight="/res/Player/jumpingRight";
 
 
 	boolean left, right;
@@ -104,31 +104,32 @@ public class Player extends AbstractMoveableEntity{
 	public void draw() {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		try {
-			facingLeftT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(facingLeft+".png"));
-			facingRightT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(facingRight+".png"));
-			startingLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingLeft+".png"));
-			startingRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingRight+".png"));
-			runningLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(runningLeft+".png"));
-			runningRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(runningRight+".png"));
-			jumpingLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(jumpingLeft+".png"));
-			jumpingRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(jumpingRight+".png"));
+			facingLeftT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+facingLeft+".png")));
+			facingRightT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+facingRight+".png")));
+			startingLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+startingLeft+".png")));
+			startingRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+startingRight+".png")));
+			runningLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+runningLeft+".png")));
+			runningRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+runningRight+".png")));
+			jumpingLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+jumpingLeft+".png")));
+			jumpingRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+jumpingRight+".png")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println();
 		if(standing&&left){
 			facingLeftT.bind();
-
+			System.out.println("This happened");
 			GL11.glBegin(GL_QUADS);
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+14, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+14, (int)y+20); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -139,11 +140,11 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+14, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+14, (int)y+20); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -154,11 +155,11 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+15, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+15, (int)y+19); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+19); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -169,11 +170,11 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(0, 0);
 			GL11.glVertex2i((int)x, (int)y); // Upper-left
 			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+15, (int)y); // Upper-right
+			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+15, (int)y+19); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+19); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -187,9 +188,9 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(1, 0);
 			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+20); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -203,9 +204,9 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(1, 0);
 			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+20); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+20); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -218,9 +219,9 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(1, 0);
 			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+22); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+22); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
@@ -233,9 +234,9 @@ public class Player extends AbstractMoveableEntity{
 			GL11.glTexCoord2f(1, 0);
 			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
 			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+22); // Bottom-right
+			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
 			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+22); // Bottom-left
+			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
 			GL11.glEnd();
 		}
 
