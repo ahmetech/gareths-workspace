@@ -14,14 +14,14 @@ import org.newdawn.slick.util.ResourceLoader;
 
 
 public class Player extends AbstractMoveableEntity{
-	String facingLeft="res/player/facingLeft";
-	String facingRight="res/player/facingRight";
-	String startingLeft="res/player/startingRight";
-	String startingRight="res/player/startingRight";
-	String runningLeft= "res/player/runningLeft";
-	String runningRight="res/player/runningRight";
-	String jumpingLeft= "res/player/jumpingLeft";
-	String jumpingRight="res/player/jumpingRight";
+	String facingLeft="res/Player/facingLeft";
+	String facingRight="res/Player/facingRight";
+	String startingLeft="res/Player/startingRight";
+	String startingRight="res/Player/startingRight";
+	String runningLeft= "res/Player/runningLeft";
+	String runningRight="res/Player/runningRight";
+	String jumpingLeft= "res/Player/jumpingLeft";
+	String jumpingRight="res/Player/jumpingRight";
 
 
 	boolean left, right;
@@ -104,7 +104,7 @@ public class Player extends AbstractMoveableEntity{
 	public void draw() {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		try {
-			facingLeftT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(res.Player+".png"));
+			facingLeftT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(facingLeft+".png"));
 			facingRightT = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(facingRight+".png"));
 			startingLeftT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingLeft+".png"));
 			startingRightT= TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream(startingRight+".png"));
