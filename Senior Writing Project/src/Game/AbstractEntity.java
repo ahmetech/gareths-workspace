@@ -1,9 +1,8 @@
-package Game;
 import java.awt.Rectangle;
 
 
 public abstract class AbstractEntity implements Entity {
-	protected double x, y, width, height;
+	protected double x, y, width, height, rotation;
 	protected Rectangle hitbox = new Rectangle();
 	
 	
@@ -12,8 +11,27 @@ public abstract class AbstractEntity implements Entity {
 		this.y=y;
 		this.width=width;
 		this.height=height;
+		rotation=0;
+	}
+	
+	public AbstractEntity(double x,double y,double width,double height,double rotation) {
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+		this.rotation=rotation;
 	}
 
+	
+	@Override
+	public void setRotation(double r){
+		this.rotation=r;
+	}
+	
+	@Override
+	public double getRotation(){
+		return rotation;
+	}
 
 
 	@Override
@@ -68,5 +86,7 @@ public abstract class AbstractEntity implements Entity {
 		
 		return hitbox.intersects(other.getX(),other.getY(),other.getWidth(),other.getHeight());
 	}
+	
+	
 
 }
