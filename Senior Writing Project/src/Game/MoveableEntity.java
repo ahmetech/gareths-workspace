@@ -1,4 +1,3 @@
-package Game;
 
 public interface MoveableEntity extends Entity{
 	public double getDX();

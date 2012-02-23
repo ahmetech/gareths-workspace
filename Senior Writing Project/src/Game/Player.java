@@ -1,7 +1,8 @@
-package Game;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glRectd;
 
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,39 +11,48 @@ import java.io.IOException;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Player extends AbstractMoveableEntity{
-	String facingLeft="/res/Player/standingLeft";
-	String facingRight="/res/Player/standingRight";
-	String startingLeft="/res/Player/walkingRight";
-	String startingRight="/res/Player/walkingRight";
-	String runningLeft= "/res/Player/runningLeft";
-	String runningRight="/res/Player/runningRight";
-	String jumpingLeft= "/res/Player/jumpingLeft";
-	String jumpingRight="/res/Player/jumpingRight";
-
-
-	boolean left, right;
-	boolean standing, running1, running2, jumping;
+	String type="Basic";
+	String character = "Spaceman";
+		
+	String sprite="stand";
+	int anim=0;
+	int frame=0;
+	static double scale=2;
+	
+	double speed = .15;
+	
+	double jump = 4;
+	double maxFall = 1;
+	double gravity = .05;
+	double vspeed = 0;
+	boolean falling=false;
+	
+	
+	String dir="r";
+	//r (right), l (left)
+	
+	
+	String aim="f";
+	//u (up), f (forward), d (down)
+	
+	
+	
 	boolean u=false,d=false,l=false,r=false;
+	
+	double hspeed=0;
+	double maxRun = .5;
 
-	private Texture facingLeftT;
-	private Texture facingRightT;
-	private Texture startingLeftT;
-	private Texture startingRightT;
-	private Texture runningLeftT;
-	private Texture runningRightT;
-	private Texture jumpingLeftT;
-	private Texture jumpingRightT;
-
-	public Player(double x, double y, boolean facing) {
-		super(x, y, 32, 32);
-		right=facing;
-		left=!facing;
+	private Texture Texture;
+	
+	public Player(double x, double y) {
+		super(x, y, 16*scale, (23-1)*scale);
 	}
-
+	
 	public boolean isU() {
 		return u;
 	}
@@ -75,171 +85,198 @@ public class Player extends AbstractMoveableEntity{
 		this.r = r;
 	}
 
-	public void update(int delta){
-		if(u==true){
-			y=y-delta*.1;
-		}
-		if(d==true){
-			y=y+delta*.1;
-		}
+	
+	public void update(int delta, ArrayList<Block> blocks){
+		super.update(delta);
+		
+		//if(u==true)y=y-delta*.1;
+		//if(d==true)y=y+delta*.1;
+		
+		
 		if(l==true){
-			right=false;
-			left=true;
-			x=x-delta*.1;
+			if(!checkCollisions(blocks, "l", delta))x=x-delta*speed;
 		}
 		if(r==true){
-			left=false;
-			right=true;
-			x=x+delta*.1;
+			if(!checkCollisions(blocks, "r", delta))x=x+delta*speed;
 		}
-
-		//animate();
+		
+		
+		//+ = r
+		//- = l
+		//x+=hspeed*delta;
+		
+		
+		if(l&&!r&&!dir.equals("l")){
+			anim=0;
+			frame=0;
+			dir="l";
+		}
+		if(r&&!l&&!dir.equals("r")){
+			anim=0;
+			frame=0;
+			dir="r";
+		}
+		
+		
+		//check fall & jump
+		//dy>0, falling
+		//dy<0, jumping
+		//if(checkCollisions(blocks,"u",delta)){
+		//	y+=.3;
+		//}
+		if(!checkCollisions(blocks,"d",delta)){
+			falling=true;
+			vspeed-=gravity;
+			if(vspeed<0){
+				for(double i = 0;i>vspeed;i-=.01){
+					if(!checkCollisions(blocks,"d",1)){
+						y+=.01;
+					}else{
+						y-=.01;
+						vspeed=0;
+						falling=false;
+					}
+				}
+			}else{
+				for(double i = 0;i<vspeed;i+=.01){
+					if(!checkCollisions(blocks,"u",1)){
+						y-=.01;
+					}else{
+						y+=.01;
+						vspeed=0;
+					}
+					
+				}
+			}
+		}
+		if(!falling){
+			if(u){
+				vspeed+=jump;
+			}
+		}
+		
+		
+		
+		/**
+		if(!checkCollisions(blocks,"d",delta)){
+				dy+=gravity*delta;
+				if(dy>maxFall)dy=maxFall;
+				
+				if(dy<0){
+					if(checkCollisions(blocks,"u",delta)){
+						dy=0;
+					}
+				}
+				
+				y=y-dy;
+		}else{
+				dy=0;
+		}
+		**/
+		
+		
+		
+		animate(delta,blocks);
 	}
 
-	public void animate(){
-
+	
+	public void animate(int delta,ArrayList<Block> blocks){
+		anim+=delta;
+		if(dy>=0&&falling){
+			frame=0;
+			sprite="fall";
+		}else if(dy<0&&falling){
+			frame=0;
+			sprite="jump";
+		}else{
+			if(l&&!r||r&&!l){
+				sprite="walk";
+				if(anim>75*4)anim=1;
+				if(anim>=1)frame=0;
+				if(anim>=75)frame=1;
+				if(anim>=75*2)frame=2;
+				if(anim>=72*3)frame=3;
+			}else{
+				sprite="stand";
+				Random random = new Random();
+				int r = random.nextInt(10);
+				int r2 = random.nextInt(50);
+				
+				if(anim>75*(50+r))anim=0;
+				if(anim>=0)frame=0;
+				if(anim>=(75*(50+r))-(30+r2))frame=1;
+			}
+		}
 	}
-
+	
+	
+	
+	
 	@Override
 	public void draw() {
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		
+		 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		try {
-			facingLeftT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+facingLeft+".png")));
-			facingRightT = TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+facingRight+".png")));
-			startingLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+startingLeft+".png")));
-			startingRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+startingRight+".png")));
-			runningLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+runningLeft+".png")));
-			runningRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+runningRight+".png")));
-			jumpingLeftT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+jumpingLeft+".png")));
-			jumpingRightT= TextureLoader.getTexture("PNG", new FileInputStream(new File("src"+jumpingRight+".png")));
+			//right now only works with compy files
+			//fix later plz thx :3
+			Texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("G:/directory storage/james/01- GAME PROJECTS/Adrift/Sprites/Player/"+type+"/"+character+"_"+sprite+"_"+dir.toUpperCase()+frame+".png")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println();
-		if(standing&&left){
-			facingLeftT.bind();
-			System.out.println("This happened");
+		Texture.bind();
+			
+			GL11.glTexParameterf(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		
+		
+			GL11.glTranslated(x, y, 0);
+			GL11.glRotatef((float)rotation, 0f, 0f, 1f);
+			GL11.glTranslated(-x, -y, 0);
+		
+		
 			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
+				GL11.glTexCoord2f(0, 0);
+				GL11.glVertex2d((int)x-9, (int)y-2); // Upper-left
+				GL11.glTexCoord2f(1, 0);
+				GL11.glVertex2d((int)x+32*scale-9, (int)y-2); // Upper-right
+				GL11.glTexCoord2f(1, 1);
+				GL11.glVertex2d((int)x+32*scale-9, (int)y-2+32*scale); // Bottom-right
+				GL11.glTexCoord2f(0, 1);
+				GL11.glVertex2d((int)x-9, (int)y-2+32*scale); // Bottom-left
 			GL11.glEnd();
-		}
+		
 
-		if(standing&&right){
-			facingRightT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-		if(running1&&left){
-			startingLeftT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-		if(running1&&right){
-			startingRightT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-
-		if(running2&&left){
-			runningLeftT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-
-		if(running2&&right){
-			runningRightT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-		if(jumping&&left){
-			jumpingLeftT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
-		if(jumping&&right){
-			jumpingRightT.bind();
-
-			GL11.glBegin(GL_QUADS);
-			GL11.glTexCoord2f(0, 0);
-			GL11.glVertex2i((int)x, (int)y); // Upper-left
-			GL11.glTexCoord2f(1, 0);
-			GL11.glVertex2i((int)x+16, (int)y); // Upper-right
-			GL11.glTexCoord2f(1, 1);
-			GL11.glVertex2i((int)x+16, (int)y+32); // Bottom-right
-			GL11.glTexCoord2f(0, 1);
-			GL11.glVertex2i((int)x, (int)y+32); // Bottom-left
-			GL11.glEnd();
-		}
-
+		
 		//glRectd(x,y,x+width,y+height);
 	}
+	
+	
+	
+	
+	
+	
+	public boolean checkCollisions(ArrayList<Block> blocks, String d, int delta){
+		for (Block tempEntity : blocks) {
+			if(collides(tempEntity, d, delta))return true;
+		}
+		return false;
+	}
+	
+	
+	public boolean collides(Entity other, String d, int delta){
+		//s = self -> unchanged position in check
+		if(d.equals("l"))hitbox.setBounds((int) ((int) x-speed*delta), (int) ((int) y+scale), (int) width, (int) height);
+		if(d.equals("r"))hitbox.setBounds((int) ((int) x+speed*delta), (int) ((int) y+scale), (int) width, (int) height);
+		
+
+		if(d.equals("u"))hitbox.setBounds((int) x, (int) ((int) y+scale-.01*delta), (int) width, (int) height);
+		if(d.equals("d"))hitbox.setBounds((int) x, (int) ((int) y+scale+.01*delta), (int) width, (int) height);
+		
+		return hitbox.intersects(other.getX(),other.getY(),other.getWidth(),other.getHeight());
+	}
+	
+	
+	
+	
 }
