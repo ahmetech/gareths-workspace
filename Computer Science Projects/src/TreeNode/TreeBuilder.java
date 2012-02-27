@@ -139,6 +139,80 @@ public class TreeBuilder {
 		post(postOrder, head);
 		return postOrder;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Deletes the node and move the children up appropriately
+	public static TreeNode delete(TreeNode head, int number){
+		TreeNode current=head;
+		while(!(current.getData()==number)){
+			if(number<=current.getData()){
+				current=current.getLeft();
+			}else current=current.getRight();
+		}
+		int test=howManyChildren(current);
+		switch(test){
+			case 0: current=noChild(current);
+			case 1: current=oneChild(current);
+			case 2: current=twoChild(current);
+		}
+		
+		while(current.getParent()!=null){
+			current=current.getParent();
+		}
+		
+	}
+	
+	
+	public static int howManyChildren(TreeNode node){
+		if(node.getRight()==null&&node.getLeft()==null){
+			return 0;
+		}
+		else if(node.getRight()!=null&&node.getLeft()!=null){
+			return true;
+		}else return 1;
+	}
+	
+	
+	public static TreeNode noChild(TreeNode node){
+		node=null;
+		return node;
+	}
+	
+	public static TreeNode oneChild(TreeNode node){
+		if(node.getRight()!=null){
+			node=node.getRight();
+		}
+		if(node.getLeft()!=null){
+			node=node.getLeft();
+		}
+		return node;
+	}
+	
+	public static TreeNode twoChild(TreeNode node){
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 
