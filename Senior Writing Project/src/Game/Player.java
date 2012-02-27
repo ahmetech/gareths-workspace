@@ -20,6 +20,17 @@ public class Player extends AbstractMoveableEntity{
 	String character = "Spaceman";
 		
 	String sprite="stand";
+	
+	String jumpingLeft="jumpingLeft";
+	String jumpingRight="jumpingRight";
+	String runningLeft="runningLeft";
+	String runningRight="runningRight";
+	String standingLeft="standingLeft";
+	String standingRight="standingRight";
+	String walkingLeft="walkingLeft";
+	String walkingRight="walkingRight";
+	
+	
 	int anim=0;
 	int frame=0;
 	static double scale=2;
@@ -47,7 +58,14 @@ public class Player extends AbstractMoveableEntity{
 	double hspeed=0;
 	double maxRun = .5;
 
-	private Texture Texture;
+	private Texture jumpingLeftTexture;
+	private Texture jumpingRightTexture;
+	private Texture runningLeftTexture;
+	private Texture runningRightTexture;
+	private Texture standingLeftTexture;
+	private Texture standingRightTexture;
+	private Texture walkingLeftTexture;
+	private Texture walkingRightTexture;
 	
 	public Player(double x, double y) {
 		super(x, y, 16*scale, (23-1)*scale);
@@ -219,13 +237,13 @@ public class Player extends AbstractMoveableEntity{
 		try {
 			//right now only works with compy files
 			//fix later plz thx :3
-			Texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("G:/directory storage/james/01- GAME PROJECTS/Adrift/Sprites/Player/"+type+"/"+character+"_"+sprite+"_"+dir.toUpperCase()+frame+".png")));
+			walkingLeftTexture = TextureLoader.getTexture("PNG", new FileInputStream(new File("E:\\Game\\res\\Player\\"+walkingLeft+".png");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Texture.bind();
+		walkingLeftTexture.bind();
 			
 			GL11.glTexParameterf(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		
