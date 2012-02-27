@@ -2,8 +2,8 @@ import java.awt.Rectangle;
 
 
 public abstract class AbstractEntity implements Entity {
-	protected double x, y, width, height, rotation;
-	protected Rectangle hitbox = new Rectangle();
+	public double x, y, width, height, rotation;
+	public Rectangle hitbox = new Rectangle();
 	
 	
 	public AbstractEntity(double x,double y,double width,double height) {
