@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class TreeMain {
 	public static void main(String[] args){
 		TreeNode head=TreeBuilder.makeTree();
+		//Change the number in the paramater to whatever number you want to delete(It must be in input.txt)
+		head=TreeBuilder.delete(head, 216);
 		ArrayList<Integer> preOrder=TreeBuilder.preOrder(head);
 		ArrayList<Integer> inOrder=TreeBuilder.inOrder(head);
 		ArrayList<Integer> postOrder=TreeBuilder.postOrder(head);
