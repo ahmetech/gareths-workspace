@@ -159,22 +159,27 @@ public class TreeBuilder {
 	//Deletes the node and move the children up appropriately
 	public static TreeNode delete(TreeNode head, int number){
 		TreeNode current=head;
+		String lastMove=null;
 		while(!(current.getData()==number)){
 			if(number<=current.getData()){
 				current=current.getLeft();
-			}else current=current.getRight();
+				lastMove="l";
+			}else {
+				current=current.getRight();
+				lastMove="r";	
+			}
 		}
 		int test=howManyChildren(current);
 		switch(test){
-			case 0: current=noChild(current);
-			case 1: current=oneChild(current);
-			case 2: current=twoChild(current);
+			case 0: noChild(current, lastMove); break;
+			case 1: oneChild(current, lastMove); break;
+			case 2: current=twoChild(current, lastMove); break;
 		}
 		
 		while(current.getParent()!=null){
 			current=current.getParent();
 		}
-		
+		return current;
 	}
 	
 	
@@ -183,36 +188,43 @@ public class TreeBuilder {
 			return 0;
 		}
 		else if(node.getRight()!=null&&node.getLeft()!=null){
-			return true;
+			return 2;
 		}else return 1;
 	}
 	
 	
-	public static TreeNode noChild(TreeNode node){
-		node=null;
-		return node;
+	public static void noChild(TreeNode node, String lastMove){
+		if(lastMove.equals("l")){
+			node.getParent().setLeft(null);
+		}else node.getParent().setRight(null);
+
 	}
 	
-	public static TreeNode oneChild(TreeNode node){
+	public static void oneChild(TreeNode node, String lastMove){
 		if(node.getRight()!=null){
-			node=node.getRight();
+			if(lastMove.equals("l")){
+				node.getParent().setLeft(node.getRight());
+			}else node.getParent().setRight(node.getRight());
 		}
 		if(node.getLeft()!=null){
-			node=node.getLeft();
+			if(lastMove.equals("l")){
+				node.getParent().setLeft(node.getLeft());
+			}else node.getParent().setRight(node.getLeft());
 		}
-		return node;
 	}
 	
-	public static TreeNode twoChild(TreeNode node){
-		
-	}
-	
-	
-	
-	
-	
-	
-	
+	public static TreeNode twoChild(TreeNode node, String lastMove){
+		TreeNode origNode=node;
+		node=node.getLeft();
+		while(node.getRight()!=null){
+			node=node.getRight();
+		}
+		origNode.setData(node.getData());
+		if(node.getLeft()!=null){
+			node.getParent().setRight(node.getLeft());
+		}else node.getParent().setRight(null);
+		return origNode;
+	}	
 }
 
 
