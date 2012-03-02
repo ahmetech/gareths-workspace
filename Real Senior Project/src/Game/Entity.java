@@ -1,4 +1,7 @@
 package Game;
+
+import java.awt.Rectangle;
+
 /*
  * An entity represents any element that appears in the game. The
  * entity is responsible for resolving collisions and movement
@@ -46,10 +49,10 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Request that this entity move itself based on a certain ammount
+	 * Request that this entity move itself based on a certain amount
 	 * of time passing.
 	 *
-	 * @param delta The ammount of time that has passed in milliseconds
+	 * @param delta The amount of time that has passed in milliseconds
 	 */
 	public void move(long delta) {
 		// update the location of the entity based on move speeds
@@ -107,26 +110,18 @@ public abstract class Entity {
 	public void doLogic() {
 	}
 
-	/**
-	 * Get the x location of this entity
-	 *
-	 * @return The x location of this entity
-	 */
+
 	public int getX() {
 		return (int) x;
 	}
 
-	/**
-	 * Get the y location of this entity
-	 *
-	 * @return The y location of this entity
-	 */
+
 	public int getY() {
 		return (int) y;
 	}
 
 	/**
-	 * Check if this entity collised with another.
+	 * Check if this entity collided with another.
 	 *
 	 * @param other The other entity to check collision against
 	 * @return True if the entities collide with each other
