@@ -21,5 +21,22 @@ public class PlayerEntity extends Entity{
 	
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("walkingRight.gif"), x, y);
+		this.game=game;
 	}
+
+	@Override
+	public void collidedWith(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	/*Make this work with the block instead of the alien
+	public void collidedWithBlock(Entity other) {
+		// if its an alien, notify the game that the player
+		// is dead
+		if (other instanceof AlienEntity) {
+			game.notifyDeath();
+		}
+	}*/
 }
