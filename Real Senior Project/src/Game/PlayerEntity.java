@@ -1,9 +1,14 @@
 package Game;
 
+import java.util.ArrayList;
+
 public class PlayerEntity extends Entity{
 	
 	/** The speed at which the Player moves horizontally */
 	private float moveSpeed= 75;
+	
+	
+	int anim=0;
 	
 	private Game game;
 	
@@ -29,6 +34,35 @@ public class PlayerEntity extends Entity{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public void update(ArrayList blocks, long delta){
+	animate(delta);	
+		
+		
+		
+		
+	}
+	public void animate(long delta){
+		anim+=delta;
+		if(l&&!r&&vspeed){
+			if(anim>=0){
+				//sprite = walk1
+			}
+			if(anim>=8){
+				//walk2
+			}
+			if(anim>=16){
+				
+			}
+			if(anim>=24){
+				anim-=24;
+			}
+		}
+		
+		
+	}
+	
 	
 	
 	/*Make this work with the block instead of the alien
