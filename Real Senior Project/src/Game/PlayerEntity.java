@@ -7,7 +7,6 @@ public class PlayerEntity extends Entity{
 	/** The speed at which the Player moves horizontally */
 	private float moveSpeed= 75;
 	
-	
 	int anim=0;
 	
 	private Game game;

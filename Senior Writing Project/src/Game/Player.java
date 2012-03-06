@@ -1,3 +1,5 @@
+package Game;
+
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glRectd;
@@ -7,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
@@ -237,7 +240,7 @@ public class Player extends AbstractMoveableEntity{
 		try {
 			//right now only works with compy files
 			//fix later plz thx :3
-			walkingLeftTexture = TextureLoader.getTexture("PNG", new FileInputStream(new File("E:\\Game\\res\\Player\\"+walkingLeft+".png");
+			walkingLeftTexture = TextureLoader.getTexture("GIF", );
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

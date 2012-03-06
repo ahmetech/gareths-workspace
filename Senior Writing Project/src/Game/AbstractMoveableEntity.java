@@ -1,3 +1,5 @@
+package Game;
+
 
 public abstract class AbstractMoveableEntity extends AbstractEntity implements MoveableEntity{
 	protected double dx, dy;
