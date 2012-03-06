@@ -2,7 +2,7 @@ package Game;
 
 public class PlayerEntity extends Entity{
 	
-	/** The speed at which the aliens moves horizontally */
+	/** The speed at which the Player moves horizontally */
 	private float moveSpeed= 75;
 	
 	private Game game;
@@ -20,7 +20,7 @@ public class PlayerEntity extends Entity{
 	private int frameNumber;
 	
 	public PlayerEntity(Game game, int x, int y){
-		super(game.getSprite("walkingRight.gif"), x, y);
+		super(game.getSprite("standingRight.gif"), x, y);
 		this.game=game;
 	}
 

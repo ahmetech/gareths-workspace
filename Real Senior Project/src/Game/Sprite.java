@@ -27,7 +27,7 @@ public class Sprite {
 	 */
 	public Sprite(TextureLoader loader, String ref) {
 		try {
-			texture = loader.getTexture("e:/Game/res/Player/" + ref);
+			texture = loader.getTexture("Player/" + ref);
 			width = texture.getImageWidth();
 			height = texture.getImageHeight();
 		} catch (IOException ioe) {

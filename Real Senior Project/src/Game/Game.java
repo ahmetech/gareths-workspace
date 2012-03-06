@@ -167,7 +167,7 @@ public class Game {
 		entities.add(player);
 
 		// Add all of the blocks at a later time
-
+		
 	}
 
 	/**
@@ -295,7 +295,7 @@ public class Game {
 		// if we're waiting for an "any key" press then draw the
 		// current message
 		if (waitingForKeyPress) {
-			message.draw(325, 250);
+			//message.draw(250, 250);
 		}
 
 		// resolve the movemfent of the ship. First assume the ship
@@ -354,6 +354,7 @@ public class Game {
 	}
 	
 	public Sprite getSprite(String ref) {
+
 		return new Sprite(textureLoader, ref);
 	}
 
