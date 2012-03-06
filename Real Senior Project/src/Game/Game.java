@@ -27,7 +27,7 @@ public class Game {
 	/** The speed at which the player's ship should move (pixels/sec) */
 	private float moveSpeed= 300;
 	/** True if we're holding up game play until a key has been pressed */
-	private boolean waitingForKeyPress= true;
+	private boolean waitingForKeyPress= false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
 	private boolean	logicRequiredThisLoop;
 	/** The time at which the last rendering looped started from the point of view of the game logic */
@@ -121,11 +121,11 @@ public class Game {
 			return;
 		}
 
-		/** get our sprites
-		gotYou = getSprite("gotyou.gif");
-		pressAnyKey = getSprite("pressanykey.gif");
-		youWin = getSprite("youwin.gif");
-		**/
+		//get our sprites
+		//gotYou = getSprite("gotyou.gif");
+		pressAnyKey = getSprite("walkingLeft.gif");
+		//youWin = getSprite("youwin.gif");
+		
 
 		message = pressAnyKey;
 
@@ -295,7 +295,7 @@ public class Game {
 		// if we're waiting for an "any key" press then draw the
 		// current message
 		if (waitingForKeyPress) {
-			//message.draw(250, 250);
+			message.draw(250, 250);
 		}
 
 		// resolve the movemfent of the ship. First assume the ship
@@ -306,20 +306,21 @@ public class Game {
 		// get mouse movement on x axis. We need to get it now, since
 		// we can only call getDX ONCE! - secondary calls will yield 0, since
 		// there haven't been any movement since last call.
-
+		
 		// we delegate input checking to submethod since we want to check
 		// for keyboard, mouse & controller
 		boolean leftPressed   = hasInput(Keyboard.KEY_LEFT);
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
-		boolean firePressed   = hasInput(Keyboard.KEY_SPACE);
+		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
-		if (!waitingForKeyPress) {
+		
 			if ((leftPressed) && (!rightPressed)) {
+				System.out.println("Got here");
 				player.setHorizontalMovement(-moveSpeed);
+				
 			} else if ((rightPressed) && (!leftPressed)) {
 				player.setHorizontalMovement(moveSpeed);
 			}
-		}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
 			Game.gameRunning = false;
