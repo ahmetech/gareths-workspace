@@ -25,9 +25,9 @@ public class PlayerEntity extends Entity{
 	
 	private boolean jumping=false;
 	
-	private boolean movingLeft=false;
+	private boolean Left=false;
 	
-	private boolean movingRight=false;
+	private boolean Right=false;
 	
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("standingRight.gif"), x, y);
@@ -40,9 +40,30 @@ public class PlayerEntity extends Entity{
 		// TODO Auto-generated method stub
 		
 	}
+	public void move(long delta) {
+		// update the location of the entity based on move speeds
+		x += (delta * dx) / 1000;
+		y += (delta * dy) / 1000;
+		update(delta);
+	}
 	
-	
-	public void update(ArrayList blocks, long delta){
+	public boolean isLeft() {
+		return Left;
+	}
+
+	public void setLeft(boolean left) {
+		Left = left;
+	}
+
+	public boolean isRight() {
+		return Right;
+	}
+
+	public void setRight(boolean right) {
+		Right = right;
+	}
+
+	public void update(long delta){
 		animate(delta);	
 		
 		
@@ -51,38 +72,42 @@ public class PlayerEntity extends Entity{
 	}
 	public void animate(long delta){
 		anim+=delta;
-		if(movingLeft&&!movingRight&&(dx!=0)){
+		if(dx==0&&Left&&!Right){
+			sprite=game.getSprite("standingLeft.gif");
+		}
+		if(dx==0&&!Left&&Right){
+			sprite=game.getSprite("standingRight.gif");
+		}
+		if(Left&&!Right&&(dx!=0)){
 			if(anim>=0){
 				sprite = game.getSprite("walkingLeft.gif");
 			}
-			if(anim>=8){
+			if(anim>=300){
 				sprite = game.getSprite("runningLeft.gif");
 			}
-			if(anim>=16){
+			if(anim>=600){
 				sprite = game.getSprite("walkingLeft.gif");
 			}
-			if(anim>=24){
+			if(anim>=900){
 				sprite = game.getSprite("runningLeft.gif");
-				anim-=24;
+				anim-=900;
 			}
 		}
-		if(!movingLeft&&movingRight&&(dx!=0)){
+		if(!Left&&Right&&(dx!=0)){
 			if(anim>=0){
 				sprite = game.getSprite("walkingRight.gif");
 			}
-			if(anim>=8){
+			if(anim>=50){
 				sprite = game.getSprite("runningRight.gif");
 			}
-			if(anim>=16){
+			if(anim>=100){
 				sprite = game.getSprite("walkingRight.gif");
 			}
-			if(anim>=24){
+			if(anim>=150){
 				sprite = game.getSprite("runningRight.gif");
-				anim-=24;
+				anim-=150;
 			}
 		}
-		
-		
 	}
 	
 	
