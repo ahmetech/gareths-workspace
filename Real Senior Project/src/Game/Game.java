@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 import org.lwjgl.LWJGLException;
@@ -25,7 +26,7 @@ public class Game {
 	/** The entity representing the player */
 	private PlayerEntity player;
 	/** The speed at which the player's ship should move (pixels/sec) */
-	private float moveSpeed= 300;
+	private float moveSpeed= 100;
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress= false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
@@ -311,15 +312,18 @@ public class Game {
 		// for keyboard, mouse & controller
 		boolean leftPressed   = hasInput(Keyboard.KEY_LEFT);
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
+		boolean gPressed= hasInput(Keyboard.KEY_G);
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
 		
 			if ((leftPressed) && (!rightPressed)) {
-				System.out.println("Got here");
 				player.setHorizontalMovement(-moveSpeed);
 				
 			} else if ((rightPressed) && (!leftPressed)) {
 				player.setHorizontalMovement(moveSpeed);
+			}
+			if (spacePressed) {
+				player.dy+=-100-player.gravity;
 			}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
