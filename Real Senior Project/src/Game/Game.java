@@ -253,9 +253,7 @@ public class Game {
 
 		// cycle round asking each entity to move itself
 		if (!waitingForKeyPress) {
-			for ( Entity entity : entities ) {
-				entity.move(delta);
-			}
+				player.move(delta);
 		}
 
 		// cycle round drawing all the entities we have in the game
@@ -299,9 +297,9 @@ public class Game {
 			message.draw(250, 250);
 		}
 
-		// resolve the movemfent of the ship. First assume the ship
+		// resolve the movement of the ship. First assume the ship
 		// isn't moving. If either cursor key is pressed then
-		// update the movement appropraitely
+		// update the movement appropriately
 		player.setHorizontalMovement(0);
 
 		// get mouse movement on x axis. We need to get it now, since
@@ -312,15 +310,17 @@ public class Game {
 		// for keyboard, mouse & controller
 		boolean leftPressed   = hasInput(Keyboard.KEY_LEFT);
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
-		boolean gPressed= hasInput(Keyboard.KEY_G);
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
 		
 			if ((leftPressed) && (!rightPressed)) {
 				player.setHorizontalMovement(-moveSpeed);
-				
+				player.setLeft(true);
+				player.setRight(false);
 			} else if ((rightPressed) && (!leftPressed)) {
 				player.setHorizontalMovement(moveSpeed);
+				player.setLeft(false);
+				player.setRight(true);
 			}
 			if (spacePressed) {
 				player.dy+=-100-player.gravity;
