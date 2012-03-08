@@ -28,6 +28,8 @@ public abstract class Entity {
 
 	/** The current speed of this entity vertically (pixels/sec) */
 	protected float	dy;
+	
+	protected float gravity;
 
 	/** The rectangle used for this entity during collisions  resolution */
 	private Rectangle	me	= new Rectangle();

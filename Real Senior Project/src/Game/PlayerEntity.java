@@ -23,8 +23,15 @@ public class PlayerEntity extends Entity{
 	/** The current frame of animation being displayed */
 	private int frameNumber;
 	
+	private boolean jumping=false;
+	
+	private boolean movingLeft=false;
+	
+	private boolean movingRight=false;
+	
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("standingRight.gif"), x, y);
+		gravity=10;
 		this.game=game;
 	}
 
@@ -36,7 +43,7 @@ public class PlayerEntity extends Entity{
 	
 	
 	public void update(ArrayList blocks, long delta){
-	animate(delta);	
+		animate(delta);	
 		
 		
 		
@@ -44,17 +51,33 @@ public class PlayerEntity extends Entity{
 	}
 	public void animate(long delta){
 		anim+=delta;
-		if(l&&!r&&vspeed){
+		if(movingLeft&&!movingRight&&(dx!=0)){
 			if(anim>=0){
-				//sprite = walk1
+				sprite = game.getSprite("walkingLeft.gif");
 			}
 			if(anim>=8){
-				//walk2
+				sprite = game.getSprite("runningLeft.gif");
 			}
 			if(anim>=16){
-				
+				sprite = game.getSprite("walkingLeft.gif");
 			}
 			if(anim>=24){
+				sprite = game.getSprite("runningLeft.gif");
+				anim-=24;
+			}
+		}
+		if(!movingLeft&&movingRight&&(dx!=0)){
+			if(anim>=0){
+				sprite = game.getSprite("walkingRight.gif");
+			}
+			if(anim>=8){
+				sprite = game.getSprite("runningRight.gif");
+			}
+			if(anim>=16){
+				sprite = game.getSprite("walkingRight.gif");
+			}
+			if(anim>=24){
+				sprite = game.getSprite("runningRight.gif");
 				anim-=24;
 			}
 		}
