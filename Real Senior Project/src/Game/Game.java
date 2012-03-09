@@ -45,7 +45,7 @@ public class Game {
 	/** Is this an application or applet */
 	private static boolean isApplication;
 
-	private boolean justJumped=false;
+	private boolean jumpHasBeenReleased=false;
 
 
 	//Might use these for the words
@@ -166,9 +166,9 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		player = new PlayerEntity(this, 370, 550);
+		player = new PlayerEntity(this, 370, 500);
 		entities.add(player);
-
+		entities.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
 		// Add all of the blocks at a later time
 
 	}
@@ -295,9 +295,6 @@ public class Game {
 
 		// if we're waiting for an "any key" press then draw the
 		// current message
-		if (waitingForKeyPress) {
-			message.draw(250, 250);
-		}
 
 		// resolve the movement of the ship. First assume the ship
 		// isn't moving. If either cursor key is pressed then
@@ -325,9 +322,16 @@ public class Game {
 			player.setRight(true);
 		}
 		if (spacePressed) {
-			justJumped=true;
-			player.dy+=-15;
+			player.dy+=-30;
 			player.setJumping(true);
+		}
+		else {
+			if (!spacePressed) {
+				jumpHasBeenReleased=true;
+			}
+			if (spacePressed && jumpHasBeenReleased) {
+				jumpHasBeenReleased=false;
+			}
 		}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
@@ -350,11 +354,8 @@ public class Game {
 			Keyboard.isKeyDown(Keyboard.KEY_RIGHT);
 
 		case Keyboard.KEY_SPACE:
-			if(!justJumped){
-				justJumped=false;
 				return
 				Keyboard.isKeyDown(Keyboard.KEY_SPACE);
-			}
 		}
 		return false;
 	}

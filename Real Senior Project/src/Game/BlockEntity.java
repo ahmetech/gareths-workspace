@@ -10,7 +10,6 @@ public class BlockEntity extends Entity{
 
 	@Override
 	public void collidedWith(Entity other) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 }
