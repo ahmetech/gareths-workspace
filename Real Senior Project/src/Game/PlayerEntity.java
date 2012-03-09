@@ -3,47 +3,27 @@ package Game;
 import java.util.ArrayList;
 
 public class PlayerEntity extends Entity{
-	
-	/** The speed at which the Player moves horizontally */
-	private float moveSpeed= 75;
-	
 	int anim=0;
 	
 	private Game game;
-	
-	/** The animation frames */
-	private Sprite[] frames= new Sprite[4];
-	
-	/** The time since the last frame change took place */
-	private long lastFrameChange;
 
-	/** The frame duration in milliseconds, i.e. how long any given frame of animation lasts */
-	private long frameDuration= 250;
-	 
-	/** The current frame of animation being displayed */
-	private int frameNumber;
-	
 	private boolean jumping=false;
 	
 	private boolean Left=false;
 	
 	private boolean Right=false;
 	
+	
 	public PlayerEntity(Game game, int x, int y){
-		super(game.getSprite("standingRight.gif"), x, y);
-		gravity=10;
+		super(game.getSprite("right1.gif"), x, y);
+		gravity=2;
 		this.game=game;
-	}
-
-	@Override
-	public void collidedWith(Entity other) {
-		// TODO Auto-generated method stub
-		
 	}
 	public void move(long delta) {
 		// update the location of the entity based on move speeds
 		x += (delta * dx) / 1000;
-		y += (delta * dy) / 1000;
+		dy+=gravity;
+		y += (delta * (dy)) / 1000;
 		update(delta);
 	}
 	
@@ -62,7 +42,11 @@ public class PlayerEntity extends Entity{
 	public void setRight(boolean right) {
 		Right = right;
 	}
-
+	
+	public void setJumping(boolean Jumping){
+		jumping=Jumping;
+	}
+	
 	public void update(long delta){
 		animate(delta);	
 		
@@ -72,52 +56,85 @@ public class PlayerEntity extends Entity{
 	}
 	public void animate(long delta){
 		anim+=delta;
-		if(dx==0&&Left&&!Right){
+		if(dx==0&&Left&&!Right&&!jumping){
 			sprite=game.getSprite("standingLeft.gif");
 		}
-		if(dx==0&&!Left&&Right){
+		if(dx==0&&!Left&&Right&&!jumping){
 			sprite=game.getSprite("standingRight.gif");
 		}
-		if(Left&&!Right&&(dx!=0)){
+		if(Left&&!Right&&(dx!=0)&&!jumping){
 			if(anim>=0){
-				sprite = game.getSprite("walkingLeft.gif");
+				sprite = game.getSprite("left1.gif");
 			}
-			if(anim>=300){
-				sprite = game.getSprite("runningLeft.gif");
+			if(anim>=80){
+				sprite = game.getSprite("left2.gif");
 			}
-			if(anim>=600){
-				sprite = game.getSprite("walkingLeft.gif");
+			if(anim>=160){
+				sprite = game.getSprite("left3.gif");
 			}
-			if(anim>=900){
-				sprite = game.getSprite("runningLeft.gif");
-				anim-=900;
+			if(anim>=240){
+				sprite = game.getSprite("left4.gif");
+			}
+			if(anim>=320){
+				sprite = game.getSprite("left5.gif");
+			}
+			if(anim>=400){
+				sprite = game.getSprite("left6.gif");
+			}
+			if(anim>=480){
+				sprite = game.getSprite("left7.gif");
+			}
+			if(anim>=570){
+				sprite = game.getSprite("left8.gif");
+			}
+			if(anim>=650){
+				sprite = game.getSprite("left9.gif");
+			}
+			if(anim>=730){
+				sprite = game.getSprite("left10.gif");
+				anim-=730;
 			}
 		}
-		if(!Left&&Right&&(dx!=0)){
+		if(!Left&&Right&&(dx!=0)&&!jumping){
 			if(anim>=0){
-				sprite = game.getSprite("walkingRight.gif");
+				sprite = game.getSprite("right1.gif");
 			}
-			if(anim>=50){
-				sprite = game.getSprite("runningRight.gif");
+			if(anim>=80){
+				sprite = game.getSprite("right2.gif");
 			}
-			if(anim>=100){
-				sprite = game.getSprite("walkingRight.gif");
+			if(anim>=160){
+				sprite = game.getSprite("right3.gif");
 			}
-			if(anim>=150){
-				sprite = game.getSprite("runningRight.gif");
-				anim-=150;
+			if(anim>=240){
+				sprite = game.getSprite("right4.gif");
+			}
+			if(anim>=320){
+				sprite = game.getSprite("right5.gif");
+			}
+			if(anim>=400){
+				sprite = game.getSprite("right6.gif");
+			}
+			if(anim>=480){
+				sprite = game.getSprite("right7.gif");
+			}
+			if(anim>=570){
+				sprite = game.getSprite("right8.gif");
+			}
+			if(anim>=650){
+				sprite = game.getSprite("right9.gif");
+			}
+			if(anim>=730){
+				sprite = game.getSprite("right10.gif");
+				anim-=730;
 			}
 		}
 	}
 	
-	
-	
-	/*Make this work with the block instead of the alien
-	public void collidedWithBlock(Entity other) {
+	public void collidedWith(Entity other) {
 		// if its an alien, notify the game that the player
 		// is dead
-		if (other instanceof AlienEntity) {
+		if (other instanceof BlockEntity) {
 			game.notifyDeath();
 		}
-	}*/
+	}
 }

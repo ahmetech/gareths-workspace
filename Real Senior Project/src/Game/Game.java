@@ -26,7 +26,7 @@ public class Game {
 	/** The entity representing the player */
 	private PlayerEntity player;
 	/** The speed at which the player's ship should move (pixels/sec) */
-	private float moveSpeed= 100;
+	private float moveSpeed= 150;
 	/** True if we're holding up game play until a key has been pressed */
 	private boolean waitingForKeyPress= false;
 	/** True if game logic needs to be applied this loop, normally as a result of a game event */
@@ -124,7 +124,7 @@ public class Game {
 
 		//get our sprites
 		//gotYou = getSprite("gotyou.gif");
-		pressAnyKey = getSprite("walkingLeft.gif");
+		//pressAnyKey = getSprite("walkingLeft.gif");
 		//youWin = getSprite("youwin.gif");
 		
 
@@ -323,7 +323,8 @@ public class Game {
 				player.setRight(true);
 			}
 			if (spacePressed) {
-				player.dy+=-100-player.gravity;
+				player.dy+=-15;
+				player.setJumping(true);
 			}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
