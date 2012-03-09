@@ -16,7 +16,7 @@ public class PlayerEntity extends Entity{
 	
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("right1.gif"), x, y);
-		gravity=2;
+		gravity=0;
 		this.game=game;
 	}
 	public void move(long delta) {
@@ -128,6 +128,42 @@ public class PlayerEntity extends Entity{
 				anim-=730;
 			}
 		}
+		if(jumping&&Right&&!Left){
+			if(anim>=0){
+				sprite=game.getSprite("jumpingRight1.gif");
+			}
+			if (anim>=80) {
+				sprite=game.getSprite("jumpingRight2.gif");
+			}
+			if (anim>=160) {
+				sprite=game.getSprite("jumpingRight3.gif");
+			}
+			if (anim>=240) {
+				sprite=game.getSprite("jumpingRight4.gif");
+			}
+			if (anim>=320) {
+				sprite=game.getSprite("jumpingRight5.gif");
+				anim-=320;
+			}
+		}
+		if(jumping&&!Right&&Left){
+			if(anim>=0){
+				sprite=game.getSprite("jumpingLeft1.gif");
+			}
+			if (anim>=80) {
+				sprite=game.getSprite("jumpingLeft2.gif");
+			}
+			if (anim>=160) {
+				sprite=game.getSprite("jumpingLeft3.gif");
+			}
+			if (anim>=240) {
+				sprite=game.getSprite("jumpingLeft4.gif");
+			}
+			if (anim>=320) {
+				sprite=game.getSprite("jumpingLeft5.gif");
+			}
+		}
+		
 	}
 	
 	public void collidedWith(Entity other) {

@@ -45,6 +45,8 @@ public class Game {
 	/** Is this an application or applet */
 	private static boolean isApplication;
 
+	private boolean justJumped=false;
+
 
 	//Might use these for the words
 	/** The message to display which waiting for a key press */
@@ -126,7 +128,7 @@ public class Game {
 		//gotYou = getSprite("gotyou.gif");
 		//pressAnyKey = getSprite("walkingLeft.gif");
 		//youWin = getSprite("youwin.gif");
-		
+
 
 		message = pressAnyKey;
 
@@ -168,7 +170,7 @@ public class Game {
 		entities.add(player);
 
 		// Add all of the blocks at a later time
-		
+
 	}
 
 	/**
@@ -253,7 +255,7 @@ public class Game {
 
 		// cycle round asking each entity to move itself
 		if (!waitingForKeyPress) {
-				player.move(delta);
+			player.move(delta);
 		}
 
 		// cycle round drawing all the entities we have in the game
@@ -305,27 +307,28 @@ public class Game {
 		// get mouse movement on x axis. We need to get it now, since
 		// we can only call getDX ONCE! - secondary calls will yield 0, since
 		// there haven't been any movement since last call.
-		
+
 		// we delegate input checking to submethod since we want to check
 		// for keyboard, mouse & controller
 		boolean leftPressed   = hasInput(Keyboard.KEY_LEFT);
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
-		
-			if ((leftPressed) && (!rightPressed)) {
-				player.setHorizontalMovement(-moveSpeed);
-				player.setLeft(true);
-				player.setRight(false);
-			} else if ((rightPressed) && (!leftPressed)) {
-				player.setHorizontalMovement(moveSpeed);
-				player.setLeft(false);
-				player.setRight(true);
-			}
-			if (spacePressed) {
-				player.dy+=-15;
-				player.setJumping(true);
-			}
+
+		if ((leftPressed) && (!rightPressed)) {
+			player.setHorizontalMovement(-moveSpeed);
+			player.setLeft(true);
+			player.setRight(false);
+		} else if ((rightPressed) && (!leftPressed)) {
+			player.setHorizontalMovement(moveSpeed);
+			player.setLeft(false);
+			player.setRight(true);
+		}
+		if (spacePressed) {
+			justJumped=true;
+			player.dy+=-15;
+			player.setJumping(true);
+		}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
 			Game.gameRunning = false;
@@ -347,18 +350,21 @@ public class Game {
 			Keyboard.isKeyDown(Keyboard.KEY_RIGHT);
 
 		case Keyboard.KEY_SPACE:
-			return
-			Keyboard.isKeyDown(Keyboard.KEY_SPACE);
+			if(!justJumped){
+				justJumped=false;
+				return
+				Keyboard.isKeyDown(Keyboard.KEY_SPACE);
+			}
 		}
 		return false;
 	}
-	
 
-	
+
+
 	public void execute() {
 		gameLoop();
 	}
-	
+
 	public Sprite getSprite(String ref) {
 
 		return new Sprite(textureLoader, ref);
