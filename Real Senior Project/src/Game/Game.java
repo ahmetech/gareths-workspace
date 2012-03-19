@@ -10,6 +10,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import static org.lwjgl.opengl.GL11.*;
 
 
@@ -23,6 +25,8 @@ public class Game {
 	private ArrayList<Entity> entities= new ArrayList<Entity>();
 	/** The list of entities that need to be removed from the game this loop */
 	private ArrayList<Entity> removeList= new ArrayList<Entity>();
+	
+	private ArrayList<BlockEntity> blocks=new ArrayList<BlockEntity>();
 	/** The entity representing the player */
 	private PlayerEntity player;
 	/** The speed at which the player's ship should move (pixels/sec) */
@@ -169,8 +173,10 @@ public class Game {
 		player = new PlayerEntity(this, 370, 500);
 		entities.add(player);
 		entities.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
+		entities.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
 		// Add all of the blocks at a later time
-
+		blocks.add((BlockEntity) entities.get(1));
+		blocks.add((BlockEntity) entities.get(2));
 	}
 
 	/**
@@ -255,7 +261,7 @@ public class Game {
 
 		// cycle round asking each entity to move itself
 		if (!waitingForKeyPress) {
-			player.move(delta);
+			player.move(delta, blocks);
 		}
 
 		// cycle round drawing all the entities we have in the game
@@ -266,6 +272,7 @@ public class Game {
 		// brute force collisions, compare every entity against
 		// every other entity. If any of them collide notify
 		// both entities that the collision has occured
+		/*
 		for (int p = 0; p < entities.size(); p++) {
 			for (int s = p + 1; s < entities.size(); s++) {
 				Entity me = entities.get(p);
@@ -276,7 +283,7 @@ public class Game {
 					him.collidedWith(me);
 				}
 			}
-		}
+		}*/
 
 		// remove any entity that has been marked for clear up
 		entities.removeAll(removeList);
@@ -322,7 +329,6 @@ public class Game {
 			player.setRight(true);
 		}
 		if (spacePressed) {
-			player.dy+=-30;
 			player.setJumping(true);
 		}
 		else {

@@ -9,22 +9,24 @@ public class PlayerEntity extends Entity{
 
 	private boolean jumping=false;
 	
+	boolean falling=false;
+	
 	private boolean Left=false;
 	
 	private boolean Right=false;
 	
+	double jump=100;
 	
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=0;
+		gravity=1;
 		this.game=game;
 	}
-	public void move(long delta) {
+	public void move(long delta, ArrayList<BlockEntity> blocks) {
 		// update the location of the entity based on move speeds
-		x += (delta * dx) / 1000;
-		dy+=gravity;
-		y += (delta * (dy)) / 1000;
-		update(delta);
+		//x += (delta * dx) / 1000;
+		//y += (delta * (dy)) / 1000;
+		update(delta, blocks);
 	}
 	
 	public boolean isLeft() {
@@ -47,12 +49,54 @@ public class PlayerEntity extends Entity{
 		jumping=Jumping;
 	}
 	
-	public void update(long delta){
+	public void update(long delta, ArrayList<BlockEntity> blocks){
+		if(Left==true){
+			if(!checkCollisions(blocks, "l", delta))x+=((delta*dx)/1000);
+
+		}
+		else if(Right==true){
+			if(!checkCollisions(blocks, "r", delta))x+=((delta*dx)/1000);
+
+		}
+		
+		if(!checkCollisions(blocks,"d",delta)){
+			falling=true;
+			dy-=(delta*gravity/10000);
+			if(dy<0){
+				for(double i = 0;i>dy;i-=.01){
+					if(!checkCollisions(blocks,"d",delta)){
+						dy+=gravity;
+						y+=((delta*dy)/1000);
+						System.out.println("Got here");
+					}else{
+						dy-=gravity;
+						dy=0;
+						y+=((delta*dy)/1000);
+						falling=false;
+					}
+				}
+			}else{
+				for(double i = 0;i<dy;i+=.01){
+					if(!checkCollisions(blocks,"u",delta)){
+						dy-=gravity;
+						y+=((delta*dy)/1000);
+					}else{
+						dy+=gravity;
+						dy=0;
+						y+=((delta*dy)/1000);
+					}
+					
+				}
+			}
+		}
+		if(!falling){
+			if(jumping){
+				dy+=4;
+			}
+		}
+		
+		
 		animate(delta);	
-		
-		
-		
-		
 	}
 	public void animate(long delta){
 		anim+=delta;
@@ -166,11 +210,28 @@ public class PlayerEntity extends Entity{
 		
 	}
 	
-	public boolean collidedWith(Entity other) {
-		// if its an alien, notify the game that the player
-		// is dead
-		if (other instanceof BlockEntity) {
-			
+	public boolean checkCollisions(ArrayList<BlockEntity> blocks, String d, long delta){
+		for (BlockEntity tempEntity : blocks) {
+			if(collides(tempEntity, d, delta))return true;
 		}
+		return false;
 	}
+	
+	public boolean collides(BlockEntity other, String d, long delta){
+		//s = self -> unchanged position in check
+		if(d.equals("l"))hitbox.setBounds((int) ((int) x-((delta * dx) / 1000)), ((int) y), (int) sprite.getWidth(), (int) sprite.getHeight());
+		if(d.equals("r"))hitbox.setBounds((int) ((int) x+((delta * dx) / 1000)), ((int) y), (int) sprite.getWidth(), (int) sprite.getHeight());
+		
+
+		if(d.equals("u"))hitbox.setBounds((int) x, (int) ((int) y-((delta*dy)/1000)), (int) sprite.getWidth(), (int) sprite.getHeight());
+		if(d.equals("d"))hitbox.setBounds((int) x, (int) ((int) y+((delta*dy)/1000)), (int) sprite.getWidth(), (int) sprite.getHeight());
+		
+		return hitbox.intersects(other.getX(),other.getY(),other.sprite.getWidth(),other.sprite.getHeight());
+	}
+	@Override
+	public void collidedWith(Entity other) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

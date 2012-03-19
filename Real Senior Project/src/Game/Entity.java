@@ -29,13 +29,12 @@ public abstract class Entity {
 	/** The current speed of this entity vertically (pixels/sec) */
 	protected float	dy;
 	
+	
 	protected float gravity;
 
 	/** The rectangle used for this entity during collisions  resolution */
-	private Rectangle	me	= new Rectangle();
+	protected Rectangle	hitbox	= new Rectangle();
 
-	/** The rectangle used for other entities during collision resolution */
-	private Rectangle	him	= new Rectangle();
 
 	/**
 	 * Construct a entity based on a sprite image and a location.
@@ -128,18 +127,20 @@ public abstract class Entity {
 	 * @param other The other entity to check collision against
 	 * @return True if the entities collide with each other
 	 */
+	/*
 	public boolean collidesWith(Entity other) {
 		me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
 		him.setBounds((int) other.x, (int) other.y, other.sprite.getWidth(), other.sprite.getHeight());
 
 		return me.intersects(him);
+	}*/
+
+	public boolean intersects(Entity other) {
+		hitbox.setBounds((int) this.x, (int) this.y, (int) sprite.getWidth(), (int) sprite.getHeight());
+		
+		return hitbox.intersects(other.getX(),other.getY(),other.sprite.getWidth(),other.sprite.getHeight());
 	}
-
-	/**
-	 * Notification that this entity collided with another.
-	 *
-	 * @param other The entity with which this entity collided.
-	 */
+	
 	public abstract void collidedWith(Entity other);
-
+	
 }
