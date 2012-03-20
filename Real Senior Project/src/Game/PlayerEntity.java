@@ -4,22 +4,22 @@ import java.util.ArrayList;
 
 public class PlayerEntity extends Entity{
 	int anim=0;
-	
+
 	private Game game;
 
 	private boolean jumping=false;
-	
+
 	boolean falling=false;
-	
+
 	private boolean Left=false;
-	
+
 	private boolean Right=false;
-	
+
 	double jump=100;
-	
+
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=1;
+		gravity=0;
 		this.game=game;
 	}
 	public void move(long delta, ArrayList<BlockEntity> blocks) {
@@ -28,7 +28,7 @@ public class PlayerEntity extends Entity{
 		//y += (delta * (dy)) / 1000;
 		update(delta, blocks);
 	}
-	
+
 	public boolean isLeft() {
 		return Left;
 	}
@@ -44,21 +44,29 @@ public class PlayerEntity extends Entity{
 	public void setRight(boolean right) {
 		Right = right;
 	}
-	
+
 	public void setJumping(boolean Jumping){
 		jumping=Jumping;
 	}
-	
+
 	public void update(long delta, ArrayList<BlockEntity> blocks){
 		if(Left==true){
+
 			if(!checkCollisions(blocks, "l", delta))x+=((delta*dx)/1000);
+			else {
+				x+=4;
+			}
 
 		}
-		else if(Right==true){
+		if(Right==true){
+
 			if(!checkCollisions(blocks, "r", delta))x+=((delta*dx)/1000);
+			else {
+				x-=4;
+			}
 
 		}
-		
+
 		if(!checkCollisions(blocks,"d",delta)){
 			falling=true;
 			dy-=(delta*gravity/10000);
@@ -85,17 +93,18 @@ public class PlayerEntity extends Entity{
 						dy=0;
 						y+=((delta*dy)/1000);
 					}
-					
+
 				}
 			}
 		}
 		if(!falling){
 			if(jumping){
-				dy+=4;
+				System.out.println("Got here");
+				dy+=30;
 			}
 		}
-		
-		
+
+
 		animate(delta);	
 	}
 	public void animate(long delta){
@@ -207,31 +216,31 @@ public class PlayerEntity extends Entity{
 				sprite=game.getSprite("Player/jumpingLeft5.gif");
 			}
 		}
-		
+
 	}
-	
+
 	public boolean checkCollisions(ArrayList<BlockEntity> blocks, String d, long delta){
 		for (BlockEntity tempEntity : blocks) {
 			if(collides(tempEntity, d, delta))return true;
 		}
 		return false;
 	}
-	
+
 	public boolean collides(BlockEntity other, String d, long delta){
 		//s = self -> unchanged position in check
-		if(d.equals("l"))hitbox.setBounds((int) ((int) x-((delta * dx) / 1000)), ((int) y), (int) sprite.getWidth(), (int) sprite.getHeight());
-		if(d.equals("r"))hitbox.setBounds((int) ((int) x+((delta * dx) / 1000)), ((int) y), (int) sprite.getWidth(), (int) sprite.getHeight());
-		
+		if(d.equals("l"))hitbox.setBounds((int) (x-((dx*delta)/1000)), (int) y, 44, 55);
+		if(d.equals("r"))hitbox.setBounds((int) (x+((dx*delta)/1000)), (int) y, 44, 55);
 
-		if(d.equals("u"))hitbox.setBounds((int) x, (int) ((int) y-((delta*dy)/1000)), (int) sprite.getWidth(), (int) sprite.getHeight());
-		if(d.equals("d"))hitbox.setBounds((int) x, (int) ((int) y+((delta*dy)/1000)), (int) sprite.getWidth(), (int) sprite.getHeight());
-		
+
+		if(d.equals("u"))hitbox.setBounds((int) x, (int) (y-((delta*dy)/1000)), 44, 55);
+		if(d.equals("d"))hitbox.setBounds((int) x, (int) (y+((delta*dy)/1000)), 44, 55);
+
 		return hitbox.intersects(other.getX(),other.getY(),other.sprite.getWidth(),other.sprite.getHeight());
 	}
 	@Override
 	public void collidedWith(Entity other) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 }

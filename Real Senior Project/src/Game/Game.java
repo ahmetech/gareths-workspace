@@ -172,11 +172,13 @@ public class Game {
 		// create the player ship and place it roughly in the center of the screen
 		player = new PlayerEntity(this, 370, 500);
 		entities.add(player);
-		entities.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
-		entities.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
+		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
+		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
+		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 402, 500));
 		// Add all of the blocks at a later time
-		blocks.add((BlockEntity) entities.get(1));
-		blocks.add((BlockEntity) entities.get(2));
+		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
+		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
+		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 450, 500));
 	}
 
 	/**
@@ -267,6 +269,9 @@ public class Game {
 		// cycle round drawing all the entities we have in the game
 		for ( Entity entity : entities ) {
 			entity.draw();
+		}
+		for(BlockEntity block: blocks){
+			block.draw();
 		}
 
 		// brute force collisions, compare every entity against
