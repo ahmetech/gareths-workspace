@@ -11,6 +11,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.sun.xml.internal.ws.message.source.PayloadSourceMessage;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -325,16 +326,17 @@ public class Game {
 
 
 		if ((leftPressed) && (!rightPressed)) {
-			player.setHorizontalMovement(-moveSpeed);
+			player.setHorizontalMovement(-150);
 			player.setLeft(true);
 			player.setRight(false);
 		} else if ((rightPressed) && (!leftPressed)) {
-			player.setHorizontalMovement(moveSpeed);
+			player.setHorizontalMovement(150);
 			player.setLeft(false);
 			player.setRight(true);
 		}
 		if (spacePressed) {
 			player.setJumping(true);
+			player.setVerticalMovement(-40);
 		}
 		else {
 			if (!spacePressed) {
