@@ -173,13 +173,12 @@ public class Game {
 		// create the player ship and place it roughly in the center of the screen
 		player = new PlayerEntity(this, 370, 500);
 		entities.add(player);
-		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
-		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
-		//entities.add(new BlockEntity(this, "Blocks/floor1.gif", 402, 500));
-		// Add all of the blocks at a later time
-		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
-		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 338, 560));
-		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 450, 500));
+		for(int i=0; i<1280; i+=32){
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 560));
+		}
+		for (int i = 0; i > 5; i++) {
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 320+(i*32), 480));
+		}
 	}
 
 	/**
@@ -336,7 +335,9 @@ public class Game {
 		}
 		if (spacePressed) {
 			player.setJumping(true);
-			player.setVerticalMovement(-40);
+			for (int i = 0; i < 5; i++) {
+				player.dy+=-i;
+			}
 		}
 		else {
 			if (!spacePressed) {

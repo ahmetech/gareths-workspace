@@ -13,7 +13,7 @@ public class PlayerEntity extends Entity{
 
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=0;
+		gravity=2;
 		this.game=game;
 	}
 	public void move(long delta, ArrayList<BlockEntity> blocks) {
@@ -34,7 +34,8 @@ public class PlayerEntity extends Entity{
 	public void setGrounded(boolean grounded) {this.grounded = grounded;}
 	
 	public void update(long delta, ArrayList<BlockEntity> blocks){
-			if(Left==true){
+		System.out.println(dx);	
+		if(Left==true){
 				if(!checkCollisions(blocks, "l", delta))	x+=((delta*dx)/1000);
 				else x+=1;
 			}
@@ -46,6 +47,7 @@ public class PlayerEntity extends Entity{
 			if(!checkCollisions(blocks,"d",delta)){
 				dy+=gravity;
 				if(dy<0){
+					for(int i=0; i<dy; i++){
 						if(!checkCollisions(blocks,"d",delta)){
 							dy+=gravity;
 							y+=((delta*dy)/1000);
@@ -56,6 +58,7 @@ public class PlayerEntity extends Entity{
 							jumping=false;
 							grounded=true;
 						}
+					}
 				}else{
 					if(!checkCollisions(blocks,"u",delta)){
 						dy+=gravity;
@@ -142,12 +145,12 @@ public class PlayerEntity extends Entity{
 
 	public boolean collides(BlockEntity other, String d, long delta){
 		//s = self -> unchanged position in check
-		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) getY(), 44, 55);
-		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) getY(), 44, 55);
+		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
+		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
 
 
-		if(d.equals("u"))hitbox.setBounds((int) getX(), (int) (getY()-((delta*dy)/1000)), 44, 55);
-		if(d.equals("d"))hitbox.setBounds((int) getX(), (int) (getY()+((delta*dy)/1000)), 44, 55);
+		if(d.equals("u"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
+		if(d.equals("d"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()+((delta*dy)/1000)), 44, 55);
 
 		return hitbox.intersects(other.getX(),other.getY(),32,32);
 	}
