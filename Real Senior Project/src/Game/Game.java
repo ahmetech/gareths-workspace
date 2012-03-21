@@ -176,9 +176,7 @@ public class Game {
 		for(int i=0; i<1280; i+=32){
 			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 560));
 		}
-		for (int i = 0; i > 5; i++) {
-			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 320+(i*32), 480));
-		}
+		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
 	}
 
 	/**
@@ -324,29 +322,20 @@ public class Game {
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
 
-		if ((leftPressed) && (!rightPressed)) {
-			player.setHorizontalMovement(-150);
-			player.setLeft(true);
-			player.setRight(false);
-		} else if ((rightPressed) && (!leftPressed)) {
-			player.setHorizontalMovement(150);
-			player.setLeft(false);
-			player.setRight(true);
-		}
-		if (spacePressed) {
-			player.setJumping(true);
-			for (int i = 0; i < 5; i++) {
-				player.dy+=-i;
-			}
-		}
-		else {
+		if (leftPressed) {player.setHorizontalMovement(-150);  player.setLeft(true); player.lastLook=false;} 
+			else player.setLeft(false);
+		if (rightPressed) {player.setHorizontalMovement(150); player.setRight(true); player.lastLook=true;}
+		 	else player.setRight(false);
+		if (spacePressed) {player.setJumping(true);  player.dy+=-20;}
+			else {player.setJumping(false);}
+			/*{
 			if (!spacePressed) {
 				jumpHasBeenReleased=true;
 			}
 			if (spacePressed && jumpHasBeenReleased) {
 				jumpHasBeenReleased=false;
 			}
-		}
+		}*/
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
 			Game.gameRunning = false;
