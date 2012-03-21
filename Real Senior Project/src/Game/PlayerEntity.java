@@ -10,10 +10,12 @@ public class PlayerEntity extends Entity{
 	private boolean Left=false;
 	private boolean Right=false;
 	private boolean grounded=true;
+	double vspeed=0;
+	protected boolean lastLook=true;
 
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=2;
+		gravity=0;
 		this.game=game;
 	}
 	public void move(long delta, ArrayList<BlockEntity> blocks) {
@@ -32,52 +34,52 @@ public class PlayerEntity extends Entity{
 	public void setJumping(boolean Jumping){jumping=Jumping;}
 	public boolean isGrounded() {return grounded;}
 	public void setGrounded(boolean grounded) {this.grounded = grounded;}
-	
-	public void update(long delta, ArrayList<BlockEntity> blocks){
-		System.out.println(dx);	
-		if(Left==true){
-				if(!checkCollisions(blocks, "l", delta))	x+=((delta*dx)/1000);
-				else x+=1;
-			}
-			if(Right==true){
-				if(!checkCollisions(blocks, "r", delta))	x+=((delta*dx)/1000);
-				else	x-=1;
-			}
 
-			if(!checkCollisions(blocks,"d",delta)){
-				dy+=gravity;
-				if(dy<0){
-					for(int i=0; i<dy; i++){
-						if(!checkCollisions(blocks,"d",delta)){
-							dy+=gravity;
-							y+=((delta*dy)/1000);
-						}else{
-							dy-=gravity;
-							dy=0;
-							y+=((delta*dy)/1000);
-							jumping=false;
-							grounded=true;
-						}
-					}
-				}else{
-					if(!checkCollisions(blocks,"u",delta)){
-						dy+=gravity;
-						y+=((delta*dy)/1000);
+	public void update(long delta, ArrayList<BlockEntity> blocks){
+		x += (delta * dx) / 1000;
+		y += (delta * (dy-gravity))/1000;
+		System.out.println(dy);
+		if(Left==true){
+			if(!checkCollisions(blocks, "l", delta))	x=(float) (x-(delta*.1));
+		}
+		if(Right==true){
+			if(!checkCollisions(blocks, "r", delta))	x=(float) (x+(delta*.1));
+		}
+
+		if(!checkCollisions(blocks,"d",delta)){
+			falling=true;
+			vspeed-=gravity;
+			if(vspeed<0){
+				for(double i = 0;i>vspeed;i-=1){
+					if(!checkCollisions(blocks,"d",delta)){
+						y+=2;
 					}else{
-						dy+=gravity;
-						dy=0;
-						y+=((delta*dy)/1000);
+						y-=2;
+						vspeed=0;
+						falling=false;
+						jumping=false;
+						grounded=true;
+					}
+				}
+			}else{
+				for(double i = 0;i>vspeed;i+=1){
+					if(!checkCollisions(blocks,"u",delta)){
+						y-=2;
+					}else{
+						y+=2;
+						vspeed=0;
 					}
 				}
 			}
-		
+		}
+
 
 		animate(delta);	
 	}
 	public void animate(long delta){
 		anim+=delta;
-		if(dx==0&&Left&&!Right)	sprite=game.getSprite("Player/standingLeft.gif");
-		if(dx==0&&!Left&&Right)	sprite=game.getSprite("Player/standingRight.gif");
+		if(!lastLook&&Left&&!Right)	sprite=game.getSprite("Player/standingLeft.gif");
+		if(lastLook&&!Left&&Right)	sprite=game.getSprite("Player/standingRight.gif");
 		if(Left&&!Right&&(dx!=0)&&!jumping){
 			if(anim>=0)		sprite = game.getSprite("Player/left1.gif");
 			if(anim>=80)	sprite = game.getSprite("Player/left2.gif");
