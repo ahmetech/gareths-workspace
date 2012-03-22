@@ -15,7 +15,7 @@ public class PlayerEntity extends Entity{
 
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=0;
+		gravity=1;
 		this.game=game;
 	}
 	public void move(long delta, ArrayList<BlockEntity> blocks) {
@@ -38,48 +38,42 @@ public class PlayerEntity extends Entity{
 	public void update(long delta, ArrayList<BlockEntity> blocks){
 		x += (delta * dx) / 1000;
 		y += (delta * (dy-gravity))/1000;
-		System.out.println(dy);
+		float blah=(delta * (dy))/1000;
+		System.out.println(blah);
 		if(Left==true){
-			if(!checkCollisions(blocks, "l", delta))	x=(float) (x-(delta*.1));
+			if(!checkCollisions(blocks, "l", delta)) x+=.1;
 		}
 		if(Right==true){
-			if(!checkCollisions(blocks, "r", delta))	x=(float) (x+(delta*.1));
+			if(!checkCollisions(blocks, "r", delta)) x-=.1;
 		}
 
 		if(!checkCollisions(blocks,"d",delta)){
-			falling=true;
 			vspeed-=gravity;
 			if(vspeed<0){
-				for(double i = 0;i>vspeed;i-=1){
-					if(!checkCollisions(blocks,"d",delta)){
-						y+=2;
-					}else{
-						y-=2;
-						vspeed=0;
-						falling=false;
-						jumping=false;
-						grounded=true;
-					}
+
+				if(!checkCollisions(blocks,"d",1)){
+					y+=1;
+				}else{
+					y-=.1;
+					vspeed=0;
 				}
 			}else{
-				for(double i = 0;i>vspeed;i+=1){
-					if(!checkCollisions(blocks,"u",delta)){
-						y-=2;
-					}else{
-						y+=2;
-						vspeed=0;
-					}
+
+				if(!checkCollisions(blocks,"u",delta)){
+					System.out.println("true");
+					y-=.1;
+				}else{
+					y+=1;
+					vspeed=0;
 				}
 			}
 		}
-
-
 		animate(delta);	
 	}
 	public void animate(long delta){
 		anim+=delta;
-		if(!lastLook&&Left&&!Right)	sprite=game.getSprite("Player/standingLeft.gif");
-		if(lastLook&&!Left&&Right)	sprite=game.getSprite("Player/standingRight.gif");
+		if(!lastLook&&(dx==0)&&!jumping)	{sprite=game.getSprite("Player/standingLeft.gif"); anim=0;}
+		if(lastLook&&(dx==0)&&!jumping)	{sprite=game.getSprite("Player/standingRight.gif"); anim=0;}
 		if(Left&&!Right&&(dx!=0)&&!jumping){
 			if(anim>=0)		sprite = game.getSprite("Player/left1.gif");
 			if(anim>=80)	sprite = game.getSprite("Player/left2.gif");
@@ -110,28 +104,28 @@ public class PlayerEntity extends Entity{
 				anim-=730;
 			}
 		}
-		if(jumping&&Right&&!Left){
+		if(jumping&&lastLook){
 			if(anim>=0)		sprite=game.getSprite("Player/jumpingRight1.gif");
-			if (anim>=100)	sprite=game.getSprite("Player/jumpingRight2.gif");
-			if (anim>=200) 	sprite=game.getSprite("Player/jumpingRight3.gif");
-			if (anim>=300)	sprite=game.getSprite("Player/jumpingRight4.gif");
-			if (anim>=400) {
+			if (anim>=150)	sprite=game.getSprite("Player/jumpingRight2.gif");
+			if (anim>=300) 	sprite=game.getSprite("Player/jumpingRight3.gif");
+			if (anim>=450)	sprite=game.getSprite("Player/jumpingRight4.gif");
+			if (anim>=600) {
 				sprite=game.getSprite("Player/jumpingRight5.gif");
 				while(!grounded){
-					anim-=400;
+					anim-=600;
 					jumping=false;
 				}
 			}
 		}
-		if(jumping&&!Right&&Left){
+		if(jumping&&!lastLook){
 			if(anim>=0)		sprite=game.getSprite("Player/jumpingLeft1.gif");
-			if (anim>=100)	sprite=game.getSprite("Player/jumpingLeft2.gif");
-			if (anim>=200) 	sprite=game.getSprite("Player/jumpingLeft3.gif");
-			if (anim>=300)	sprite=game.getSprite("Player/jumpingLeft4.gif");
-			if (anim>=400) {
+			if (anim>=150)	sprite=game.getSprite("Player/jumpingLeft2.gif");
+			if (anim>=300) 	sprite=game.getSprite("Player/jumpingLeft3.gif");
+			if (anim>=450)	sprite=game.getSprite("Player/jumpingLeft4.gif");
+			if (anim>=600) {
 				sprite=game.getSprite("Player/jumpingLeft5.gif");
 				while(!grounded){
-					anim-=400;
+					anim-=600;
 					jumping=false;
 				}
 			}
