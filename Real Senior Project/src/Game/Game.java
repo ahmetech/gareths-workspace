@@ -171,12 +171,12 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		player = new PlayerEntity(this, 370, 500);
+		player = new PlayerEntity(this, 370, 520);
 		entities.add(player);
 		for(int i=0; i<1280; i+=32){
-			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 560));
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 560, 460));
 		}
-		blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 560));
 	}
 
 	/**
@@ -321,13 +321,12 @@ public class Game {
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
-
-		if (leftPressed) {player.setHorizontalMovement(-150);  player.setLeft(true); player.lastLook=false;} 
+		if (leftPressed) {player.setHorizontalMovement(-200);  player.setLeft(true); player.lastLook=false;} 
 			else player.setLeft(false);
-		if (rightPressed) {player.setHorizontalMovement(150); player.setRight(true); player.lastLook=true;}
+		if (rightPressed) {player.setHorizontalMovement(200); player.setRight(true); player.lastLook=true;}
 		 	else player.setRight(false);
-		if (spacePressed) {player.setJumping(true);  player.dy+=-20;}
-			else {player.setJumping(false);}
+		if (spacePressed) {player.setJumping(true);  player.setVerticalMovement(-150);}
+			else {player.setJumping(false); player.setVerticalMovement(0);}
 			/*{
 			if (!spacePressed) {
 				jumpHasBeenReleased=true;
