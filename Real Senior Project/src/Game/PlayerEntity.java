@@ -11,6 +11,7 @@ public class PlayerEntity extends Entity{
 	private boolean Right=false;
 	private boolean grounded=true;
 	double vspeed=0;
+	float changeInDy=0;
 	protected boolean lastLook=true;
 
 	public PlayerEntity(Game game, int x, int y){
@@ -37,9 +38,8 @@ public class PlayerEntity extends Entity{
 
 	public void update(long delta, ArrayList<BlockEntity> blocks){
 		x += (delta * dx) / 1000;
-		y += (delta * (dy-gravity))/1000;
-		float blah=(delta * (dy))/1000;
-		System.out.println(blah);
+		dy=dy+gravity;
+		y += (delta * dy)/1000;
 		if(Left==true){
 			if(!checkCollisions(blocks, "l", delta)) x+=.1;
 		}
@@ -50,11 +50,11 @@ public class PlayerEntity extends Entity{
 		if(!checkCollisions(blocks,"d",delta)){
 			vspeed-=gravity;
 			if(vspeed<0){
-
 				if(!checkCollisions(blocks,"d",1)){
 					y+=1;
 				}else{
-					y-=.1;
+					grounded=true;
+					y-=3;
 					vspeed=0;
 				}
 			}else{
@@ -70,6 +70,10 @@ public class PlayerEntity extends Entity{
 		}
 		animate(delta);	
 	}
+	public void setVerticalMovement(float changeInDy, float gravity){
+		dy=(dy+changeInDy);
+	}
+	
 	public void animate(long delta){
 		anim+=delta;
 		if(!lastLook&&(dx==0)&&!jumping)	{sprite=game.getSprite("Player/standingLeft.gif"); anim=0;}
@@ -147,7 +151,7 @@ public class PlayerEntity extends Entity{
 
 		if(d.equals("u"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
 		if(d.equals("d"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()+((delta*dy)/1000)), 44, 55);
-
+		System.out.println((int) (getX()+((dx*delta)/1000))+" "+(int) (getY()+((delta*dy)/1000))+", "+other.getX()+" "+other.getY());
 		return hitbox.intersects(other.getX(),other.getY(),32,32);
 	}
 	@Override
