@@ -12,13 +12,7 @@ public class Square {
 		int magicConstant=findMagicConstant(n);
 		if(n%2==0)square=even(square, numbersList, magicConstant);
 		else square=odd(square, numbersList, magicConstant, n);
-		for (int i = 0; i < square.length; i++) {
-			System.out.println("");
-			for (int j = 0; j < square.length; j++) {
-				System.out.print(square[i][j]);
-				System.out.print(" ");
-			}
-		}
+		check(square, magicConstant, n);
 	}
 	
 	public static ArrayList<Integer> getNumbers(int n){
@@ -35,17 +29,19 @@ public class Square {
 	public static int[][] odd(int[][] square, ArrayList<Integer> numbersList, int magicConstant, int n){
 		int lastNumber=numbersList.remove(0);
 		square[0][square.length/2]=lastNumber;
-		String lastSpot=findLastSpot(square, lastNumber);
+		int[] spot=findLastSpot(square, lastNumber);
+
 		while (numbersList.size()!=0) {
-			int coor1=Integer.valueOf(lastSpot.substring(0,1));
-			int coor2=Integer.valueOf(lastSpot.substring(1,2));
+			int coor1=spot[0];
+			int coor2=spot[1];
 			lastNumber=numbersList.remove(0);
 			int tempCoor1=findUpMove(coor1, n);
 			int tempCoor2=findRightMove(coor2, n);
 			if(checkNormal(square, tempCoor1, tempCoor2)){
 				square[tempCoor1][tempCoor2]=lastNumber;
-				lastSpot=Integer.toString(tempCoor1)+Integer.toString(tempCoor2);
-			}else lastSpot=placeDown(coor1, coor2, square, lastNumber, n);
+				spot[0]=tempCoor1;
+				spot[1]=tempCoor2;
+			}else spot=placeDown(coor1, coor2, square, lastNumber, n);
 		}
 		return square;
 	}
@@ -67,25 +63,28 @@ public class Square {
 		}return false;
 	}
 	
-	public static String placeDown(int coor1, int coor2, int[][] square, int lastNumber, int n){
-		String spot="";
+	public static int[] placeDown(int coor1, int coor2, int[][] square, int lastNumber, int n){
+		int[] spot=new int[2];
 		if(coor1+1<n&&coor2<n){
 			square[coor1+1][coor2]=lastNumber;
-			spot=Integer.toString(coor1+1)+Integer.toString(coor2);
+			spot[0]=coor1+1;
+			spot[1]=coor2;
 			return spot;
 		}else {
 			square[0][coor2]=lastNumber;
-			spot=Integer.toString(0)+Integer.toString(coor2);
+			spot[0]=0;
+			spot[1]=coor2;
 			return spot;
 		}
 	}
 	
-	public static String findLastSpot(int[][] square, int lastNumber){
-		String spot="";
+	public static int[] findLastSpot(int[][] square, int lastNumber){
+		int[] spot=new int[2];
 		for (int i = 0; i < square.length; i++) {
 			for (int j = 0; j < square.length; j++) {
 				if(square[i][j]==lastNumber){
-					spot=Integer.toString(i)+Integer.toString(j);
+					spot[0]=i;
+					spot[1]=j;
 					return spot;
 				}
 			}
@@ -93,10 +92,74 @@ public class Square {
 		return spot;
 	}
 	
-	public static int[][] even(int[][] square, ArrayList<Integer> numbersList, int magicConstant){
-		
+	public static int[][] even(int[][] square, ArrayList<Integer> numbersList, int n){
+		int[][]tempSquare=fillBox(square, numbersList);
 		
 		return square;
+	}
+	
+	public static int[][] fillBox(int[][]square, ArrayList<Integer> numbersList){
+		int[][] box=square;
+		ArrayList<Integer> temp=numbersList;
+		for (int i = 0; i < box.length; i++) {
+			for (int j = 0; j < box.length; j++) {
+				box[i][j]=temp.remove(0);
+			}
+		}
+		return box;
+	}
+	
+	public static void check(int[][] square, int magicConstant, int n){
+		int sum;
+		//check rows
+		for (int i = 0; i < square.length; i++) {
+			sum=0;
+			for (int j = 0; j < square.length; j++) {
+				sum+=square[i][j];
+			}
+			if(sum==magicConstant){
+				System.out.println("Checked Row");
+			}else System.out.println("Failed Row");
+		}
+		//check columns
+		for (int i = 0; i < square.length; i++) {
+			sum=0;
+			for (int j = 0; j < square.length; j++) {
+				sum+=square[j][i];
+			}
+			if(sum==magicConstant){
+				System.out.println("Checked Column");
+			}else System.out.println("Failed Column");
+		}
+		//check diagnols
+		//right
+		sum=0;
+		for (int i = 0; i < square.length; i++) {
+			sum+=square[i][i];
+		}
+		if(sum==magicConstant){
+			System.out.println("Checked RDiagnol");
+		}else System.out.println("Failed RDiagnol");
+		//left
+		sum=0;
+		for (int i = 0; i < square.length; i++) {
+				sum+=square[i][n-1-i];
+		}
+		if(sum==magicConstant){
+			System.out.println("Checked LDiagnol");
+		}else System.out.println("Failed LDiagnol");
+		
+	
+	}
+	
+	public static void printTheSquare(int[][] square){
+		for (int i = 0; i < square.length; i++) {
+			System.out.println("");
+			for (int j = 0; j < square.length; j++) {
+				System.out.print(square[i][j]);
+				System.out.print("     ");
+			}
+		}
 	}
 
 
