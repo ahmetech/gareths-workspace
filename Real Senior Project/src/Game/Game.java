@@ -174,8 +174,8 @@ public class Game {
 		player = new PlayerEntity(this, 370, 520);
 		entities.add(player);
 		for(int i=0; i<1280; i+=32){
-			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
-			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 560, 460));
+			//blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 580));
 		}
 	}
 
@@ -325,16 +325,19 @@ public class Game {
 			else player.setLeft(false);
 		if (rightPressed) {player.setHorizontalMovement(200); player.setRight(true); player.lastLook=true;}
 		 	else player.setRight(false);
-		if (spacePressed) {player.setJumping(true);  player.setVerticalMovement(-150);}
-			else {player.setJumping(false); player.setVerticalMovement(0);}
-			/*{
+		if (spacePressed) {player.setGrounded(false);}
+			{
 			if (!spacePressed) {
+				player.changeInDy=0;
 				jumpHasBeenReleased=true;
 			}
 			if (spacePressed && jumpHasBeenReleased) {
+				player.changeInDy=-250;
+				player.setVerticalMovement(player.changeInDy, player.gravity); 
+				System.out.println("here");
 				jumpHasBeenReleased=false;
 			}
-		}*/
+		}
 		// if escape has been pressed, stop the game
 		if ((Display.isCloseRequested() || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) && isApplication) {
 			Game.gameRunning = false;
