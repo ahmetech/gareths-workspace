@@ -10,7 +10,7 @@ public class PlayerEntity extends Entity{
 	private boolean Left=false;
 	private boolean Right=false;
 	private boolean grounded=true;
-	double vspeed=0;
+	float vspeed=0;
 	float changeInDy=0;
 	protected boolean lastLook=true;
 
@@ -38,8 +38,7 @@ public class PlayerEntity extends Entity{
 
 	public void update(long delta, ArrayList<BlockEntity> blocks){
 		x += (delta * dx) / 1000;
-		dy=dy+gravity;
-		y += (delta * dy)/1000;
+		y += (delta * vspeed)/1000;
 		if(Left==true){
 			if(!checkCollisions(blocks, "l", delta)) x+=.1;
 		}
@@ -48,8 +47,11 @@ public class PlayerEntity extends Entity{
 		}
 
 		if(!checkCollisions(blocks,"d",delta)){
-			vspeed-=gravity;
+			vspeed+=gravity;
 			if(vspeed<0){
+				for (int i = 0; i < array.length; i++) {
+					
+				}
 				if(!checkCollisions(blocks,"d",1)){
 					y+=1;
 				}else{
@@ -58,9 +60,7 @@ public class PlayerEntity extends Entity{
 					vspeed=0;
 				}
 			}else{
-
-				if(!checkCollisions(blocks,"u",delta)){
-					System.out.println("true");
+				if(!checkCollisions(blocks,"u",1)){
 					y-=.1;
 				}else{
 					y+=1;
@@ -71,7 +71,7 @@ public class PlayerEntity extends Entity{
 		animate(delta);	
 	}
 	public void setVerticalMovement(float changeInDy, float gravity){
-		dy=(dy+changeInDy);
+		vspeed=(vspeed+changeInDy);
 	}
 	
 	public void animate(long delta){
@@ -145,13 +145,12 @@ public class PlayerEntity extends Entity{
 
 	public boolean collides(BlockEntity other, String d, long delta){
 		//s = self -> unchanged position in check
-		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
-		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
+		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);
+		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);
 
 
-		if(d.equals("u"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*dy)/1000)), 44, 55);
-		if(d.equals("d"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()+((delta*dy)/1000)), 44, 55);
-		System.out.println((int) (getX()+((dx*delta)/1000))+" "+(int) (getY()+((delta*dy)/1000))+", "+other.getX()+" "+other.getY());
+		if(d.equals("u"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);
+		if(d.equals("d"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()+((delta*vspeed)/1000)), 44, 55);
 		return hitbox.intersects(other.getX(),other.getY(),32,32);
 	}
 	@Override
