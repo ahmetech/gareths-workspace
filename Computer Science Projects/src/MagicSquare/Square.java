@@ -10,22 +10,25 @@ public class Square {
 		int[][] square=new int[n][n];
 		ArrayList<Integer> numbersList=getNumbers(n);
 		int magicConstant=findMagicConstant(n);
-		if(n%2==0)square=even(square, numbersList, magicConstant);
+		if(n%2==0)
+			if(n%4==0)square=even(numbersList, n);
+			else throw new RuntimeException("N must be divisible by 4 since its even");
 		else square=odd(square, numbersList, magicConstant, n);
-		check(square, magicConstant, n);
+		//check(square, magicConstant, n);
+		printTheSquare(square);
 	}
-	
 	public static ArrayList<Integer> getNumbers(int n){
 		ArrayList<Integer> numbers=new ArrayList<Integer>();
 		for (int i = 1; i <= n*n; i++) {	numbers.add(i);		}	
 		return numbers;
 	}
-	
 	public static int findMagicConstant(int n){
 		int magic=((n*((n*n)+1))/2);
 		return magic;
 	}
-	
+
+
+
 	public static int[][] odd(int[][] square, ArrayList<Integer> numbersList, int magicConstant, int n){
 		int lastNumber=numbersList.remove(0);
 		square[0][square.length/2]=lastNumber;
@@ -45,7 +48,6 @@ public class Square {
 		}
 		return square;
 	}
-	
 	public static int findUpMove(int coor1, int n){
 		if (coor1-1<0) {
 			return n-1;
@@ -56,13 +58,11 @@ public class Square {
 			return 0;
 		}else return coor2+1;
 	}
-	
 	public static boolean checkNormal(int[][] square, int coor1, int coor2){
 		if(square[coor1][coor2]==0){
 			return true;
 		}return false;
 	}
-	
 	public static int[] placeDown(int coor1, int coor2, int[][] square, int lastNumber, int n){
 		int[] spot=new int[2];
 		if(coor1+1<n&&coor2<n){
@@ -77,7 +77,6 @@ public class Square {
 			return spot;
 		}
 	}
-	
 	public static int[] findLastSpot(int[][] square, int lastNumber){
 		int[] spot=new int[2];
 		for (int i = 0; i < square.length; i++) {
@@ -91,24 +90,63 @@ public class Square {
 		}
 		return spot;
 	}
-	
-	public static int[][] even(int[][] square, ArrayList<Integer> numbersList, int n){
-		int[][]tempSquare=fillBox(square, numbersList);
-		
-		return square;
-	}
-	
-	public static int[][] fillBox(int[][]square, ArrayList<Integer> numbersList){
-		int[][] box=square;
-		ArrayList<Integer> temp=numbersList;
-		for (int i = 0; i < box.length; i++) {
-			for (int j = 0; j < box.length; j++) {
-				box[i][j]=temp.remove(0);
+
+
+
+	public static int[][] even(ArrayList<Integer> numbersList, int n){
+		int[][] tempSquare= new int[n][n];
+		int count=1;
+		int square=n/4;
+
+		for (int i = 0; i < tempSquare.length; i++) {
+			if(i<square||i>tempSquare.length-1-square){
+				for (int j = 0; j < square; j++) {
+					tempSquare[i][j]=count;
+					for (int j2 = 0; j2 < numbersList.size(); j2++) {
+						if(numbersList.get(j2)==count){
+							numbersList.remove(j2);
+						}
+					}
+					count++;
+				}
+				count+=(2*square);
+				for (int j = tempSquare.length-square; j < tempSquare.length; j++) {
+					tempSquare[i][j]=count;
+					for (int j2 = 0; j2 < numbersList.size(); j2++) {
+						if(numbersList.get(j2)==count){
+							numbersList.remove(j2);
+						}
+					}
+					count++;
+				}
+			}
+			else{
+				count+=square;
+				for (int k = square; k < tempSquare.length-square; k++) {
+					tempSquare[i][k]=count;
+					for (int j2 = 0; j2 < numbersList.size(); j2++) {
+						if(numbersList.get(j2)==count){
+							numbersList.remove(j2);
+						}
+					}
+					count++;
+				}
+				count+=square;
 			}
 		}
-		return box;
+		printTheSquare(tempSquare);
+		for (int i = 0; i < tempSquare.length; i++) {
+			for (int j = 0; j < tempSquare.length; j++) {
+				if(tempSquare[i][j]==0){
+					tempSquare[i][j]=numbersList.remove(numbersList.size()-1);
+				}
+			}
+		}
+		return tempSquare;
 	}
-	
+
+
+
 	public static void check(int[][] square, int magicConstant, int n){
 		int sum;
 		//check rows
@@ -118,8 +156,8 @@ public class Square {
 				sum+=square[i][j];
 			}
 			if(sum==magicConstant){
-				System.out.println("Checked Row");
-			}else System.out.println("Failed Row");
+				System.out.println("Checked Row "+sum);
+			}else System.out.println("Failed Row "+sum);
 		}
 		//check columns
 		for (int i = 0; i < square.length; i++) {
@@ -128,8 +166,8 @@ public class Square {
 				sum+=square[j][i];
 			}
 			if(sum==magicConstant){
-				System.out.println("Checked Column");
-			}else System.out.println("Failed Column");
+				System.out.println("Checked Column "+sum);
+			}else System.out.println("Failed Column "+sum);
 		}
 		//check diagnols
 		//right
@@ -138,20 +176,19 @@ public class Square {
 			sum+=square[i][i];
 		}
 		if(sum==magicConstant){
-			System.out.println("Checked RDiagnol");
-		}else System.out.println("Failed RDiagnol");
+			System.out.println("Checked RDiagnol "+sum);
+		}else System.out.println("Failed RDiagnol "+sum);
 		//left
 		sum=0;
 		for (int i = 0; i < square.length; i++) {
-				sum+=square[i][n-1-i];
+			sum+=square[i][n-1-i];
 		}
 		if(sum==magicConstant){
-			System.out.println("Checked LDiagnol");
-		}else System.out.println("Failed LDiagnol");
-		
-	
+			System.out.println("Checked LDiagnol "+sum);
+		}else System.out.println("Failed LDiagnol "+sum);
+
+
 	}
-	
 	public static void printTheSquare(int[][] square){
 		for (int i = 0; i < square.length; i++) {
 			System.out.println("");
