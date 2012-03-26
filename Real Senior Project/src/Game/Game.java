@@ -332,9 +332,8 @@ public class Game {
 				jumpHasBeenReleased=true;
 			}
 			if (spacePressed && jumpHasBeenReleased) {
-				player.changeInDy=-250;
+				player.changeInDy=-150;
 				player.setVerticalMovement(player.changeInDy, player.gravity); 
-				System.out.println("here");
 				jumpHasBeenReleased=false;
 			}
 		}
