@@ -134,7 +134,6 @@ public class Square {
 				count+=square;
 			}
 		}
-		printTheSquare(tempSquare);
 		for (int i = 0; i < tempSquare.length; i++) {
 			for (int j = 0; j < tempSquare.length; j++) {
 				if(tempSquare[i][j]==0){
