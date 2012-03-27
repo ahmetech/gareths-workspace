@@ -37,44 +37,47 @@ public class PlayerEntity extends Entity{
 	public void setGrounded(boolean grounded) {this.grounded = grounded;}
 
 	public void update(long delta, ArrayList<BlockEntity> blocks){
-		boolean test=checkCollisions(blocks, "r", delta);
-		System.out.println(test);
 		y += (delta * vspeed)/1000;
-		if(Left==true){
+		boolean test=checkCollisions(blocks, "l", delta);
+		boolean test2=checkCollisions(blocks, "r", delta);
+		System.out.println(test+" "+test2+" "+x);
+		
+		if(Left==true||lastLook==true){
 			if(!checkCollisions(blocks, "l", delta)) x += (delta * dx) / 1000;
 			else {
 				while (checkCollisions(blocks, "l", delta)) {
-					x+=1;
+					x+=3;
 				}
 			}
 		}
-		if(Right==true){
+		if(Right==true||lastLook==false){
 			if(!checkCollisions(blocks, "r", delta)) x += (delta * dx) / 1000;
 			else {
 				while (checkCollisions(blocks, "r", delta)) {
-					x-=3;
+					x-=1;
 				}
 			}
 		}
-
 		if(!checkCollisions(blocks,"d",delta)){
-			vspeed+=gravity;
+				vspeed+=gravity;
 			if(vspeed>0){
-				for (float i = 0; i > vspeed; i-=1) {
-					if(!checkCollisions(blocks,"d",(long) .1)){
-					}else{
+				if(!checkCollisions(blocks,"d",delta)){
+				
+				}else{
+					while(checkCollisions(blocks,"d",delta)){
+						y-=	1;
 						grounded=true;
-						vspeed=0;
+						vspeed=0;	
 					}
 				}
+
 			}else{
-				for (float i = 0; i < vspeed; i+=1) {
-					if(!checkCollisions(blocks,"u",(long) .1)){
-					}else{
-						y+=1;
-						vspeed=0;
-					}
+				if(!checkCollisions(blocks,"u",delta)){
+				}else{
+					y+=1;
+					vspeed=0;
 				}
+
 			}
 		}
 		animate(delta);	
@@ -82,7 +85,6 @@ public class PlayerEntity extends Entity{
 	public void setVerticalMovement(float changeInDy){
 		vspeed=(vspeed+changeInDy);
 	}
-
 	public void animate(long delta){
 		anim+=delta;
 		if(!lastLook&&(dx==0)&&!jumping)	{sprite=game.getSprite("Player/standingLeft.gif"); anim=0;}
@@ -154,8 +156,8 @@ public class PlayerEntity extends Entity{
 
 	public boolean collides(BlockEntity other, String d, long delta){
 		//s = self -> unchanged position in check
-		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);
-		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);
+		if(d.equals("l"))hitbox.setBounds((int) (getX()-((dx*delta)/1000)), (int) (getY()), 44, 55);
+		if(d.equals("r"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()), 44, 55);
 
 
 		if(d.equals("u"))hitbox.setBounds((int) (getX()+((dx*delta)/1000)), (int) (getY()-((delta*vspeed)/1000)), 44, 55);

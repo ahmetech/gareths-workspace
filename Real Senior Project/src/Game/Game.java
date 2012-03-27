@@ -322,9 +322,9 @@ public class Game {
 		boolean rightPressed  = hasInput(Keyboard.KEY_RIGHT);
 		boolean spacePressed   = hasInput(Keyboard.KEY_SPACE);
 
-		if (leftPressed) {player.setHorizontalMovement(-200);  player.setLeft(true); player.lastLook=false;} 
+		if (leftPressed) {player.setHorizontalMovement(-130);  player.setLeft(true); player.lastLook=false;player.setRight(false);} 
 			else player.setLeft(false);
-		if (rightPressed) {player.setHorizontalMovement(200); player.setRight(true); player.lastLook=true;}
+		if (rightPressed) {player.setHorizontalMovement(130); player.setRight(true); player.lastLook=true;player.setLeft(false);}
 		 	else player.setRight(false);
 		if (spacePressed) {player.setGrounded(false);}
 			{
