@@ -16,7 +16,7 @@ public class PlayerEntity extends Entity{
 
 	public PlayerEntity(Game game, int x, int y){
 		super(game.getSprite("Player/standingRight.gif"), x, y);
-		gravity=1;
+		gravity=0;
 		this.game=game;
 	}
 	public void move(long delta, ArrayList<BlockEntity> blocks) {
@@ -37,43 +37,52 @@ public class PlayerEntity extends Entity{
 	public void setGrounded(boolean grounded) {this.grounded = grounded;}
 
 	public void update(long delta, ArrayList<BlockEntity> blocks){
-		x += (delta * dx) / 1000;
+		boolean test=checkCollisions(blocks, "r", delta);
+		System.out.println(test);
 		y += (delta * vspeed)/1000;
 		if(Left==true){
-			if(!checkCollisions(blocks, "l", delta)) x+=.1;
+			if(!checkCollisions(blocks, "l", delta)) x += (delta * dx) / 1000;
+			else {
+				while (checkCollisions(blocks, "l", delta)) {
+					x+=1;
+				}
+			}
 		}
 		if(Right==true){
-			if(!checkCollisions(blocks, "r", delta)) x-=.1;
+			if(!checkCollisions(blocks, "r", delta)) x += (delta * dx) / 1000;
+			else {
+				while (checkCollisions(blocks, "r", delta)) {
+					x-=3;
+				}
+			}
 		}
 
 		if(!checkCollisions(blocks,"d",delta)){
 			vspeed+=gravity;
-			if(vspeed<0){
-				for (int i = 0; i < array.length; i++) {
-					
-				}
-				if(!checkCollisions(blocks,"d",1)){
-					y+=1;
-				}else{
-					grounded=true;
-					y-=3;
-					vspeed=0;
+			if(vspeed>0){
+				for (float i = 0; i > vspeed; i-=1) {
+					if(!checkCollisions(blocks,"d",(long) .1)){
+					}else{
+						grounded=true;
+						vspeed=0;
+					}
 				}
 			}else{
-				if(!checkCollisions(blocks,"u",1)){
-					y-=.1;
-				}else{
-					y+=1;
-					vspeed=0;
+				for (float i = 0; i < vspeed; i+=1) {
+					if(!checkCollisions(blocks,"u",(long) .1)){
+					}else{
+						y+=1;
+						vspeed=0;
+					}
 				}
 			}
 		}
 		animate(delta);	
 	}
-	public void setVerticalMovement(float changeInDy, float gravity){
+	public void setVerticalMovement(float changeInDy){
 		vspeed=(vspeed+changeInDy);
 	}
-	
+
 	public void animate(long delta){
 		anim+=delta;
 		if(!lastLook&&(dx==0)&&!jumping)	{sprite=game.getSprite("Player/standingLeft.gif"); anim=0;}

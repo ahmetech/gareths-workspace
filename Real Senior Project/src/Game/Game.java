@@ -174,8 +174,9 @@ public class Game {
 		player = new PlayerEntity(this, 370, 520);
 		entities.add(player);
 		for(int i=0; i<1280; i+=32){
-			//blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
-			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 580));
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
+			//blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 370, 580));
+			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", 450, 540));
 		}
 	}
 
@@ -332,8 +333,8 @@ public class Game {
 				jumpHasBeenReleased=true;
 			}
 			if (spacePressed && jumpHasBeenReleased) {
-				player.changeInDy=-150;
-				player.setVerticalMovement(player.changeInDy, player.gravity); 
+				player.changeInDy=-250;
+				player.setVerticalMovement(player.changeInDy); 
 				jumpHasBeenReleased=false;
 			}
 		}
