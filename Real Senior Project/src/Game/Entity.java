@@ -127,13 +127,13 @@ public abstract class Entity {
 	 * @param other The other entity to check collision against
 	 * @return True if the entities collide with each other
 	 */
-	/*
+	
 	public boolean collidesWith(Entity other) {
-		me.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
+		player.setBounds((int) x, (int) y, sprite.getWidth(), sprite.getHeight());
 		him.setBounds((int) other.x, (int) other.y, other.sprite.getWidth(), other.sprite.getHeight());
 
 		return me.intersects(him);
-	}*/
+	}
 
 	public boolean intersects(Entity other) {
 		hitbox.setBounds((int) this.x, (int) this.y, (int) sprite.getWidth(), (int) sprite.getHeight());

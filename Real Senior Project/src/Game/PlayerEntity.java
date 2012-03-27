@@ -40,13 +40,13 @@ public class PlayerEntity extends Entity{
 		y += (delta * vspeed)/1000;
 		boolean test=checkCollisions(blocks, "l", delta);
 		boolean test2=checkCollisions(blocks, "r", delta);
-		System.out.println(test+" "+test2+" "+x);
+		System.out.println(test+" "+test2+" "+x+" "+lastLook);
 		
 		if(Left==true||lastLook==true){
 			if(!checkCollisions(blocks, "l", delta)) x += (delta * dx) / 1000;
 			else {
 				while (checkCollisions(blocks, "l", delta)) {
-					x+=3;
+					x+=1.5;
 				}
 			}
 		}
@@ -54,7 +54,7 @@ public class PlayerEntity extends Entity{
 			if(!checkCollisions(blocks, "r", delta)) x += (delta * dx) / 1000;
 			else {
 				while (checkCollisions(blocks, "r", delta)) {
-					x-=1;
+					x-=1.5;
 				}
 			}
 		}

@@ -171,7 +171,7 @@ public class Game {
 
 	private void initEntities() {
 		// create the player ship and place it roughly in the center of the screen
-		player = new PlayerEntity(this, 370, 520);
+		player = new PlayerEntity(this, 320, 520);
 		entities.add(player);
 		for(int i=0; i<1280; i+=32){
 			blocks.add(new BlockEntity(this, "Blocks/floor1.gif", i, 580));
