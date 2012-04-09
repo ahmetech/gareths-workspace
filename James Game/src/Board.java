@@ -11,6 +11,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.omg.CORBA.Current;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 
 public class Board {
@@ -25,6 +28,7 @@ public class Board {
 
 	Player player;
 	ArrayList<Block> blocks = new ArrayList<Block>();
+	ArrayList<Scroll> scrolls=new ArrayList<Scroll>();
 	
 	
 	long lastFrame;
@@ -40,26 +44,14 @@ public class Board {
 	public void start(){
 		Mouse.setGrabbed(true);
 		
-		player = new Player(48*2, 48);
-		blocks.add(new Block(0,48));
-		blocks.add(new Block(48*4,48));
-		blocks.add(new Block(0,48*4));
-		blocks.add(new Block(0,48*2));
-		blocks.add(new Block(48,48*4));
-		blocks.add(new Block(48*2,48*4));
-		blocks.add(new Block(48*3,48*4));
-		blocks.add(new Block(48*4,48*4));
-		blocks.add(new Block(48*4,48*2));
-
-		blocks.add(new Block(48*5,48*7));
-		blocks.add(new Block(48*6,48*5));
-		blocks.add(new Block(48*7,48*3));
-		blocks.add(new Block(48*9,48*6));
-		
+		player = new Player(10, 1000);
+		createLevel1();
+		//createLevel2();
+		//createLevel3();
 		
 		try{
-			if(mode==windowed640x480 || mode==FULLSCREEN)Display.setDisplayMode(new DisplayMode(640, 480));
-			else Display.setDisplayMode(new DisplayMode(320, 240));
+			if(mode==windowed640x480 || mode==FULLSCREEN)Display.setDisplayMode(new DisplayMode(1920,1080));
+			else Display.setDisplayMode(new DisplayMode(1024, 768));
 			Display.create();
 		}catch (LWJGLException e) {
 			e.printStackTrace();
@@ -71,10 +63,10 @@ public class Board {
 		lastFPS = getTime();
 		
 		if(mode==FULLSCREEN){
-			setDisplayMode(640,480,true);
+			setDisplayMode(1920,1080,true);
 			Display.setVSyncEnabled(true);
 		}else if(mode==windowed640x480){
-			setDisplayMode(640,480,false);
+			setDisplayMode(1024,768,false);
 			Display.setVSyncEnabled(false);
 		}else if(mode==windowed320x240){
 			setDisplayMode(320,240,false);
@@ -96,7 +88,7 @@ public class Board {
 	}
 	
 	
-
+	
 	public void setDisplayMode(int width, int height, boolean fullscreen) {
 
 		// return if requested DisplayMode is already set
@@ -170,7 +162,7 @@ public class Board {
         }else{
         	player.r=false;
         }
-		if(Keyboard.isKeyDown(Keyboard.KEY_Z)){
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			player.u=true;
         }else{
         	player.u=false;
@@ -185,7 +177,7 @@ public class Board {
         	System.exit(0);
         }
 		
-		player.update(delta,blocks);
+		player.update(delta,blocks, scrolls);
 	}
 	
 	
@@ -193,7 +185,7 @@ public class Board {
 	public void initGL() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 640, 480, 0, 1, -1);
+		GL11.glOrtho(0, 1920, 1080, 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glEnable(GL_TEXTURE_2D);
 		GL11.glEnable(GL_BLEND);
@@ -226,7 +218,41 @@ public class Board {
 			for(int i = 0; i < blocks.size(); i++){
 				blocks.get(i).draw();
 			}
+			for (int i = 0; i < scrolls.size(); i++) {
+				scrolls.get(i).draw();
+			}
 	
+	}
+	
+	
+	public void createLevel1(){
+		for(int i =0; i<6; i++){
+			blocks.add(new Block(i*32,1048, "floor"));
+		}
+		blocks.add(new Block(32*6.25, 988, "air"));
+		blocks.add(new Block(32*7.25, 988, "air"));
+		blocks.add(new Block(32*4, 928, "air"));
+		blocks.add(new Block(32*3.5, 928, "air"));
+		blocks.add(new Block(32, 888, "air"));
+		scrolls.add(new Scroll(40, 868, 48, 48, "01", "1",true));
+		
+		blocks.add(new Block(32*11.5, 998, "air"));
+		blocks.add(new Block(32*12.5, 998, "air"));
+		for(double i =16; i<24.5; i++){
+			blocks.add(new Block(i*32,1048, "floor"));
+		}
+	}
+	
+	public void createLevel2(){
+		
+	}
+	
+	public void createLevel3(){
+		
+	}
+	
+	public void createLevel4(){
+		
 	}
 	
 	
