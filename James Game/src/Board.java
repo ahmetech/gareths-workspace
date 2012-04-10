@@ -11,6 +11,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.TrueTypeFont;
 import org.omg.CORBA.Current;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
@@ -27,6 +28,8 @@ public class Board {
 	}
 
 	Player player;
+	boolean made=false;
+	Dummy light;
 	ArrayList<Block> blocks = new ArrayList<Block>();
 	ArrayList<Scroll> scrolls=new ArrayList<Scroll>();
 	
@@ -44,10 +47,11 @@ public class Board {
 	public void start(){
 		Mouse.setGrabbed(true);
 		
-		player = new Player(10, 1000);
-		createLevel1();
-		//createLevel2();
+		
+		//createLevel1();
+		createLevel2();
 		//createLevel3();
+		//createLevel4();
 		
 		try{
 			if(mode==windowed640x480 || mode==FULLSCREEN)Display.setDisplayMode(new DisplayMode(1920,1080));
@@ -167,6 +171,20 @@ public class Board {
         }else{
         	player.u=false;
         }
+		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+			player.z=true;
+		}else {
+			player.z=false;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_I)) {
+			made=true;
+			light=new Dummy(1200, 994, 25, 24);
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+			player.o=true;
+		}else {
+			player.o=false;
+		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 			try {
 				Display.setFullscreen(false);
@@ -178,6 +196,9 @@ public class Board {
         }
 		
 		player.update(delta,blocks, scrolls);
+		if (made) {
+			light.update(delta, player);
+		}
 	}
 	
 	
@@ -214,7 +235,9 @@ public class Board {
 		// Clear The Screen And The Depth Buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			player.draw();
-			
+			if (made) {
+				light.draw();
+			}
 			for(int i = 0; i < blocks.size(); i++){
 				blocks.get(i).draw();
 			}
@@ -226,6 +249,53 @@ public class Board {
 	
 	
 	public void createLevel1(){
+		player = new Player(10, 1000);
+		for(int i =0; i<50; i++){
+			blocks.add(new Block(i*32,1048, "floor"));
+		}
+		blocks.add(new Block(32*8, 988, "air"));
+		scrolls.add(new Scroll(32*8+8, 968, 48, 48, "01", "1",true));
+		
+		blocks.add(new Block(32*20, 988, "air"));
+		blocks.add(new Block(32*24, 928, "air"));
+		blocks.add(new Block(32*27, 868, "air"));
+		scrolls.add(new Scroll(32*27+8, 848, 48, 48, "01", "1",true));
+		
+		blocks.add(new Block(32*39, 1048, "floor"));
+		blocks.add(new Block(32*44, 1048, "floor"));
+		blocks.add(new Block(32*49, 1048, "floor"));
+		blocks.add(new Block(32*54, 1048, "floor"));
+		scrolls.add(new Scroll(32*54+8, 1028, 48, 48, "01", "1",true));
+		
+		
+	}
+	
+	public void createLevel2(){
+		player = new Player(0, 170);
+		blocks.add(new Block(0, 200, "air"));
+		blocks.add(new Block(64, 140, "air"));
+		blocks.add(new Block(32*5, 80, "air"));
+		scrolls.add(new Scroll(32*5+8, 60, 48, 48, "01", "1",true));
+		blocks.add(new Block(32*9, 160, "air"));
+		blocks.add(new Block(32*5, 300, "air"));
+		blocks.add(new Block(15, 500, "air"));
+		blocks.add(new Block(32*2.5, 800, "air"));
+		scrolls.add(new Scroll(32*2.5+8, 780, 48, 48, "01", "1",true));
+		blocks.add(new Block(32*6, 800, "air"));
+		blocks.add(new Block(32*9, 800, "air"));
+		blocks.add(new Block(32*12, 800, "air"));
+		blocks.add(new Block(32*14.5, 750, "air"));
+		blocks.add(new Block(32*17, 700, "air"));
+		blocks.add(new Block(32*19.5, 650, "air"));
+		blocks.add(new Block(32*22, 700, "air"));
+		blocks.add(new Block(32*25.5, 750, "air"));
+		scrolls.add(new Scroll(32*25.5+8, 730, 48, 48, "01", "1",true));
+		
+	}
+	
+	public void createLevel3(){
+		player = new Player(10, 1000);
+		player.speed=.15;
 		for(int i =0; i<6; i++){
 			blocks.add(new Block(i*32,1048, "floor"));
 		}
@@ -233,26 +303,46 @@ public class Board {
 		blocks.add(new Block(32*7.25, 988, "air"));
 		blocks.add(new Block(32*4, 928, "air"));
 		blocks.add(new Block(32*3.5, 928, "air"));
-		blocks.add(new Block(32, 888, "air"));
-		scrolls.add(new Scroll(40, 868, 48, 48, "01", "1",true));
+		blocks.add(new Block(32, 868, "air"));
+		scrolls.add(new Scroll(40, 848, 48, 48, "01", "1",true));
 		
-		blocks.add(new Block(32*11.5, 998, "air"));
-		blocks.add(new Block(32*12.5, 998, "air"));
-		for(double i =16; i<24.5; i++){
+		for(double i =16; i<28.5; i++){
 			blocks.add(new Block(i*32,1048, "floor"));
 		}
-	}
-	
-	public void createLevel2(){
+		blocks.add(new Block(32*30, 988, "air"));
+		blocks.add(new Block(32*31, 928, "air"));
+		blocks.add(new Block(32*32.5, 928-60, "air"));
+		blocks.add(new Block(32*46, 998, "air"));
+		blocks.add(new Block(32*53, 958, "air"));
+		for(int i=0; i<4; i++){
+			blocks.add(new Block(32*56, 910-120*i, "air"));
+		}
+		for(int i=0; i<4; i++){
+			blocks.add(new Block(32*54, 850-120*i, "air"));
+		}
+		scrolls.add(new Scroll(32*54+8, 470, 48, 48, "01", "1",true));
 		
-	}
-	
-	public void createLevel3(){
+		for (int i = 39; i < 47; i++) {
+			blocks.add(new Block(32*i, 730, "floor"));
+		}
+		blocks.add(new Block(30*32, 730, "floor"));
+		blocks.add(new Block(20*32, 730, "floor"));
+		blocks.add(new Block(10*32, 730, "floor"));
 		
+		for(int i=0; i<4; i++){
+			blocks.add(new Block(32*4, 720-120*i, "air"));
+		}
+		for(int i=0; i<4; i++){
+			blocks.add(new Block(32, 660-120*i, "air"));
+		}
+		scrolls.add(new Scroll(32*15.5, 500, 48, 48, "01", "1",true));
 	}
 	
 	public void createLevel4(){
-		
+		player = new Player(10, 1000);
+		for(int i =0; i<80; i++){
+			blocks.add(new Block(i*32,1048, "floor"));
+		}
 	}
 	
 	

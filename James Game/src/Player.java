@@ -21,7 +21,7 @@ public class Player extends AbstractMoveableEntity{
 	int frame=0;
 	static double scale=1;
 
-	double speed = .175;
+	double speed = .1;
 
 	double jump = 4.5;
 	double maxFall = 1;
@@ -39,7 +39,7 @@ public class Player extends AbstractMoveableEntity{
 
 
 
-	boolean u=false,d=false,l=false,r=false;
+	boolean u=false,d=false,l=false,r=false,z=false,o=false;
 
 	double hspeed=0;
 	double maxRun = .5;
@@ -81,11 +81,16 @@ public class Player extends AbstractMoveableEntity{
 	public void setR(boolean r) {
 		this.r = r;
 	}
+	public boolean isO() {
+		return o;
+	}
 
+	public void setO(boolean o) {
+		this.o = o;
+	}
 
 	public void update(int delta, ArrayList<Block> blocks, ArrayList<Scroll> scrolls){
 		super.update(delta);
-
 		for (int i = 0; i < scrolls.size(); i++) {
 			Scroll temp=scrolls.get(i);
 			hitbox.setBounds((int) ((int) x), (int) ((int) y), (int) width, (int) height);
@@ -185,20 +190,34 @@ public class Player extends AbstractMoveableEntity{
 
 	public void animate(int delta,ArrayList<Block> blocks){
 		anim+=delta;
-		if(dy>=0&&falling){
+		if(z){
+			dx=0;dy=0;gravity=0;
+			if (anim>=500){
+				sprite="trans";
+				frame=0;
+			}
+			if(anim>=100){
+				frame=1;
+			}
+			if (anim>=1500) {
+				frame=2;
+				this.y-=20;
+			}
+		}
+		if(dy>=0&&falling&&!z){
 			frame=0;
 			sprite="fall";
-		}else if(dy<0&&falling){
+		}else if(dy<0&&falling&&!z){
 			frame=0;
 			sprite="jump";
 		}else{
-			if(l&&!r||r&&!l){
+			if(l&&!r||r&&!l&&!z){
 				sprite="walk";
-				if(anim>75*3)anim=1;
+				if(anim>125*3)anim=0;
 				if(anim>=1)frame=0;
-				if(anim>=75)frame=1;
-				if(anim>=75*2)frame=2;
-			}else{
+				if(anim>=125)frame=1;
+				if(anim>=125*2)frame=2;
+			}else if (!z) {
 				sprite="stand";
 				Random random = new Random();
 				int r = random.nextInt(10);
@@ -208,6 +227,8 @@ public class Player extends AbstractMoveableEntity{
 				if(anim>=0)frame=0;
 				if(anim>=(75*(50+r))-(30+r2))frame=1;
 			}
+				
+			
 		}
 	}
 
@@ -221,7 +242,7 @@ public class Player extends AbstractMoveableEntity{
 		try {
 			//right now only works with compy files
 			//fix later plz thx :3
-			Texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("E:/Adrift/Sprites/Gareth/Player2/"/*+type+"/"*/+character+"_"+sprite+"_"+dir.toUpperCase()+frame+".png")));
+			Texture = TextureLoader.getTexture("PNG", new FileInputStream(new File("E:/Adrift/Sprites/Gareth/Player2/"+character+"_"+sprite+"_"+dir.toUpperCase()+frame+".png")));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
