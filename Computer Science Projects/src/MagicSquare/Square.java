@@ -12,7 +12,7 @@ public class Square {
 		int magicConstant=findMagicConstant(n);
 		if(n%2==0)
 			if(n%4==0)square=even(numbersList, n);
-			else throw new RuntimeException("N must be divisible by 4 since its even");
+			if(n%2==0)square=anyEven(numbersList, n);
 		else square=odd(square, numbersList, magicConstant, n);
 		//check(square, magicConstant, n);
 		printTheSquare(square);
@@ -144,8 +144,58 @@ public class Square {
 		return tempSquare;
 	}
 	
-	public static void anyEven(ArrayList<Integer> numbersList, int n){
-		
+	public static int[][] anyEven(ArrayList<Integer> numbersList, int n){
+		String[][] lux=new String[2*n+1][2*n+1];
+		int[][] finalS=new int[(2*n+1)*2][(2*n+1)*2];
+		int z=0;
+		for (z = 0; z <= n; z++) {
+			for (int j = 0; j < lux.length; j++) {
+				lux[z][j]="L";
+			}
+		}
+		for (int j = 0; j < lux.length; j++) {
+			lux[n+1][j]="U";
+		}
+		for (int b = 0; b < n-1; b++) {
+			for (int j = 0; j < lux.length; j++) {
+				lux[(n+1)+(b+1)][j]="X";
+			}
+		}
+		lux[n+1][lux.length/2]="L";
+		lux[n][lux.length/2]="U";
+		int[] numbers=new int[4];
+		int[] spot=new int[2];
+		spot[0]=0; spot[1]=lux.length/2;
+		while(numbersList.size()!=0){
+			for (int i = 0; i < 4; i++) {
+				numbers[i]=numbersList.remove(0);
+			}
+			
+			fillSquare(spot[0], spot[1], letter, numbers, finalS);
+		}
+		return finalS;
+	}
+	
+	public static int[][] fillSquare(int x, int y, String letter, int[] numbers, int[][] finalS){
+		if(letter.matches("L")){
+			finalS[x*2][y*2]=numbers[3];
+			finalS[x*2][y*2+1]=numbers[0];
+			finalS[x*2+1][y*2]=numbers[1];
+			finalS[x*2+1][y*2+1]=numbers[2];
+		}
+		if(letter.matches("U")){
+			finalS[x*2][y*2]=numbers[0];
+			finalS[x*2][y*2+1]=numbers[3];
+			finalS[x*2+1][y*2]=numbers[1];
+			finalS[x*2+1][y*2+1]=numbers[2];
+		}
+		if(letter.matches("X")){
+			finalS[x*2][y*2]=numbers[0];
+			finalS[x*2][y*2+1]=numbers[3];
+			finalS[x*2+1][y*2]=numbers[2];
+			finalS[x*2+1][y*2+1]=numbers[1];
+		}
+		return finalS;
 	}
 
 
