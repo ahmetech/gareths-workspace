@@ -49,8 +49,8 @@ public class Board {
 		
 		
 		//createLevel1();
-		createLevel2();
-		//createLevel3();
+		//createLevel2();
+		createLevel3();
 		//createLevel4();
 		
 		try{
