@@ -7,6 +7,7 @@ public class Square {
 		Scanner scanner=new Scanner(System.in);
 		System.out.println("Please input n");
 		int n=scanner.nextInt();
+		long startTime=System.currentTimeMillis();
 		int[][] square=new int[n][n];
 		ArrayList<Integer> numbersList=getNumbers(n);
 		int magicConstant=findMagicConstant(n);
@@ -15,8 +16,11 @@ public class Square {
 			else {int fakeN=findFakeN(n); square=anyEven(numbersList, fakeN);}
 		}
 		else square=odd(square, numbersList, magicConstant, n);
-		check(square, magicConstant, n);
-		//printTheSquare(square);
+		long endTime=System.currentTimeMillis();
+		//check(square, magicConstant, n);
+		printTheSquare(square);
+		System.out.println("Total execution time: "+ (endTime-startTime));
+		
 	}
 	public static ArrayList<Integer> getNumbers(int n){
 		ArrayList<Integer> numbers=new ArrayList<Integer>();
@@ -27,24 +31,16 @@ public class Square {
 		int magic=((n*((n*n)+1))/2);
 		return magic;
 	}
-	public static int findFakeN(int origN){
-		int n = 0;
-		for (int i = 0; i < 1000; i++) {
-			if (origN==2*(2*n+1)) {
-				return n;
-			}else {
-				n++;
-			}
-		}
-		return n;
-	}
+	
 
 
 
 	public static int[][] odd(int[][] square, ArrayList<Integer> numbersList, int magicConstant, int n){
 		int lastNumber=numbersList.remove(0);
 		square[0][square.length/2]=lastNumber;
-		int[] spot=findLastSpot(square, lastNumber);
+		int[] spot=new int[2];
+		spot[0]=0;
+		spot[1]=square.length/2;
 
 		while (numbersList.size()!=0) {
 			int coor1=spot[0];
@@ -156,6 +152,8 @@ public class Square {
 		return tempSquare;
 	}
 	
+	
+	
 	public static int[][] anyEven(ArrayList<Integer> numbersList, int n){
 		String[][] lux=new String[2*n+1][2*n+1];
 		int[][] finalS=new int[(2*n+1)*2][(2*n+1)*2];
@@ -211,12 +209,22 @@ public class Square {
 		}
 		return finalS;
 	}
+	public static int findFakeN(int origN){
+		int n = 0;
+		for (int i = 0; i < 1000; i++) {
+			if (origN==2*(2*n+1)) {
+				return n;
+			}else {
+				n++;
+			}
+		}
+		return n;
+	}
 	public static boolean checkNor(String[][] lux, int coor1, int coor2){
 		if(!(lux[coor1][coor2].matches("B"))){
 			return true;
 		}return false;
 	}
-	
 	public static int[][] fillSquare(int x, int y, String letter, int[] numbers, int[][] finalS){
 		if(letter.matches("L")){
 			finalS[x*2][y*2]=numbers[3];
@@ -239,6 +247,8 @@ public class Square {
 		return finalS;
 	}
 
+	
+	
 	public static void check(int[][] square, int magicConstant, int n){
 		int sum;
 		//check rows
@@ -278,8 +288,6 @@ public class Square {
 		if(sum==magicConstant){
 			System.out.println("Checked LDiagnol "+sum);
 		}else System.out.println("Failed LDiagnol "+sum);
-
-
 	}
 	public static void printTheSquare(int[][] square){
 		for (int i = 0; i < square.length; i++) {
@@ -289,6 +297,7 @@ public class Square {
 				System.out.print("     ");
 			}
 		}
+		System.out.println("");
 	}
 
 
