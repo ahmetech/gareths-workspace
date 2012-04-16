@@ -10,12 +10,13 @@ public class Square {
 		int[][] square=new int[n][n];
 		ArrayList<Integer> numbersList=getNumbers(n);
 		int magicConstant=findMagicConstant(n);
-		if(n%2==0)
+		if(n%2==0){
 			if(n%4==0)square=even(numbersList, n);
-			if(n%2==0)square=anyEven(numbersList, n);
+			else {int fakeN=findFakeN(n); square=anyEven(numbersList, fakeN);}
+		}
 		else square=odd(square, numbersList, magicConstant, n);
-		//check(square, magicConstant, n);
-		printTheSquare(square);
+		check(square, magicConstant, n);
+		//printTheSquare(square);
 	}
 	public static ArrayList<Integer> getNumbers(int n){
 		ArrayList<Integer> numbers=new ArrayList<Integer>();
@@ -25,6 +26,17 @@ public class Square {
 	public static int findMagicConstant(int n){
 		int magic=((n*((n*n)+1))/2);
 		return magic;
+	}
+	public static int findFakeN(int origN){
+		int n = 0;
+		for (int i = 0; i < 1000; i++) {
+			if (origN==2*(2*n+1)) {
+				return n;
+			}else {
+				n++;
+			}
+		}
+		return n;
 	}
 
 
@@ -166,14 +178,43 @@ public class Square {
 		int[] numbers=new int[4];
 		int[] spot=new int[2];
 		spot[0]=0; spot[1]=lux.length/2;
+		boolean first=true;
+		String letter=null;
 		while(numbersList.size()!=0){
 			for (int i = 0; i < 4; i++) {
 				numbers[i]=numbersList.remove(0);
 			}
-			
+			if (first) {
+				letter=lux[0][lux.length/2];
+				lux[0][lux.length/2]="B";
+				first=false;
+			}else {
+				int tempCoor1=findUpMove(spot[0], 2*n+1);
+				int tempCoor2=findRightMove(spot[1], 2*n+1);
+				if(checkNor(lux, tempCoor1, tempCoor2)){
+					spot[0]=tempCoor1; spot[1]=tempCoor2;
+					letter=lux[spot[0]][spot[1]];
+					lux[spot[0]][spot[1]]="B";
+				}else {
+					if (spot[0]==2*n) {
+						spot[1]=0;
+						letter=lux[spot[0]][spot[1]];
+						lux[spot[0]][spot[1]]="B";
+					}else {
+						spot[0]=spot[0]+1;
+						letter=lux[spot[0]][spot[1]];
+						lux[spot[0]][spot[1]]="B";
+					}
+				}
+			}
 			fillSquare(spot[0], spot[1], letter, numbers, finalS);
 		}
 		return finalS;
+	}
+	public static boolean checkNor(String[][] lux, int coor1, int coor2){
+		if(!(lux[coor1][coor2].matches("B"))){
+			return true;
+		}return false;
 	}
 	
 	public static int[][] fillSquare(int x, int y, String letter, int[] numbers, int[][] finalS){
@@ -197,8 +238,6 @@ public class Square {
 		}
 		return finalS;
 	}
-
-
 
 	public static void check(int[][] square, int magicConstant, int n){
 		int sum;
