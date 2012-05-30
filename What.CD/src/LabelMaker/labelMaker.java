@@ -26,7 +26,6 @@ public class labelMaker {
 			if(!temp.equals("done")){
 				inputs.add(temp);
 			}else on=false;
-
 		}
 		year=inputs.remove(0);
 		album=inputs.remove(0);
